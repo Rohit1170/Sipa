@@ -8,7 +8,7 @@ export default function Packaging() {
   return (
     <section
       ref={ref}
-      className="py-20 lg:py-32 bg-gradient-to-br from-green-50 to-orange-50"
+      className="py-20 lg:py-32 bg-[#f7f4ef]"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -72,15 +72,15 @@ export default function Packaging() {
               <img
                 src="/box.jpeg"
                 alt="SIPA Nutrition Sachets Box Packaging"
-                className="w-full h-auto object-contain blur-sm"
+                className="w-full h-auto object-contain "
               />
-              <div className="absolute inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center">
+              {/* <div className="absolute inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center">
               <div className="bg-white/95  px-8 py-4 rounded-full">
                 <p className="text-2xl font-bolds ">
                   Coming Soon
                 </p>
               </div>
-            </div>
+            </div> */}
             </div>
           </div>
         </div>

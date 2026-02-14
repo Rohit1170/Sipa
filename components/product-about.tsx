@@ -24,7 +24,7 @@ export default function ProductAbout() {
     {
       icon: "🍊",
       title: "Natural Orange Flavor",
-      description: "No added sugar, no added chemicals",
+      description: "No added sugar. No artificial additives.",
     },
     {
       icon: "📦",
@@ -39,7 +39,7 @@ export default function ProductAbout() {
   ]
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-white">
+    <section ref={ref} className="py-20 lg:py-32 bg-[#f7f4ef]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}

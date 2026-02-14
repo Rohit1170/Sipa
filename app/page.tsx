@@ -9,11 +9,13 @@ import FAQ from "@/components/faq"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 
+import BenefitSection from "@/components/benefit"
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Hero />
       <ProductAbout />
+      <BenefitSection/>
       <Dosage />
       <Ingredients />
       <Packaging />

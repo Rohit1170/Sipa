@@ -8,7 +8,7 @@ export default function Contact() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section id="contact" ref={ref} className="py-20 lg:py-32 bg-gradient-to-br from-green-50 to-orange-50">
+    <section id="contact" ref={ref} className="py-20 lg:py-32 bg-[#f7f4ef]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
@@ -27,18 +27,25 @@ export default function Contact() {
                 href="mailto:nutritionsipa@gmail.com"
                 className="text-2xl font-bold text-foreground hover:text-orange-600 transition-colors"
               >
-                nutritionsipa@gmail.com
+                hello@sipanutrition.com
               </a>
             </div>
             <p className="text-muted-foreground mb-8">
               We&apos;re currently in development. Join us on our journey to revolutionize daily nutrition in India.
             </p>
+            <a
+                href="mailto:nutritionsipa@gmail.com"
+                className="text-2xl font-bold text-foreground hover:text-orange-600 transition-colors"
+              >
             <Button
+            
               size="lg"
               className="bg-orange-600 hover:bg-orange-700 text-white rounded-full px-8 py-6 text-lg font-semibold"
             >
-              Coming Soon
+              
+              Mail Us
             </Button>
+            </a>
           </div>
         </div>
       </div>

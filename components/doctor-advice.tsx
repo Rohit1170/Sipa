@@ -6,7 +6,7 @@ export default function DoctorAdvice() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-gradient-to-br from-orange-50 via-white to-green-50">
+    <section ref={ref} className="py-20 lg:py-32 bg-[#f7f4ef] ">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-12 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
@@ -21,10 +21,10 @@ export default function DoctorAdvice() {
         >
           <div className="space-y-6">
             <div className="flex gap-6">
-              <div className="text-4xl">👨‍⚕️</div>
+              {/* <div className="text-4xl">👨‍⚕️</div> */}
               <div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Professional Recommendation</h3>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-muted-foreground italic">
                   Daily D3 + K2 supplementation is commonly recommended by doctors as a maintenance dose for overall
                   health and wellness.
                 </p>
@@ -32,10 +32,10 @@ export default function DoctorAdvice() {
             </div>
 
             <div className="flex gap-6">
-              <div className="text-4xl">🆓</div>
+              {/* <div className="text-4xl">🆓</div> */}
               <div>
                 <h3 className="text-xl font-bold text-foreground mb-2">No Prescription Required</h3>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-muted-foreground italic">
                   Can be taken without medical prescription as a daily maintenance supplement for long-term health
                   support.
                 </p>
@@ -43,10 +43,10 @@ export default function DoctorAdvice() {
             </div>
 
             <div className="flex gap-6">
-              <div className="text-4xl">💼</div>
+              {/* <div className="text-4xl">💼</div> */}
               <div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Ideal For Modern Lifestyle</h3>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-muted-foreground italic">
                   Perfect for individuals with indoor lifestyle, limited sun exposure, or long working hours who need
                   daily vitamin D3 & K2 support.
                 </p>

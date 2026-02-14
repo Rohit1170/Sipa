@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div>
             <h3 className="text-2xl font-bold mb-4">SIPA Nutrition</h3>
-            <p className="text-background/80">India&apos;s First Daily Vitamin D3 + K2 Sachets</p>
+            <p className="text-background/80">Daily Vitamin D3 + K2 Sachets</p>
           </div>
 
           <div>

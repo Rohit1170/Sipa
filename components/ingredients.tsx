@@ -13,7 +13,7 @@ export default function Ingredients() {
   ]
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-white">
+    <section ref={ref} className="py-20 lg:py-32 bg-[#f7f4ef]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
@@ -26,7 +26,7 @@ export default function Ingredients() {
           {ingredients.map((ingredient, index) => (
             <div
               key={index}
-              className={`p-8 bg-gradient-to-br from-orange-50 to-green-50 rounded-xl border border-green-200 hover:border-green-400 transition-all duration-500 text-center ${
+              className={`p-8 bg-gray-100 rounded-xl border border-green-200 hover:border-green-400 transition-all duration-500 text-center ${
                 inView ? "opacity-100 scale-100" : "opacity-0 scale-95"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}

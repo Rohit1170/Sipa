@@ -6,21 +6,24 @@ export default function Certifications() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   const certifications = [
-    { name: "FSSAI Certified", icon: "✓" },
-    { name: "ISO Certified Facility", icon: "✓" },
-    { name: "GMP Certified", icon: "✓" },
-    { name: "HACCP Certified", icon: "✓" },
-    { name: "US FDA Registered", icon: "✓" },
+    // { name: "FSSAI Certified", icon: "✓" },
+    // { name: "ISO Certified Facility", icon: "✓" },
+    { name: "GMP Certified", icon: "✓" }
+    // { name: "HACCP Certified", icon: "✓" },
+    
   ]
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-white">
+    <section ref={ref} className="py-20 lg:py-32 bg-[#f7f4ef]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">Quality & Trust</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm text-muted-foreground max-w-2xl italic mx-auto mt-[-25px]">
+            (Third Party Manufacturer Certificates)
+          </p>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-1 italic">
             Meeting the highest international standards for your safety
           </p>
         </div>
@@ -29,7 +32,7 @@ export default function Certifications() {
           {certifications.map((cert, index) => (
             <div
               key={index}
-              className={`p-8 bg-gradient-to-br from-orange-50 to-white rounded-xl border-2 border-green-200 flex items-center gap-4 transition-all duration-500 hover:shadow-lg ${
+              className={`p-8 bg-background rounded-xl border-2 border-green-200 flex items-center gap-4 transition-all duration-500 hover:shadow-lg ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}

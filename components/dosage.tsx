@@ -17,7 +17,7 @@ export default function Dosage() {
   ]
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-gradient-to-br from-green-50 to-orange-50">
+    <section ref={ref} className="py-20 lg:py-32 bg-[#f7f4ef] from-green-50 to-orange-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
