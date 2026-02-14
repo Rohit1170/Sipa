@@ -10,12 +10,15 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 
 import BenefitSection from "@/components/benefit"
+import Timeline from "@/components/timeline"
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Hero />
       <ProductAbout />
-      <BenefitSection/>
+      {/* <BenefitSection/>
+       */}
+       <Timeline/>
       <Dosage />
       <Ingredients />
       <Packaging />
