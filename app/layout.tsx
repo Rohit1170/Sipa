@@ -11,23 +11,22 @@ export const metadata: Metadata = {
   title: "SIPA Nutrition | India's First Daily Vitamin D3 + K2 Sachets",
   description:
     "Plant-based, doctor-recommended daily Vitamin D3 + K2 maintenance dose. Coming soon to revolutionize your daily nutrition.",
-  generator: "v0.app",
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
+        url: "/image.png",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/icon-dark-32x32.png",
+        url: "/image.png",
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/icon.svg",
+        url: "/image.png",
         type: "image/svg+xml",
       },
     ],
-    apple: "/apple-icon.png",
+    apple: "/image.png",
   },
 }
 
