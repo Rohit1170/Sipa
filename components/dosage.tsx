@@ -37,12 +37,12 @@ export default function Dosage() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
+    <section ref={ref} className="py-0 lg:py-4 bg-[#f7f4ef] overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Top rule */}
         <div
-          className={`h-px bg-neutral-300 mb-16 transition-all duration-1000 ${
+          className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
             inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           }`}
           style={{ transformOrigin: "left" }}
@@ -50,7 +50,7 @@ export default function Dosage() {
 
         {/* Header */}
         <div
-          className={`mb-20 transition-all duration-700 ${
+          className={`mb-8 transition-all duration-700 ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -90,7 +90,7 @@ export default function Dosage() {
               style={{ transitionDelay: `${200 + i * 120}ms` }}
             >
               <div>
-                <div className="flex items-start justify-between mb-8">
+                <div className="flex items-start justify-between mb-6">
                   <span
                     className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -131,22 +131,7 @@ export default function Dosage() {
           ))}
         </div>
 
-        {/* Bottom tagline */}
-        {/* <div
-          className={`mt-16 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-700 delay-700 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <div className="h-px bg-neutral-300 flex-1" />
-          <p
-            className="text-xs uppercase tracking-[0.3em] text-neutral-400 px-6 whitespace-nowrap"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Consistent · Simple · Effective
-          </p>
-          <div className="h-px bg-neutral-300 flex-1" />
-        </div> */}
-
+      
       </div>
     </section>
   );

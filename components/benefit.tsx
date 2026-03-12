@@ -42,7 +42,7 @@ export default function BenefitSection() {
 
         {/* Top rule */}
         <div
-          className={`h-px bg-neutral-300 mb-16 transition-all duration-1000 ${
+          className={`h-px bg-neutral-300 mb-6 transition-all duration-1000 ${
             inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           }`}
           style={{ transformOrigin: "left" }}
@@ -50,12 +50,12 @@ export default function BenefitSection() {
 
         {/* Header */}
         <div
-          className={`mb-20 transition-all duration-700 ${
+          className={`mb-4 transition-all duration-700 ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           <p
-            className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-4"
+            className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-2"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             Daily Benefits
@@ -90,7 +90,7 @@ export default function BenefitSection() {
               style={{ transitionDelay: `${200 + i * 120}ms` }}
             >
               <div>
-                <div className="flex items-start justify-between mb-8">
+                <div className="flex items-start justify-between mb-2">
                   <span
                     className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -111,7 +111,7 @@ export default function BenefitSection() {
                 </p>
 
                 <h3
-                  className="text-2xl font-bold text-neutral-900 mb-4 leading-tight"
+                  className="text-2xl font-bold text-neutral-900 mb-2 leading-tight"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {b.title}
@@ -119,7 +119,7 @@ export default function BenefitSection() {
               </div>
 
               <div>
-                <div className="h-px bg-neutral-200 mb-6" />
+                <div className="h-px bg-neutral-200 mb-4" />
                 <p
                   className="text-sm text-neutral-500 leading-relaxed"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}

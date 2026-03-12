@@ -61,7 +61,7 @@ export default function Timeline() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
     refs.current.forEach((el) => el && observer.observe(el));
     return () => observer.disconnect();
@@ -74,11 +74,10 @@ export default function Timeline() {
   return (
     <section className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Top rule */}
         <div
           ref={headerRef}
-          className={`h-px bg-neutral-300 mb-16 transition-all duration-1000 ${
+          className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
             headerInView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           }`}
           style={{ transformOrigin: "left" }}
@@ -86,8 +85,10 @@ export default function Timeline() {
 
         {/* Header */}
         <div
-          className={`mb-20 transition-all duration-700 ${
-            headerInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          className={`mb-8 transition-all duration-700 ${
+            headerInView
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-6"
           }`}
         >
           <p
@@ -117,7 +118,6 @@ export default function Timeline() {
 
         {/* Timeline */}
         <div className="relative">
-
           {/* Center vertical line — desktop only */}
           <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-neutral-300 -translate-x-1/2" />
 
@@ -130,7 +130,9 @@ export default function Timeline() {
                   data-index={i}
                   ref={(el) => setRef(el, i)}
                   className="relative lg:grid lg:grid-cols-2 lg:gap-0 lg:mb-0 mb-4"
-                  style={{ marginBottom: i < timelineData.length - 1 ? "3rem" : 0 }}
+                  style={{
+                    marginBottom: i < timelineData.length - 1 ? "3rem" : 0,
+                  }}
                 >
                   {/* Dot on the center line */}
                   <div
@@ -144,7 +146,9 @@ export default function Timeline() {
                   </div>
 
                   {/* Left slot */}
-                  <div className={`${isLeft ? "lg:pr-16" : "lg:pr-16 lg:invisible"}`}>
+                  <div
+                    className={`hidden lg:block ${isLeft ? "lg:pr-16" : "lg:pr-16 lg:invisible"}`}
+                  >
                     {isLeft && (
                       <div
                         className={`bg-[#f7f4ef] border border-neutral-200 p-10 transition-all duration-700 ${
@@ -159,7 +163,9 @@ export default function Timeline() {
                   </div>
 
                   {/* Right slot */}
-                  <div className={`${!isLeft ? "lg:pl-16" : "lg:pl-16 lg:invisible"}`}>
+                  <div
+                    className={`hidden lg:block  ${!isLeft ? "lg:pl-16" : "lg:pl-16 lg:invisible"}`}
+                  >
                     {!isLeft && (
                       <div
                         className={`bg-[#f7f4ef] border border-neutral-200 p-10 transition-all duration-700 ${
@@ -176,7 +182,9 @@ export default function Timeline() {
                   {/* Mobile card (shown instead of grid on small screens) */}
                   <div
                     className={`lg:hidden border border-neutral-200 p-8 transition-all duration-700 ${
-                      visible[i] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                      visible[i]
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-6"
                     }`}
                   >
                     <CardContent item={item} />
@@ -186,13 +194,12 @@ export default function Timeline() {
             })}
           </div>
         </div>
-
       </div>
     </section>
   );
 }
 
-function CardContent({ item }: { item: typeof timelineData[0] }) {
+function CardContent({ item }: { item: (typeof timelineData)[0] }) {
   return (
     <div className="flex flex-col justify-between h-full">
       <div>

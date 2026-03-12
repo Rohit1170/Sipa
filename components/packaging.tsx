@@ -30,11 +30,11 @@ export default function Packaging() {
   ];
 
   return (
-    <section ref={ref} className="py-16 lg:py-18 bg-[#f7f4ef] overflow-hidden">
+    <section ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
       {/* Top rule */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`h-px bg-neutral-300 mb-16 transition-all duration-1000 ${
+          className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
             inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           }`}
           style={{ transformOrigin: "left" }}
@@ -42,7 +42,7 @@ export default function Packaging() {
 
         {/* Header */}
         <div
-          className={`mb-20 transition-all duration-700 ${
+          className={`mb-8 transition-all duration-700 ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >

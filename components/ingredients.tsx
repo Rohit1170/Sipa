@@ -45,12 +45,12 @@ export default function Ingredients() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section id="ingredients" ref={ref} className="py-18 lg:py-36 bg-[#f7f4ef] overflow-hidden">
+    <section id="ingredients" ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Top rule */}
         <div
-          className={`h-px bg-neutral-300 mb-16 transition-all duration-1000 ${
+          className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
             inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           }`}
           style={{ transformOrigin: "left" }}
@@ -58,7 +58,7 @@ export default function Ingredients() {
 
         {/* Header */}
         <div
-          className={`mb-20 transition-all duration-700 ${
+          className={`mb-8 transition-all duration-700 ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
