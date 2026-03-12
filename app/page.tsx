@@ -17,12 +17,12 @@ export default function Home() {
       <Hero />
       <ProductAbout />
       <BenefitSection/>
-       
        <Timeline/>
+       <Certifications />
       <Dosage />
       <Ingredients />
       {/* <Packaging /> */}
-      <Certifications />
+      
       <DoctorAdvice />
       <FAQ />
       <Contact />
