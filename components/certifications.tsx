@@ -5,8 +5,8 @@ import { useEffect, useRef } from "react";
 
 const certLogos = [
   { src: "/iso.png", alt: "ISO 9001 Certified" },
-  { src: "/gmp.png", alt: "WHO GMP Certified" },
-  { src: "/FDA.png", alt: "FDA Registered" },
+  { src: "/GMP.png", alt: "WHO GMP Certified" },
+  { src: "/fda.png", alt: "FDA Registered" },
   { src: "/vitt.png", alt: "VitaShine D3 Trademark" },
   { src: "/fssai.png", alt: "FSSAI Certified" },
 ];
