@@ -16,12 +16,12 @@ export default function Home() {
     <main className="min-h-screen bg-background">
       <Hero />
       <ProductAbout />
-      {/* <BenefitSection/>
-       */}
+      <BenefitSection/>
+       
        <Timeline/>
       <Dosage />
       <Ingredients />
-      <Packaging />
+      {/* <Packaging /> */}
       <Certifications />
       <DoctorAdvice />
       <FAQ />

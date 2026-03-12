@@ -1,79 +1,112 @@
-"use client"
-
-import { Instagram, Linkedin } from "lucide-react"
+"use client";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-foreground text-background py-16">
+    <footer className="bg-neutral-950">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          <div>
-            <h3 className="text-2xl font-bold mb-4">SIPA Nutrition</h3>
-            <p className="text-background/80">Daily Vitamin D3 + K2 Sachets</p>
-          </div>
 
-          <div>
-            <h4 className="font-bold mb-4">Product</h4>
-            <ul className="space-y-2 text-background/80">
-              <li>
-                <a href="#about" className="hover:text-background transition-colors">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#dosage" className="hover:text-background transition-colors">
-                  Usage
-                </a>
-              </li>
-              <li>
-                <a href="#ingredients" className="hover:text-background transition-colors">
-                  Ingredients
-                </a>
-              </li>
-            </ul>
-          </div>
+        {/* Top section */}
+        <div className="py-16 flex flex-col lg:flex-row lg:items-start justify-between gap-12">
 
-          <div>
-            <h4 className="font-bold mb-4">Company</h4>
-            <ul className="space-y-2 text-background/80">
-              <li>
-                <a href="#contact" className="hover:text-background transition-colors">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-background transition-colors">
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* <div>
-            <h4 className="font-bold mb-4">Follow Us</h4>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-background transition-colors">
-                <Instagram className="w-6 h-6" />
-              </a>
-              <a href="#" className="hover:text-background transition-colors">
-                <Linkedin className="w-6 h-6" />
-              </a>
-            </div>
-          </div> */}
-        </div>
-
-        <div className="border-t border-background/20 pt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-background/80 text-sm">© {currentYear} SIPA Nutrition. Coming Soon.</p>
-            <p className="text-background/70 text-xs max-w-md">
-              This product is a health supplement and not intended to diagnose, treat, cure, or prevent any disease.
-              Always consult with a healthcare professional before starting any new supplement regimen.
+          {/* Brand block */}
+          <div className="max-w-xs">
+            <p
+              className="text-3xl font-bold text-white mb-1"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              SIPA <em className="italic text-orange-500">Nutrition</em>
+            </p>
+            <p
+              className="text-xs uppercase tracking-[0.25em] text-neutral-500 mb-6"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              Daily Vitamin D3 + K2
+            </p>
+            <div className="h-px bg-neutral-800 mb-6" />
+            <p
+              className="text-sm text-neutral-400 leading-relaxed"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              A vegan daily maintenance formula engineered for better
+              absorption, stronger bones, and lasting immunity.
             </p>
           </div>
+
+          {/* Links */}
+          <div className="flex gap-16 sm:gap-24">
+            <div>
+              <p
+                className="text-xs uppercase tracking-[0.25em] text-neutral-600 mb-6"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Product
+              </p>
+              <ul className="space-y-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                {[
+                  { label: "About", href: "#about" },
+                 
+                  { label: "Ingredients", href: "#ingredients" },
+                  { label: "Benefits", href: "#benefits" },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-neutral-500 hover:text-orange-500 transition-colors duration-200"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <p
+                className="text-xs uppercase tracking-[0.25em] text-neutral-600 mb-6"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Company
+              </p>
+              <ul className="space-y-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                {[
+                  { label: "FAQ", href: "#faq" },
+                  { label: "Contact", href: "#contact" },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-neutral-500 hover:text-orange-500 transition-colors duration-200"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
+
+        {/* Bottom bar */}
+        <div className="h-px bg-neutral-800" />
+        <div className="py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <p
+            className="text-xs text-neutral-600 uppercase tracking-[0.2em]"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            © {currentYear} SIPA Nutrition
+          </p>
+          <p
+            className="text-xs text-neutral-600 leading-relaxed max-w-md sm:text-right"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            Health supplement only. Not intended to diagnose, treat, cure, or prevent any disease.
+            Consult a healthcare professional before use.
+          </p>
+        </div>
+
       </div>
     </footer>
-  )
+  );
 }
