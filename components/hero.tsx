@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [tapped, setTapped] = useState(false);
   useEffect(() => setIsLoaded(true), []);
 
   return (
@@ -250,13 +251,19 @@ export default function Hero() {
                 </div>
               </div>
               <button
-                className="relative w-full py-4 bg-neutral-900 text-white text-sm uppercase tracking-[0.2em] font-semibold overflow-hidden group cursor-not-allowed"
+                onClick={() => setTapped(true)}
+                onBlur={() => setTapped(false)}
+                className="relative w-full py-4 bg-neutral-900 text-white text-sm uppercase tracking-[0.2em] font-semibold overflow-hidden cursor-not-allowed"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
-                <span className="group-hover:opacity-0 transition-opacity duration-200">
+                <span
+                  className={`transition-opacity duration-200 ${tapped ? "opacity-0" : "opacity-100"}`}
+                >
                   Order Now
                 </span>
-                <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-orange-400 tracking-[0.2em] uppercase text-sm">
+                <span
+                  className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 text-orange-400 tracking-[0.2em] uppercase text-sm ${tapped ? "opacity-100" : "opacity-0"}`}
+                >
                   Coming Soon
                 </span>
               </button>

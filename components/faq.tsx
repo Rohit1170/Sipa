@@ -9,21 +9,21 @@ const faqs = [
     q: "Is this safe for daily use?",
     a: "Yes, this is a daily maintenance dose specifically designed for long-term daily use. It meets all safety standards and can be taken without prescription.",
   },
+  // {
+  //   number: "02",
+  //   q: "Is this vegan?",
+  //   a: "Our Vitamin D3 is sourced from lichen (VitaShine® D3), making it a 100% vegan product suitable for all dietary preferences.",
+  // },
   {
     number: "02",
-    q: "Is this vegan?",
-    a: "Our Vitamin D3 is sourced from lichen (VitaShine® D3), making it a 100% vegan product suitable for all dietary preferences.",
-  },
-  {
-    number: "03",
     q: "Does it contain sugar or chemicals?",
     a: "No added sugar. No artificial additives. We use only natural ingredients and excipients that are safe for daily consumption.",
   },
-  {
-    number: "04",
-    q: "When should I take it?",
-    a: "Take one sachet after your morning meal with food containing fat for optimal absorption. This ensures better bioavailability and maximum benefit.",
-  },
+  // {
+  //   number: "04",
+  //   q: "When should I take it?",
+  //   a: "Take one sachet after your morning meal with food containing fat for optimal absorption. This ensures better bioavailability and maximum benefit.",
+  // },
 ];
 
 export default function FAQ() {

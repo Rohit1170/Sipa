@@ -7,6 +7,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [orderClicked, setOrderClicked] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -14,10 +15,14 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const handleOrderClick = () => {
+    setOrderClicked(true);
+    setTimeout(() => setOrderClicked(false), 2000);
+  };
+
   const navLinks = [
     { label: "Benefits", href: "#benefits" },
     { label: "Ingredients", href: "#ingredients" },
-    // { label: "Usage", href: "#dosage" },
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
   ];
@@ -59,7 +64,7 @@ export default function Navbar() {
                 About
               </button>
 
-              {/* Desktop Order button */}
+              {/* Desktop Order button — hover */}
               <div
                 className="relative group cursor-not-allowed"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -106,18 +111,19 @@ export default function Navbar() {
               About
             </button>
 
-            {/* Mobile Order button */}
-            <div
-              className="relative group cursor-not-allowed"
+            {/* Mobile Order button — onClick */}
+            <button
+              onClick={handleOrderClick}
+              className="relative px-5 py-3 bg-neutral-900 text-white text-xs uppercase tracking-[0.2em] text-center overflow-hidden transition-all duration-200 cursor-not-allowed"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              <span className="block px-5 py-3 bg-neutral-900 text-white text-xs uppercase tracking-[0.2em] text-center group-hover:opacity-0 transition-opacity duration-200">
+              <span className={`transition-opacity duration-200 ${orderClicked ? "opacity-0" : "opacity-100"}`}>
                 Order — ₹599
               </span>
-              <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-orange-400 text-xs uppercase tracking-[0.2em] bg-neutral-900">
+              <span className={`absolute inset-0 flex items-center justify-center text-orange-400 text-xs uppercase tracking-[0.2em] transition-opacity duration-200 ${orderClicked ? "opacity-100" : "opacity-0"}`}>
                 Coming Soon
               </span>
-            </div>
+            </button>
           </div>
         )}
       </nav>
