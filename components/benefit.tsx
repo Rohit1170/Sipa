@@ -20,14 +20,14 @@ const benefits = [
   {
     number: "03",
     title: "Heart Health",
-    desc: "Vitamin K2 directs calcium to bones instead of arteries.",
+    desc: "Vitamin K2 effectively directs calcium to bones instead of arteries.",
     accent: "#c2410c",
     stat: "Cardiovascular",
   },
   {
     number: "04",
     title: "Muscle Function",
-    desc: "Helps maintain muscle strength and reduces fatigue.",
+    desc: "Helps maintain muscle strength and effectively reduces fatigue.",
     accent: "#166534",
     stat: "Muscle Strength",
   },
@@ -37,9 +37,12 @@ export default function BenefitSection() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section id="benefits" ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
+    <section
+      id="benefits"
+      ref={ref}
+      className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Top rule */}
         <div
           className={`h-px bg-neutral-300 mb-6 transition-all duration-1000 ${
@@ -54,25 +57,18 @@ export default function BenefitSection() {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <p
-            className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-2"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
+          <p className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-2">
             Daily Benefits
           </p>
+
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]">
               Built for Your
               <br />
               <em className="italic text-orange-700">Body's Needs</em>
             </h2>
-            <p
-              className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
+
+            <p className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed">
               Real wellness comes from consistency. Daily D3 + K2 maintains
               optimal levels to support your body long-term.
             </p>
@@ -84,71 +80,52 @@ export default function BenefitSection() {
           {benefits.map((b, i) => (
             <div
               key={i}
-              className={`bg-[#f7f4ef] p-10 flex flex-col justify-between min-h-[280px] transition-all duration-700 ${
-                inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              className={`bg-[#f7f4ef] p-10 flex flex-col min-h-[280px] transition-all duration-700 ${
+                inView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${200 + i * 120}ms` }}
             >
-              <div>
-                <div className="flex items-start justify-between mb-2">
-                  <span
-                    className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  >
-                    {b.number}
-                  </span>
-                  <div
-                    className="w-2 h-2 rounded-full mt-1"
-                    style={{ backgroundColor: b.accent }}
-                  />
+              <div className="flex flex-col h-full">
+                {/* Top content */}
+                <div>
+                  <div className="flex items-start justify-between mb-2">
+                    <span className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
+                      {b.number}
+                    </span>
+                    <div
+                      className="w-2 h-2 rounded-full mt-1"
+                      style={{ backgroundColor: b.accent }}
+                    />
+                  </div>
+
+                  <p className="text-xs uppercase tracking-[0.25em] text-neutral-400 mb-2">
+                    {b.stat}
+                  </p>
+
+                  <h3 className="text-2xl font-bold text-neutral-900 leading-tight min-h-[56px]">
+                    {b.title}
+                  </h3>
                 </div>
 
-                <p
-                  className="text-xs uppercase tracking-[0.25em] text-neutral-400 mb-2"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  {b.stat}
-                </p>
+                {/* Spacer (THIS is the key) */}
+               <div className="flex-1" />
 
-                <h3
-                  className="text-2xl font-bold text-neutral-900 mb-2 leading-tight"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {b.title}
-                </h3>
-              </div>
-
-              <div>
-                <div className="h-px bg-neutral-200 mb-4" />
-                <p
-                  className="text-sm text-neutral-500 leading-relaxed"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  {b.desc}
-                </p>
-              </div>
+                {/* Bottom content (always aligned) */}
+                <div>
+                  
+                 <div className="h-px bg-neutral-200 my-5" />
+                 
+                  <p className="text-sm text-neutral-500 leading-relaxed min-h-[72px] h-full">
+                    {b.desc}
+                  </p>
+                </div>
+              </div>{" "}
             </div>
           ))}
         </div>
-
-        {/* Bottom tagline */}
-        {/* <div
-          className={`mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all duration-700 delay-700 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <div className="h-px bg-neutral-300 flex-1" />
-          <p
-            className="text-xs uppercase tracking-[0.3em] text-neutral-400 px-6 whitespace-nowrap"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Let's Get Better Together
-          </p>
-          <div className="h-px bg-neutral-300 flex-1" />
-        </div>
-        */}
-
-      </div> 
+      </div>
     </section>
   );
 }

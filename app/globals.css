@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 :root {
   /* Updated color tokens for SIPA Nutrition premium medical aesthetic */
   --background: oklch(1 0 0);

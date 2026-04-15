@@ -11,22 +11,37 @@ import Footer from "@/components/footer"
 
 import BenefitSection from "@/components/benefit"
 import Timeline from "@/components/timeline"
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
-      <Hero />
-      <ProductAbout />
-      <BenefitSection/>
-       <Timeline/>
-       <Certifications />
-      <Dosage />
-      <Ingredients />
-      {/* <Packaging /> */}
       
-      <DoctorAdvice />
-      <FAQ />
-      <Contact />
-      <Footer />
+      {/* ✅ MOBILE ONLY */}
+      <div className="block md:hidden">
+        <Hero />
+        <BenefitSection />
+        <Timeline />
+        <Ingredients />
+        <FAQ />
+        <Contact /> {/* CTA */}
+          <Footer />
+      </div>
+
+      {/* ✅ DESKTOP ONLY */}
+      <div className="hidden md:block">
+        <Hero />
+        <ProductAbout />
+        <BenefitSection />
+        <Timeline />
+        <Certifications />
+        <Dosage />
+        <Ingredients />
+        <DoctorAdvice />
+        <FAQ />
+        <Contact />
+        <Footer />
+      </div>
+
     </main>
   )
 }

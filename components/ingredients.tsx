@@ -92,7 +92,7 @@ export default function Ingredients() {
           {ingredients.map((ing, i) => (
             <div
               key={i}
-              className={`bg-[#f7f4ef] p-10 flex flex-col justify-between min-h-[300px] transition-all duration-700 ${
+              className={`bg-[#f7f4ef] p-10 flex flex-col  min-h-[300px] transition-all duration-700 ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${200 + i * 120}ms` }}
@@ -141,10 +141,10 @@ export default function Ingredients() {
                 >
                   {ing.rda}
                 </span>
+                 {/* <div className="h-px bg-neutral-200 mt-3 mb-2" /> */}
               </div>
-
+                  <div className="h-px bg-neutral-200 my-4" />
               <div>
-                <div className="h-px bg-neutral-200 mb-5" />
                 <p
                   className="text-sm text-neutral-500 leading-relaxed"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}

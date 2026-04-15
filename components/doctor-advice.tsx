@@ -7,7 +7,7 @@ const points = [
     number: "01",
     label: "Clinical Backing",
     title: "Doctor Recommended",
-    desc: "Daily D3 + K2 supplementation is commonly recommended by doctors as a maintenance dose for overall health and wellness.",
+    desc: "Daily D3 + K2 supplementation is widely recommended by doctors as a maintenance dose for health and wellness.",
     accent: "#c2410c",
   },
   {
@@ -32,7 +32,6 @@ export default function DoctorAdvice() {
   return (
     <section ref={ref} className="py-4 lg:py-8 bg-[#f7f4ef] overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Top rule */}
         <div
           className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
@@ -66,24 +65,26 @@ export default function DoctorAdvice() {
               className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              Formulated to meet daily maintenance standards —
-              safe, accessible, and clinically sound.
+              Formulated to meet daily maintenance standards — safe, accessible,
+              and clinically sound.
             </p>
           </div>
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-neutral-300">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x divide-neutral-300">
           {points.map((p, i) => (
             <div
               key={i}
               className={`bg-[#f7f4ef] p-10 flex flex-col justify-between min-h-[280px] transition-all duration-700 ${
-                inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                inView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${200 + i * 120}ms` }}
             >
               <div>
-                <div className="flex items-start justify-between mb-8">
+                <div className="flex items-start justify-between mb-3">
                   <span
                     className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -104,15 +105,16 @@ export default function DoctorAdvice() {
                 </p>
 
                 <h3
-                  className="text-2xl font-bold text-neutral-900 leading-tight"
+                  className="text-2xl font-bold text-neutral-900 leading-tight mb-4"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {p.title}
                 </h3>
+                 <div className="h-px bg-neutral-200 mb-5" />
               </div>
 
               <div>
-                <div className="h-px bg-neutral-200 mb-5" />
+               
                 <p
                   className="text-sm text-neutral-500 leading-relaxed"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -123,7 +125,6 @@ export default function DoctorAdvice() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

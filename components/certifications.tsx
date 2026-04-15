@@ -1,7 +1,6 @@
 "use client";
 
 import { useInView } from "react-intersection-observer";
-import { useEffect, useRef } from "react";
 
 const certLogos = [
   { src: "/iso.png", alt: "ISO 9001 Certified" },
@@ -58,85 +57,55 @@ export default function Certifications() {
         </div>
 
         {/* Infinite logo slider */}
-        {/* Infinite logo slider */}
-<div
-  className={`relative mb-8 transition-all duration-700 delay-200 ${
-    inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-  }`}
->
-  {/* Fade edges */}
-  <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-    style={{ background: "linear-gradient(to right, #f7f4ef, transparent)" }} />
-  <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-    style={{ background: "linear-gradient(to left, #f7f4ef, transparent)" }} />
-
-  <style>{`
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-33.333%); }
-    }
-    .marquee-track {
-      animation: marquee 20s linear infinite;
-    }
-  `}</style>
-
-  <div className="overflow-hidden border-y border-neutral-200 py-8">
-    <div className="marquee-track flex items-center gap-12 w-max">
-  {[...certLogos, ...certLogos, ...certLogos].map((logo, i) => (
-    <div key={i} className="flex items-center gap-12 flex-shrink-0">
-      <div className="flex items-center justify-center h-14 w-32 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-        <img
-          src={logo.src}
-          alt={logo.alt}
-          className="max-h-full max-w-full object-contain"
-        />
-      </div>
-      <div className="w-2 h-2 rounded-full bg-gray-500 flex-shrink-0" />
-    </div>
-  ))}
-</div>
-  </div>
-</div>
-        {/* GMP Card */}
-        {/* <div
-          className={`bg-[#f7f4ef] border border-neutral-200 p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-8 transition-all duration-700 delay-300 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        <div
+          className={`relative mb-8 transition-all duration-700 delay-200 ${
+            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <div>
-            <p
-              className="text-xs uppercase tracking-[0.25em] text-neutral-400 mb-2"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              Certification
-            </p>
-            <h3
-              className="text-4xl font-bold text-neutral-900"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              GMP Certified
-            </h3>
-          </div>
+          {/* Fade edges */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to right, #f7f4ef, transparent)" }}
+          />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to left, #f7f4ef, transparent)" }}
+          />
 
-          <div className="h-px sm:h-16 sm:w-px bg-neutral-200 flex-shrink-0" />
+          <style>{`
+            @keyframes marquee {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(-33.333%); }
+            }
+            .marquee-track {
+              animation: marquee 22s linear infinite;
+            }
+          `}</style>
 
-          <p
-            className="text-sm text-neutral-500 leading-relaxed max-w-md"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Good Manufacturing Practice certified facility — every batch
-            produced under strict quality control protocols for your safety.
-          </p>
+          {/* ↑ Bigger slider: taller py, larger gap */}
+          <div className="overflow-hidden border-y border-neutral-200 py-10 sm:py-12">
+            <div className="marquee-track flex items-center gap-16 sm:gap-20 w-max">
+              {[...certLogos, ...certLogos, ...certLogos].map((logo, i) => (
+                <div key={i} className="flex items-center gap-16 sm:gap-20 flex-shrink-0">
 
-          <div className="flex-shrink-0">
-            <div
-              className="w-12 h-12 rounded-full border-2 flex items-center justify-center"
-              style={{ borderColor: "#166534" }}
-            >
-              <div className="w-2 h-2 rounded-full bg-[#166534]" />
+                  {/* Responsive logo container:
+                      - Mobile : h-12 w-28  (48px tall, 112px wide)
+                      - Tablet : h-16 w-36  (64px tall, 144px wide)
+                      - Desktop: h-20 w-44  (80px tall, 176px wide)         */}
+                  <div className="flex items-center justify-center h-12 w-28 sm:h-16 sm:w-36 lg:h-20 lg:w-44 flex-shrink-0">
+                    <img
+                      src={logo.src}
+                      alt={logo.alt}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+
+                  <div className="w-2 h-2 rounded-full bg-gray-400 flex-shrink-0" />
+                </div>
+              ))}
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Disclaimer */}
         <div

@@ -28,7 +28,7 @@ const faqs = [
 
 export default function FAQ() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section id="faq" ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
