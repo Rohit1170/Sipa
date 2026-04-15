@@ -1,8 +1,6 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
 
 :root {
   /* Updated color tokens for SIPA Nutrition premium medical aesthetic */

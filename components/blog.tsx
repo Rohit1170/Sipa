@@ -569,7 +569,7 @@ export default function blog() {
        
 
         {/* ── HERO ── */}
-        <header className="relative px-8 pt-[4.5rem] pb-14 text-center overflow-hidden
+        <header className="relative px-10 pt-[4.5rem] pb-14 text-center overflow-hidden
                            bg-gradient-to-br from-[#f9f7f3] to-[#f2efea]">
           <img
             src="https://www.sipanutrition.com/hero.jpeg"
