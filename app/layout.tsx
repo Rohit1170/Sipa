@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import Navbar from "@/components/Navbar"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
@@ -16,19 +17,19 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logo.png",
+        url: "/icon.jpeg",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/logo.png",
+        url: "/icon.jpeg",
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/logo.png",
+        url: "/icon.jpeg",
         type: "image/svg+xml",
       },
     ],
-    apple: "/logo.png",
+    apple: "/icon.jpeg",
   },
 }
 
@@ -40,12 +41,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
        <head>
+        <link rel="canonical" href="https://www.sipanutrition.com/" />
         <meta name="google-site-verification" content="432lcv7Hma2TkRpJCpEaAMtT3M1Zw9g95ByAAZR12JE" />
       </head>
       <body className={`font-sans antialiased`}>
         <Navbar /> 
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
