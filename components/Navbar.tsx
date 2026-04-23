@@ -92,6 +92,7 @@ export default function Navbar() {
   };
 
   const navLinks = [
+    { label: "Home", href: "/" },
     { label: "Benefits", href: "#benefits" },
     { label: "Ingredients", href: "#ingredients" },
     { label: "FAQ", href: "#faq" },
@@ -131,7 +132,7 @@ export default function Navbar() {
               </a>
             ))}
 
-            <div
+            {/* <div
               className="relative group cursor-not-allowed"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
@@ -140,7 +141,7 @@ export default function Navbar() {
               </span>
               <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-orange-400 text-xs uppercase tracking-[0.2em] bg-neutral-900">
              coming soon</span>
-            </div>
+            </div> */}
           </div>
 
           <button

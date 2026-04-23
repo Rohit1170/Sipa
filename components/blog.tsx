@@ -57,7 +57,7 @@ const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
   name: "SIPA Nutrition Vitamin D3 + K2 Daily Sachets",
-  description: "India's first vegan daily Vitamin D3 + K2 sachet. 600 IU D3 via VitaShine® lichen + 55 mcg K2 MK-7. 100% lab tested. No sugar. No prescription needed.",
+  description: "India's first vegan daily Vitamin D3 + K2 sachet. 600 IU D3 via VitaShine® lichen + 55 mcg K2 MK-7. 100% lab tested. No sugar.",
   brand: { "@type": "Brand", name: "SIPA Nutrition" },
   offers: { "@type": "Offer", price: "599", priceCurrency: "INR", availability: "https://schema.org/PreOrder", url: "https://www.sipanutrition.com/#order" },
 };
@@ -745,7 +745,7 @@ export default function blog() {
                   India's best Vegan Daily<br />D3 + K2 Sachet — <em className="text-orange-700 not-italic">Just ₹19.9 a Day</em>
                 </h2>
                 <p className="text-stone-500 max-w-lg mx-auto mb-8 text-[0.94rem]">
-                  Clinically dosed. 100% vegan via VitaShine®. Independently lab tested. No sugar, no fillers, no prescription needed.
+                  Clinically dosed. 100% vegan via VitaShine®. Independently lab tested. No sugar, no fillers.
                 </p>
                 <p style={serifFont} className="text-[3rem] text-neutral-900 leading-none mb-1">₹599</p>
                 <p className="text-[0.82rem] text-stone-500 mb-7">30 sachets · 30-day supply · ≈ ₹19.9/day</p>
@@ -801,7 +801,7 @@ export default function blog() {
                 <p className="text-neutral-900 mb-5 leading-[1.8]">Vitamin D3 and K2 are arguably the two most important daily nutrients for your long-term health trajectory. But as the science clearly shows, their true power only activates when they are taken together.</p>
                 <PullQuote>"Don't just supplement. Supplement biologically smart. D3 without K2 is a mathematical half-answer to a whole-body problem."</PullQuote>
                 <p className="text-neutral-900 mb-5 leading-[1.8]">SIPA Nutrition was built on exactly this principle — to offer India's first daily D3 + K2 sachet that's vegan, clean, clinically dosed, and independently lab-tested.</p>
-                <InlineCTA title="Let's Get Better Together." body="Try SIPA Nutrition's Vitamin D3 + K2 sachets — 30 sachets, one a day, ₹599. Vegan. 100% lab tested. No prescription needed." />
+                <InlineCTA title="Let's Get Better Together." body="Try SIPA Nutrition's Vitamin D3 + K2 sachets — 30 sachets, one a day, ₹599. Vegan. 100% lab tested." />
                 <p className="mt-8 text-[0.78rem] text-stone-400 leading-[1.6] italic">
                   Disclaimer: This article is for informational and educational purposes only. It is not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare professional before starting any new supplement regimen.
                 </p>

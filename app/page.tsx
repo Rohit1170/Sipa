@@ -35,7 +35,7 @@ export default function Home() {
         <Timeline />
         <Certifications />
         <Dosage />
-        <Ingredients />
+        {/* <Ingredients /> */}
         <DoctorAdvice />
         <FAQ />
         <Contact />
