@@ -5,6 +5,8 @@ import {
   faInstagram,
   faLinkedin,
   faXTwitter,
+  faWhatsapp,
+  faFacebook
 } from "@fortawesome/free-brands-svg-icons";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -45,7 +47,7 @@ export default function Footer() {
 
   const handleLinkClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     if (!href.startsWith("#")) return;
 
@@ -70,6 +72,7 @@ export default function Footer() {
   const companyLinks = [
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
+    { label: "Ph: +91 96617 44207" },
   ];
 
   return (
@@ -125,14 +128,7 @@ export default function Footer() {
               </ul>
 
               <div className="flex gap-4 mt-6">
-                <a
-                  href="https://x.com/NutritionS7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-neutral-500 hover:text-orange-500 transition"
-                >
-                  <FontAwesomeIcon icon={faXTwitter} size="lg" />
-                </a>
+                
 
                 <a
                   href="https://www.instagram.com/sipa_nutrition/"
@@ -150,6 +146,30 @@ export default function Footer() {
                   className="text-neutral-500 hover:text-orange-500 transition"
                 >
                   <FontAwesomeIcon icon={faLinkedin} size="lg" />
+                </a>
+                <a
+                 href="https://wa.me/919661744207?text=Hi%20there%20I%20wanted%20to%20connect"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-500 hover:text-orange-500 transition"
+                >
+                  <FontAwesomeIcon icon={faWhatsapp} size="lg" />
+                </a>
+                <a
+                  href="https://x.com/NutritionS7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-500 hover:text-orange-500 transition"
+                >
+                  <FontAwesomeIcon icon={faXTwitter} size="lg" />
+                </a>
+                <a
+                 href="https://www.facebook.com/profile.php?id=61572038853763"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-500 hover:text-orange-500 transition"
+                >
+                  <FontAwesomeIcon icon={faFacebook} size="lg" />
                 </a>
               </div>
             </div>
