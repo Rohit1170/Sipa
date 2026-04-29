@@ -43,6 +43,15 @@ export default function RootLayout({
        <head>
         <link rel="canonical" href="https://www.sipanutrition.com/" />
         <meta name="google-site-verification" content="432lcv7Hma2TkRpJCpEaAMtT3M1Zw9g95ByAAZR12JE" />
+       <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "wj6zosmb8d");`,
+          }}
+        />
       </head>
       <body className={`font-sans antialiased`}>
         <Navbar /> 
