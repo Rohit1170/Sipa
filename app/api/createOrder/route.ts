@@ -7,7 +7,7 @@ const razorpay = new Razorpay({
 });
 
 // ─── Toggle this to switch between test (₹1) and production (₹349) ───────────
-const IS_TEST_MODE = false; // 👈 Change to false before going live
+const IS_TEST_MODE = true; // 👈 Change to false before going live
 
 const PRICE_PER_UNIT = IS_TEST_MODE ? 100 : 34900; // 100 paise = ₹1 | 34900 paise = ₹349
 
