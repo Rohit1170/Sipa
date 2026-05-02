@@ -1,191 +1,99 @@
-import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/app/lib/db";
-import Prebook from "@/app/models/prebook";
-import path from "path";
-import fs from "fs";
-import { sendMail } from "@/app/lib/sendMail";
+import mongoose, { Schema, Document } from "mongoose";
 
-const PRICE_PER_UNIT = 349;
-const ORIGINAL_PRICE = 399;
+// ── Individual payment entry ──────────────────────────────────────────────────
+interface IPayment {
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  quantity: number;
+  amount: number; // in rupees
+  paidAt: Date;
+}
 
-// --- Cache template (important for performance & serverless) ---
-const templatePath = path.join(
-  process.cwd(),
-  "app/templates/preBooking.html"
-);
-const baseTemplate = fs.readFileSync(templatePath, "utf8");
-
-// --- Basic HTML sanitizer ---
-const escapeHTML = (str: string) =>
-  str.replace(/[&<>"']/g, (tag) => {
-    const chars: Record<string, string> = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    };
-    return chars[tag] || tag;
-  });
-
-interface PrebookRequestBody {
+// ── Full prebook document ─────────────────────────────────────────────────────
+export interface IPrebook extends Document {
+  // Customer info
   name: string;
   email: string;
   phone: string;
-  quantity?: number;
+
+  // Delivery
   address1: string;
   address2?: string;
-  pincode: string;
   city: string;
+  pincode: string;
   state: string;
   notes?: string;
+
+  // Consent
   consent: boolean;
+
+  // Order summary (combined across all payments)
+  totalQuantity: number;
+  totalAmountPaid: number; // in rupees
+
+  // Status
+  status: "paid" | "refunded" | "cancelled";
+
+  // All payments history — one entry per Razorpay transaction
+  payments: IPayment[];
+
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
-  try {
-    await connectDB();
+const PaymentSchema = new Schema<IPayment>(
+  {
+    razorpayOrderId: { type: String, required: true, unique: true },
+    razorpayPaymentId: { type: String, required: true },
+    quantity: { type: Number, required: true },
+    amount: { type: Number, required: true },
+    paidAt: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
 
-    const body: PrebookRequestBody = await req.json();
+const PrebookSchema = new Schema<IPrebook>(
+  {
+    // Customer
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    phone: { type: String, required: true, trim: true },
 
-    const {
-      name,
-      email,
-      phone,
-      quantity = 1,
-      address1,
-      address2,
-      pincode,
-      city,
-      state,
-      notes,
-      consent,
-    } = body;
+    // Delivery
+    address1: { type: String, required: true },
+    address2: { type: String },
+    city: { type: String, required: true },
+    pincode: { type: String, required: true },
+    state: { type: String, required: true },
+    notes: { type: String },
 
-    // --- Validation ---
-    if (
-      !name ||
-      !email ||
-      !phone ||
-      !address1 ||
-      !pincode ||
-      !city ||
-      !state ||
-      !consent
-    ) {
-      return NextResponse.json(
-        { success: false, message: "Missing required fields." },
-        { status: 400 }
-      );
-    }
+    // Consent
+    consent: { type: Boolean, required: true },
 
-    if (quantity < 1 || quantity > 10) {
-      return NextResponse.json(
-        { success: false, message: "Invalid quantity." },
-        { status: 400 }
-      );
-    }
+    // Combined totals (auto-updated on each payment)
+    totalQuantity: { type: Number, default: 0 },
+    totalAmountPaid: { type: Number, default: 0 },
 
-    const totalAmount = PRICE_PER_UNIT * quantity;
-    const savings = ORIGINAL_PRICE * quantity - totalAmount;
+    // Status
+    status: {
+      type: String,
+      enum: ["paid", "refunded", "cancelled"],
+      default: "paid",
+    },
 
-    const fullAddress = `${address1}${address2 ? ", " + address2 : ""}, ${city}, ${state} - ${pincode}`;
-
-    const adminEmail = process.env.EMAIL_USER;
-
-    if (!adminEmail) {
-      throw new Error("Email credentials are not configured in .env.local");
-    }
-
-    // --- Save to DB ---
-    const prebook = await Prebook.create({
-      name,
-      email,
-      phone,
-      quantity,
-      address1,
-      address2,
-      pincode,
-      city,
-      state,
-      notes,
-      consent,
-      status: "pending",
-    });
-
-    const orderId = (prebook._id as string).toString();
-
-    // --- Prepare email template ---
-    let htmlTemplate = baseTemplate
-      .replace(/{{\s*name\s*}}/g, escapeHTML(name))
-      .replace(/{{\s*email\s*}}/g, escapeHTML(email))
-      .replace(/{{\s*quantity\s*}}/g, quantity.toString())
-      .replace(/{{\s*pricePerUnit\s*}}/g, PRICE_PER_UNIT.toString())
-      .replace(/{{\s*totalAmount\s*}}/g, totalAmount.toString())
-      .replace(/{{\s*savings\s*}}/g, savings.toString())
-      .replace(/{{\s*orderId\s*}}/g, orderId)
-      .replace(/{{\s*address\s*}}/g, escapeHTML(fullAddress));
-
-    // --- Send emails safely ---
-    const emailResults = await Promise.allSettled([
-      // User email
-      sendMail({
-        to: email,
-        subject: "🎉 Your Pre-Booking is Confirmed!",
-        html: htmlTemplate,
-      }),
-
-      // Admin email
-      sendMail({
-        to: adminEmail,
-        subject: "🛒 New Pre-Booking Received",
-        html: `
-          <div style="font-family:Arial;padding:20px;">
-            <h2 style="color:#c2410c;">🛒 New Pre-Booking Received</h2>
-
-            <p><strong>Name:</strong> ${escapeHTML(name)}</p>
-            <p><strong>Email:</strong> ${escapeHTML(email)}</p>
-            <p><strong>Phone:</strong> ${escapeHTML(phone)}</p>
-            <p><strong>Quantity:</strong> ${quantity}</p>
-            <p><strong>Total Amount:</strong> ₹${totalAmount}</p>
-            <p><strong>Savings:</strong> ₹${savings}</p>
-            <p><strong>Address:</strong> ${escapeHTML(fullAddress)}</p>
-            ${notes ? `<p><strong>Notes:</strong> ${escapeHTML(notes)}</p>` : ""}
-
-            <hr style="margin:20px 0;" />
-            <p>🆔 Order ID: <strong>${orderId}</strong></p>
-          </div>
-        `,
-      }),
-    ]);
-
-    // --- Log email failures (but don’t break API) ---
-    emailResults.forEach((result) => {
-      if (result.status === "rejected") {
-        console.error("Email failed:", result.reason);
-      }
-    });
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Pre-booking confirmed! Check your email.",
-        orderId,
-      },
-      { status: 201 }
-    );
-  } catch (err: unknown) {
-    console.error("Prebook error:", err);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          err instanceof Error
-            ? err.message
-            : "Something went wrong. Please try again.",
-      },
-      { status: 500 }
-    );
+    // Full payment history
+    payments: { type: [PaymentSchema], default: [] },
+  },
+  {
+    timestamps: true, // createdAt, updatedAt
   }
-}
+);
+
+// ── Index on email (not unique — same customer can have one record) ────────────
+PrebookSchema.index({ email: 1 });
+
+// ── Index on payment order IDs for fast idempotency lookup ───────────────────
+PrebookSchema.index({ "payments.razorpayOrderId": 1 }, { unique: true, sparse: true });
+
+export default mongoose.models.Prebook ||
+  mongoose.model<IPrebook>("Prebook", PrebookSchema);

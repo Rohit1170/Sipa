@@ -1,3 +1,4 @@
+"use client"
 import Hero from "@/components/hero"
 import ProductAbout from "@/components/product-about"
 import Dosage from "@/components/dosage"
@@ -11,8 +12,16 @@ import Footer from "@/components/footer"
 
 import BenefitSection from "@/components/benefit"
 import Timeline from "@/components/timeline"
+import { useEffect } from "react"
 
 export default function Home() {
+  useEffect(() => {
+  const script = document.createElement("script");
+  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+  script.async = true;
+  document.body.appendChild(script);
+  return () => { document.body.removeChild(script); };
+}, []);
   return (
     <main className="min-h-screen bg-background">
       

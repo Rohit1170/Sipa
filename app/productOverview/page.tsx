@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Footer from "@/components/footer";
 import Navbar from "@/components/Navbar";
@@ -59,12 +59,6 @@ const usageSteps = [
   { step: "4", label: "Duration", title: "Daily, Long-Term", desc: "Safe for continuous daily use. Benefits compound — consistency is the formula." },
 ];
 
-const testimonials = [
-  { text: "I've tried D3 capsules for years and always forgot. The sachet just sits on my breakfast table and it's done. My vitamin D levels are back in range after just 2 months.", author: "Rohan S.", role: "Software Engineer, Pune" },
-  { text: "Love that it's vegan and actually uses VitaShine D3 — not the cheap animal-derived stuff. Clean label, no junk. The orange flavour is subtle and nice.", author: "Meera K.", role: "Nutritionist, Mumbai" },
-  { text: "The K2 + D3 combo is what I was looking for. I'd been taking them separately. SIPA just made it one simple step. Consistent energy, no more afternoon crashes.", author: "Arjun P.", role: "Yoga Instructor, Bangalore" },
-];
-
 const claims = [
   { title: "Third-Party Tested", desc: "Every batch tested for purity, potency, and heavy metals by independent ISO-accredited labs." },
   { title: "Vegan & Non-GMO", desc: "Plant-based sachets, zero genetically modified organisms. Clean from the ground up." },
@@ -111,103 +105,304 @@ export default function ProductOverview() {
     quantity: number;
   } | null>(null);
 
+  // ── EDGE CASE 1: Track payment in progress to block accidental modal close ──
+  const [paymentInProgress, setPaymentInProgress] = useState(false);
+
+  // ── EDGE CASE 2: Track if SDK is ready ──
+  const [sdkReady, setSdkReady] = useState(false);
+
+  // ── EDGE CASE 3: Ref to prevent double-click / concurrent payments ──
+  const isSubmitting = useRef(false);
+
+  // ── EDGE CASE 4: Track if payment succeeded (ref for use inside callbacks) ──
+  const paymentSucceeded = useRef(false);
+
   const productImages = ["/prod3.png", "/prod2.jpeg", "/prod1.jpeg", "/prod4.jpeg", "/prod5.jpeg"];
 
+  // ── Load Razorpay SDK ─────────────────────────────────────────────────────
+  useEffect(() => {
+    // If already loaded (e.g. hot reload), just set ready
+    if (typeof window !== "undefined" && (window as any).Razorpay) {
+      setSdkReady(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => setSdkReady(true);
+    script.onerror = () => {
+      console.error("Failed to load Razorpay SDK");
+      toast({
+        title: "Payment Unavailable",
+        description: "Could not load payment module. Please check your connection and refresh.",
+        variant: "destructive",
+      });
+    };
+    document.body.appendChild(script);
+    return () => {
+      // Only remove if we added it
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
+  // ── EDGE CASE 5: Warn user before leaving during active payment ──
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (paymentInProgress) {
+        e.preventDefault();
+        e.returnValue = "Payment is in progress. Are you sure you want to leave?";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [paymentInProgress]);
+
+  // ── Escape key closes lightbox only ──────────────────────────────────────
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setLightboxIndex(null); }
+      if (e.key === "Escape") setLightboxIndex(null);
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  const increase = () => setQty((prev) => prev + 1);
-  const decrease = () => setQty((prev) => (prev > 1 ? prev - 1 : 1));
+  const increase = () => setQty((prev) => Math.min(prev + 1, 10));
+  const decrease = () => setQty((prev) => Math.max(prev - 1, 1));
 
-  // ── Validation ──
+  // ── Validation ────────────────────────────────────────────────────────────
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-
     if (!name.trim()) newErrors.name = "Full name is required.";
-
     if (!phone.trim()) {
       newErrors.phone = "Mobile number is required.";
     } else if (!/^[6-9]\d{9}$/.test(phone.trim())) {
       newErrors.phone = "Enter a valid 10-digit Indian mobile number.";
     }
-
     if (!email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       newErrors.email = "Enter a valid email address.";
     }
-
     if (!address1.trim()) newErrors.address1 = "Address Line 1 is required.";
-
     if (!city.trim()) newErrors.city = "City is required.";
-
     if (!pincode.trim()) {
       newErrors.pincode = "Pincode is required.";
     } else if (!/^\d{6}$/.test(pincode.trim())) {
       newErrors.pincode = "Enter a valid 6-digit pincode.";
     }
-
     if (!formState.trim()) newErrors.formState = "State is required.";
-
     if (!consent) newErrors.consent = "Please give your consent to proceed.";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // ── Clear error on change ──
   const clearError = (field: keyof FormErrors) => {
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
-  const handlePrebook = async () => {
-    if (!validate()) return;
-
-    setIsLoading(true);
-    try {
-      const res = await fetch("/api/prebook", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name, email, phone, quantity: qty,
-          address1, address2, pincode, city,
-          state: formState, notes, consent,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast({ title: "Error", description: data.message || "Something went wrong.", variant: "destructive" });
-        return;
-      }
-
-      setBookingSuccess({ orderId: data.orderId, totalAmount: 349 * qty, quantity: qty });
-
-    } catch (err) {
-      console.error(err);
-      toast({ title: "Network Error", description: "Please try again.", variant: "destructive" });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // ── Safe close — blocked during payment ──────────────────────────────────
   const handleCloseModal = () => {
+    if (paymentInProgress) return;
     setShowForm(false);
     setBookingSuccess(null);
     setErrors({});
+    paymentSucceeded.current = false;
   };
 
-  // ── Reusable error message ──
+  // ── Reset all state helper ────────────────────────────────────────────────
+  const resetPaymentState = () => {
+    setIsLoading(false);
+    setPaymentInProgress(false);
+    isSubmitting.current = false;
+  };
+
+  // ── Main Payment Handler ──────────────────────────────────────────────────
+  const handlePrebook = async () => {
+    if (!validate()) return;
+
+    // ── EDGE CASE: Prevent double submission ──
+    if (isSubmitting.current) return;
+    isSubmitting.current = true;
+
+    // ── EDGE CASE: SDK not loaded yet ──
+    if (!sdkReady || !(window as any).Razorpay) {
+      toast({
+        title: "Payment Not Ready",
+        description: "Payment module is still loading. Please wait a moment and try again.",
+        variant: "destructive",
+      });
+      isSubmitting.current = false;
+      return;
+    }
+
+    setIsLoading(true);
+    setPaymentInProgress(true);
+    paymentSucceeded.current = false;
+
+    try {
+      // ── Step 1: Create Razorpay order ──
+      const orderRes = await fetch("/api/createOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: qty }),
+      });
+
+      const orderData = await orderRes.json();
+
+      if (!orderRes.ok) {
+        toast({
+          title: "Order Failed",
+          description: orderData.message || "Could not create payment order. Please try again.",
+          variant: "destructive",
+        });
+        resetPaymentState();
+        return;
+      }
+
+      const { orderId: razorpayOrderId, amount } = orderData;
+
+      // ── Step 2: Open Razorpay checkout ──
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount,           // comes from server — single source of truth
+        currency: "INR",
+        name: "SIPA Nutrition",
+        description: "The Daily D3 + K2 — Pre-Booking",
+        order_id: razorpayOrderId,
+        prefill: { name, email, contact: phone },
+        theme: { color: "#C4541A" },
+
+        // ── EDGE CASE: Payment cancelled by user ──
+        modal: {
+          ondismiss: () => {
+             console.log("ondismiss fired");
+  console.log("paymentSucceeded:", paymentSucceeded.current);
+  console.log("paymentInProgress:", paymentInProgress);
+            if (paymentSucceeded.current) return; // payment went through — ignore dismiss
+            resetPaymentState();
+            toast({
+              title: "Payment Cancelled",
+              description: "You closed the payment window. Your details are saved — try again when ready.",
+              variant: "destructive",
+            });
+          },
+        },
+
+        // ── EDGE CASE: Payment failed (card declined, bank error, timeout) ──
+        "modal.ondismiss": undefined, // handled above
+        notify: {
+          sms: true,
+          email: true,
+        },
+
+        handler: async (response: {
+          razorpay_order_id: string;
+          razorpay_payment_id: string;
+          razorpay_signature: string;
+        }) => {
+          // Mark success immediately so ondismiss doesn't interfere
+          paymentSucceeded.current = true;
+
+          try {
+            // ── Step 3: Verify payment + save DB + send email ──
+            const verifyRes = await fetch("/api/verifyPayment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                customerData: {
+                  name, email, phone,
+                  quantity: qty,
+                  address1, address2,
+                  pincode, city,
+                  state: formState,
+                  notes, consent,
+                },
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+
+            // ── EDGE CASE: Duplicate booking ──
+            if (verifyRes.status === 409) {
+              toast({
+                title: "Already Pre-Booked",
+                description: "This email has already been used for a pre-booking.",
+                variant: "destructive",
+              });
+              resetPaymentState();
+              return;
+            }
+
+            if (!verifyRes.ok) {
+              // Payment went through but verify failed — critical, show support info
+              toast({
+                title: "Verification Failed",
+                description: `Payment received (ID: ${response.razorpay_payment_id}) but confirmation failed. Please contact support — you will NOT be double charged.`,
+                variant: "destructive",
+              });
+              resetPaymentState();
+              return;
+            }
+
+            // ── Step 4: Show success ──
+            setBookingSuccess({
+              orderId: verifyData.orderId,
+              totalAmount: 349 * qty,
+              quantity: qty,
+            });
+            setShowForm(true);
+            resetPaymentState();
+
+          } catch (err) {
+            console.error("Verify network error:", err);
+            toast({
+              title: "Network Error During Verification",
+              description: `Payment ID: ${response.razorpay_payment_id} — Please contact support. You will NOT be charged twice.`,
+              variant: "destructive",
+            });
+            resetPaymentState();
+          }
+        },
+      };
+
+      // Attach payment.failed handler after options
+      const rzp = new (window as any).Razorpay(options);
+
+      // ── EDGE CASE: Payment explicitly failed (declined, insufficient funds etc.) ──
+      rzp.on("payment.failed", (response: any) => {
+        paymentSucceeded.current = false;
+        resetPaymentState();
+        const reason = response?.error?.description || "Payment was declined.";
+        const code = response?.error?.code || "";
+        toast({
+          title: "Payment Failed",
+          description: `${reason}${code ? ` (${code})` : ""} — Please try a different payment method.`,
+          variant: "destructive",
+        });
+      });
+
+      rzp.open();
+
+    } catch (err) {
+      console.error("handlePrebook error:", err);
+      toast({
+        title: "Network Error",
+        description: "Could not connect to payment service. Please check your connection and try again.",
+        variant: "destructive",
+      });
+      resetPaymentState();
+    }
+  };
+
+  // ── Reusable error message ────────────────────────────────────────────────
   const ErrMsg = ({ msg }: { msg?: string }) =>
     msg ? <p className="text-[10px] text-red-500 mt-1 ml-0.5" style={SANS}>{msg}</p> : null;
 
-  // ── Input class helper ──
   const inputCls = (hasError?: string) =>
     `input rounded-sm w-full ${hasError ? "border-red-400 focus:border-red-400" : ""}`;
 
@@ -256,11 +451,9 @@ export default function ProductOverview() {
                 <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-
             <div className="relative w-full max-w-sm aspect-square rounded-2xl overflow-hidden bg-[#f0ebe3]" onClick={(e) => e.stopPropagation()}>
               <Image src={productImages[lightboxIndex]} alt={`Product ${lightboxIndex + 1}`} fill className="object-cover" />
             </div>
-
             <button
               className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
               onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => prev !== null ? (prev + 1) % productImages.length : 0); }}
@@ -269,14 +462,12 @@ export default function ProductOverview() {
                 <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-
             <div className="absolute bottom-6 flex gap-2">
               {productImages.map((_, i) => (
                 <button key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${i === lightboxIndex ? "bg-white w-4" : "bg-white/40"}`}
                   onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }} />
               ))}
             </div>
-
             <p className="absolute top-5 right-5 text-white/40 text-xs tracking-widest uppercase" style={SANS}>esc / click outside</p>
           </div>
         )}
@@ -306,7 +497,6 @@ export default function ProductOverview() {
               </svg>
               <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Early Bird Exclusive</span>
             </div>
-
             <div className="flex items-center gap-3">
               <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹349</span>
               <div className="flex flex-col">
@@ -314,7 +504,6 @@ export default function ProductOverview() {
                 <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>42% OFF</span>
               </div>
             </div>
-
             <div className="flex items-start gap-2">
               <svg viewBox="0 0 12 12" className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 fill-[#C4541A]">
                 <path d="M6 1a5 5 0 100 10A5 5 0 006 1zm0 1.5a.75.75 0 110 1.5.75.75 0 010-1.5zm-.5 2.5h1v4h-1V5z" />
@@ -323,7 +512,6 @@ export default function ProductOverview() {
                 Early access price — locked only for the first batch of pre-bookers.
               </p>
             </div>
-
             <div className="bg-[#1C1A17] rounded-sm px-3 py-2">
               <span className="text-[0.68rem] text-[#F3EDE3]/60 uppercase tracking-widest" style={SANS}>
                 You&apos;re reserving at the lowest price this product will ever be.
@@ -331,12 +519,14 @@ export default function ProductOverview() {
             </div>
           </div>
 
+          {/* ── EDGE CASE: SDK not ready — disable button ── */}
           <button
             onClick={() => setShowForm(true)}
-            className="w-full py-[18px] bg-[#C4541A] hover:bg-[#D96528] text-white text-[0.8rem] font-semibold tracking-[0.18em] uppercase rounded-sm transition-colors mb-5"
+            disabled={!sdkReady}
+            className="w-full py-[18px] bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-50 disabled:cursor-not-allowed text-white text-[0.8rem] font-semibold tracking-[0.18em] uppercase rounded-sm transition-colors mb-5"
             style={SANS}
           >
-            Pre Book Now
+            {sdkReady ? "Pre Book Now" : "Loading..."}
           </button>
 
           {/* ── Pre-booking Modal ── */}
@@ -350,59 +540,47 @@ export default function ProductOverview() {
                 style={{ ...SANS, maxHeight: "90vh" }}
                 onClick={(e) => e.stopPropagation()}
               >
+
                 {/* ── SUCCESS SCREEN ── */}
                 {bookingSuccess ? (
-                  <div className="px-8 py-10 flex flex-col items-center text-center">
-                    {/* Close X */}
-                    <button
-                      onClick={handleCloseModal}
-                      className="absolute top-5 right-6 text-black/30 hover:text-black/70 text-lg"
-                    >
-                      ✕
-                    </button>
+                  <div className="px-8 py-10 flex flex-col items-center text-center overflow-y-auto" style={{ maxHeight: "90vh" }}>
+                    <button onClick={handleCloseModal} className="absolute top-5 right-6 text-black/30 hover:text-black/70 text-lg">✕</button>
 
-                    {/* Check icon */}
                     <div className="w-16 h-16 rounded-full bg-[#1C6B3A]/10 flex items-center justify-center mb-6">
                       <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none">
                         <path d="M5 13l4 4L19 7" stroke="#1C6B3A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
 
-                    <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-2" style={SANS}>Pre-Booking Confirmed</p>
+                    <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-2" style={SANS}>Payment Confirmed 🎉</p>
                     <h2 className="text-[28px] text-[#1a1410] leading-tight mb-2" style={SERIF}>
                       You&apos;re in the <span className="italic text-[#C4541A]">first batch.</span>
                     </h2>
-                    <p className="text-[12px] text-black/40 mb-8" style={SANS}>No payment needed now — we collect only at launch.</p>
+                    <p className="text-[12px] text-black/40 mb-8" style={SANS}>Payment received — your spot is locked in.</p>
 
-                    {/* Cost box */}
                     <div className="w-full bg-[#F5F0E8] rounded-sm px-6 py-5 mb-4 text-left">
                       <p className="text-[9px] tracking-[0.2em] uppercase text-[#9A8E82] mb-3" style={SANS}>Order Summary</p>
-
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-[12px] text-[#5A5245]" style={SANS}>The Daily D3 + K2 × {bookingSuccess.quantity} pack</span>
                         <span className="text-[12px] font-semibold text-[#1C1A17]" style={SANS}>₹{bookingSuccess.totalAmount}</span>
                       </div>
-
-                      <div className="flex justify-between items-center mb-2">
+                      {/* <div className="flex justify-between items-center mb-2">
                         <span className="text-[12px] text-[#5A5245]" style={SANS}>Early Bird Savings</span>
                         <span className="text-[12px] font-semibold text-[#1C6B3A]" style={SANS}>− ₹{(599 - 349) * bookingSuccess.quantity}</span>
-                      </div>
-
+                      </div> */}
                       <div className="h-[1px] bg-black/10 my-3" />
-
                       <div className="flex justify-between items-center">
-                        <span className="text-[11px] font-bold uppercase tracking-wide text-[#1C1A17]" style={SANS}>Total Due at Launch</span>
+                        <span className="text-[11px] font-bold uppercase tracking-wide text-[#1C1A17]" style={SANS}>Total Paid</span>
                         <span className="text-[22px] font-bold text-[#1C1A17]" style={SERIF}>₹{bookingSuccess.totalAmount}</span>
                       </div>
                     </div>
 
-                    {/* What's next */}
                     <div className="w-full bg-[#1C1A17] rounded-sm px-6 py-4 mb-6 text-left">
                       <p className="text-[9px] tracking-[0.2em] uppercase text-[#FAF7F2]/40 mb-3" style={SANS}>What happens next</p>
                       {[
                         "✉️  Check your email for confirmation",
-                        "🚀  We'll notify you the moment we launch",
-                        "💳  Pay only when your order ships",
+                        "🚀  We'll notify you the moment we ship",
+                        "📦  Your order will be dispatched at launch",
                       ].map((line) => (
                         <p key={line} className="text-[11px] text-[#FAF7F2]/70 leading-relaxed mb-1" style={SANS}>{line}</p>
                       ))}
@@ -425,175 +603,119 @@ export default function ProductOverview() {
 
                   /* ── BOOKING FORM ── */
                   <>
-                    {/* Header */}
                     <div className="px-8 pt-7 pb-5 border-b border-black/10 relative">
                       <button onClick={handleCloseModal} className="absolute top-5 right-6 text-black/30 hover:text-black/70 text-lg">✕</button>
                       <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-1" style={SANS}>Est. 2026 · Pre-Booking</p>
                       <h2 className="text-[26px] text-[#1a1410] leading-tight" style={SERIF}>
                         Reserve Your <span className="italic text-[#C4541A]">Daily Ritual.</span>
                       </h2>
-                      <p className="text-[11px] text-black/40 mt-1" style={SANS}>Payment collected after launch</p>
+                      <p className="text-[11px] text-black/40 mt-1" style={SANS}>Pay now · Shipped at launch · Confirmation sent via email</p>
                     </div>
 
-                    {/* Body */}
                     <div className="px-8 py-6 overflow-y-auto" style={{ maxHeight: "calc(90vh - 120px)" }}>
 
-                      {/* Personal */}
                       <div className="mb-5">
                         <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Personal Details</p>
-
                         <div className="mb-2">
-                          <input
-                            placeholder="Full Name *"
-                            value={name}
-                            onChange={(e) => { setName(e.target.value); clearError("name"); }}
-                            className={inputCls(errors.name)}
-                            style={SANS}
-                          />
+                          <input placeholder="Full Name *" value={name} onChange={(e) => { setName(e.target.value); clearError("name"); }} className={inputCls(errors.name)} style={SANS} />
                           <ErrMsg msg={errors.name} />
                         </div>
-
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <input
-                              placeholder="Mobile *"
-                              value={phone}
-                              onChange={(e) => { setPhone(e.target.value); clearError("phone"); }}
-                              className={inputCls(errors.phone)}
-                              style={SANS}
-                            />
+                            <input placeholder="Mobile *" value={phone} onChange={(e) => { setPhone(e.target.value); clearError("phone"); }} className={inputCls(errors.phone)} style={SANS} />
                             <ErrMsg msg={errors.phone} />
                           </div>
                           <div>
-                            <input
-                              placeholder="Email *"
-                              value={email}
-                              onChange={(e) => { setEmail(e.target.value); clearError("email"); }}
-                              className={inputCls(errors.email)}
-                              style={SANS}
-                            />
+                            <input placeholder="Email *" value={email} onChange={(e) => { setEmail(e.target.value); clearError("email"); }} className={inputCls(errors.email)} style={SANS} />
                             <ErrMsg msg={errors.email} />
                           </div>
                         </div>
                       </div>
 
-                      {/* Quantity */}
                       <div className="mb-5">
                         <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Quantity</p>
                         <div className="flex items-center gap-4">
                           <div className="flex items-center border border-black/20 bg-[#f7f4ef] rounded-sm">
                             <button onClick={decrease} className="px-3 py-2 text-lg hover:text-[#C4541A]">−</button>
                             <input
-                              type="number"
-                              value={qty}
-                              onChange={(e) => setQty(Math.max(1, Number(e.target.value)))}
-                              min={1}
-                              className="w-12 text-center bg-transparent outline-none"
-                              style={SANS}
+                              type="number" value={qty}
+                              onChange={(e) => setQty(Math.min(10, Math.max(1, Number(e.target.value))))}
+                              min={1} max={10}
+                              className="w-12 text-center bg-transparent outline-none" style={SANS}
                             />
                             <button onClick={increase} className="px-3 py-2 text-lg hover:text-[#C4541A]">+</button>
                           </div>
-                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack</span>
+                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{349 * qty} total</span>
                         </div>
                       </div>
 
                       <div className="h-[1px] bg-black/10 my-5" />
 
-                      {/* Address */}
                       <div className="mb-5">
                         <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Delivery Address</p>
-
                         <div className="mb-2">
-                          <input
-                            placeholder="Address Line 1 *"
-                            value={address1}
-                            onChange={(e) => { setAddress1(e.target.value); clearError("address1"); }}
-                            className={inputCls(errors.address1)}
-                            style={SANS}
-                          />
+                          <input placeholder="Address Line 1 *" value={address1} onChange={(e) => { setAddress1(e.target.value); clearError("address1"); }} className={inputCls(errors.address1)} style={SANS} />
                           <ErrMsg msg={errors.address1} />
                         </div>
-
                         <div className="mb-2">
-                          <input
-                            placeholder="Address Line 2 (Optional)"
-                            value={address2}
-                            onChange={(e) => setAddress2(e.target.value)}
-                            className="input rounded-sm w-full"
-                            style={SANS}
-                          />
+                          <input placeholder="Address Line 2 (Optional)" value={address2} onChange={(e) => setAddress2(e.target.value)} className="input rounded-sm w-full" style={SANS} />
                         </div>
-
                         <div className="grid grid-cols-3 gap-2 mb-2">
                           <div className="col-span-2">
-                            <input
-                              placeholder="City *"
-                              value={city}
-                              onChange={(e) => { setCity(e.target.value); clearError("city"); }}
-                              className={inputCls(errors.city)}
-                              style={SANS}
-                            />
+                            <input placeholder="City *" value={city} onChange={(e) => { setCity(e.target.value); clearError("city"); }} className={inputCls(errors.city)} style={SANS} />
                             <ErrMsg msg={errors.city} />
                           </div>
                           <div>
-                            <input
-                              placeholder="Pincode *"
-                              value={pincode}
-                              onChange={(e) => { setPincode(e.target.value); clearError("pincode"); }}
-                              className={inputCls(errors.pincode)}
-                              style={SANS}
-                            />
+                            <input placeholder="Pincode *" value={pincode} onChange={(e) => { setPincode(e.target.value); clearError("pincode"); }} className={inputCls(errors.pincode)} style={SANS} />
                             <ErrMsg msg={errors.pincode} />
                           </div>
                         </div>
-
                         <div>
-                          <input
-                            placeholder="State *"
-                            value={formState}
-                            onChange={(e) => { setFormState(e.target.value); clearError("formState"); }}
-                            className={inputCls(errors.formState)}
-                            style={SANS}
-                          />
+                          <input placeholder="State *" value={formState} onChange={(e) => { setFormState(e.target.value); clearError("formState"); }} className={inputCls(errors.formState)} style={SANS} />
                           <ErrMsg msg={errors.formState} />
                         </div>
                       </div>
 
-                      {/* Notes */}
                       <div className="mb-4">
                         <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Delivery Notes (Optional)</p>
-                        <textarea
-                          className="input h-16 rounded-sm resize-none w-full"
-                          placeholder="Instructions..."
-                          value={notes}
-                          onChange={(e) => setNotes(e.target.value)}
-                          style={SANS}
-                        />
+                        <textarea className="input h-16 rounded-sm resize-none w-full" placeholder="Instructions..." value={notes} onChange={(e) => setNotes(e.target.value)} style={SANS} />
                       </div>
 
-                      {/* Consent */}
                       <div>
                         <label className="flex gap-2 text-[11px] text-black/40 cursor-pointer" style={SANS}>
-                          <input
-                            type="checkbox"
-                            className="accent-[#C4541A] mt-0.5"
-                            checked={consent}
-                            onChange={(e) => { setConsent(e.target.checked); clearError("consent"); }}
-                          />
+                          <input type="checkbox" className="accent-[#C4541A] mt-0.5" checked={consent} onChange={(e) => { setConsent(e.target.checked); clearError("consent"); }} />
                           I agree to be contacted via WhatsApp, SMS, and Email
                         </label>
                         <ErrMsg msg={errors.consent} />
                       </div>
 
-                      {/* CTA */}
+                      <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3 flex justify-between items-center">
+                        <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
+                        <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{349 * qty}</span>
+                      </div>
+
                       <button
                         onClick={handlePrebook}
-                        disabled={isLoading}
-                        className="w-full mt-5 py-4 mb-2 bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-60 disabled:cursor-not-allowed rounded-sm text-white text-[11px] font-semibold tracking-[0.22em] uppercase transition-colors"
+                        disabled={isLoading || !sdkReady}
+                        className="w-full py-4 mb-2 bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-60 disabled:cursor-not-allowed rounded-sm text-white text-[11px] font-semibold tracking-[0.22em] uppercase transition-colors flex items-center justify-center gap-2"
                         style={SANS}
                       >
-                        {isLoading ? "Confirming..." : "Confirm Pre-Booking →"}
+                        {isLoading ? (
+                          <>
+                            <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                            </svg>
+                            Processing...
+                          </>
+                        ) : (
+                          `Pay ₹${349 * qty} & Pre-Book →`
+                        )}
                       </button>
+
+                      <p className="text-center text-[10px] text-black/25 mt-2" style={SANS}>
+                        🔒 Secured by Razorpay · UPI, Cards, NetBanking accepted
+                      </p>
                     </div>
                   </>
                 )}
@@ -758,25 +880,6 @@ export default function ProductOverview() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      {/* <section className="bg-[#FAF7F2] border-t border-black/8 py-20">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#9A8E82] text-center mb-4" style={SANS}>Community Stories</p>
-          <h2 className="text-[clamp(26px,4vw,54px)] font-light italic text-[#1C1A17] text-center mb-14 leading-[1.15]" style={SERIF}>
-            &ldquo;Finally, a supplement I<br />actually remember to take.&rdquo;
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <div key={t.author} className="bg-white border border-black/8 rounded-sm p-8">
-                <div className="text-[#C4541A] text-sm tracking-[2px] mb-4">★★★★★</div>
-                <p className="text-[0.88rem] leading-[1.75] text-[#5A5245] italic mb-5" style={SANS}>&ldquo;{t.text}&rdquo;</p>
-                <p className="text-[0.7rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82]" style={SANS}>{t.author}</p>
-                <p className="text-[0.68rem] text-[#9A8E82] mt-0.5" style={SANS}>{t.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
       <Footer />
     </div>
   );
