@@ -9,9 +9,9 @@ export default function Hero() {
   const router = useRouter();
 
   const images = [
-    "/prod1.jpeg",
-    "/prod2.jpeg",
     "/prod3.png",
+    "/prod2.jpeg",
+    "/prod1.jpeg",
     "/prod4.jpeg",
     "/prod5.jpeg",
   ];
@@ -152,23 +152,33 @@ export default function Hero() {
                 </div>
 
                 {/* CTA — Desktop */}
-             <button
-  onClick={() => router.push("/productOverview")}
-  className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
-  style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
->
-  {/* Orange fill sweeps left to right */}
-  <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+                <button
+                  onClick={() => router.push("/productOverview")}
+                  className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {/* Orange fill sweeps left to right */}
+                  <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
 
-  <span className="relative z-10">Pre-book Now</span>
+                  <span className="relative z-10">Pre-book Now</span>
 
-  <svg
-    className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
-    viewBox="0 0 14 14" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"
-  >
-    <path d="M2 7h10M8 3l4 4-4 4" />
-  </svg>
-</button>
+                  <svg
+                    className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg>
+                </button>
               </div>
 
               {/* Desktop RIGHT — image */}
@@ -187,19 +197,30 @@ export default function Hero() {
                   />
                   <div className="absolute top-6 right-6 w-32 h-32 rounded-full border border-neutral-200 opacity-60" />
                   <div className="absolute bottom-10 left-4 w-16 h-16 rounded-full border border-orange-200 opacity-80" />
-                  <div className="relative rounded-2xl overflow-hidden group">
+                  <div className="hidden md:block relative rounded-2xl overflow-hidden group">
                     <div className="relative rounded-2xl overflow-hidden">
-                      <div className="relative rounded-2xl overflow-hidden">
-                        {" "}
-                        <Image
-                          src="/hero.jpeg"
-                          alt="SIPA Nutrition Vitamin D3 K2 Sachets"
-                          width={600}
-                          height={700}
-                          priority
-                          quality={80}
-                          className="w-full h-auto object-contain"
-                        />{" "}
+                      <div
+                        className="flex transition-transform duration-700 ease-in-out"
+                        style={{
+                          transform: `translateX(-${currentIndex * 100}%)`,
+                        }}
+                      >
+                        {images.map((img, i) => (
+                          <div
+                            key={i}
+                            className="min-w-full rounded-xl overflow-hidden"
+                          >
+                            <Image
+                              src={img}
+                              alt={`Product ${i}`}
+                              width={600}
+                              height={700}
+                              priority={i === 0}
+                              quality={80}
+                              className="w-full h-auto object-contain"
+                            />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
