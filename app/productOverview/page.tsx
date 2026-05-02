@@ -684,7 +684,7 @@ export default function ProductOverview() {
                       <div>
                         <label className="flex gap-2 text-[11px] text-black/40 cursor-pointer" style={SANS}>
                           <input type="checkbox" className="accent-[#C4541A] mt-0.5" checked={consent} onChange={(e) => { setConsent(e.target.checked); clearError("consent"); }} />
-                          I agree to be contacted via WhatsApp, SMS, and Email
+                          I agree to be contacted via Email
                         </label>
                         <ErrMsg msg={errors.consent} />
                       </div>
