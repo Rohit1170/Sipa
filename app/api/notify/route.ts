@@ -18,6 +18,7 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    
 
     // Check existing user
     const existingUser = await notify.findOne({ email });
@@ -54,8 +55,6 @@ export async function POST(request: Request) {
       .replace(/{{\s*email\s*}}/g, email)
       .replace(/{{\s*count\s*}}/g, notifyCount.toString());
 
-    // Send email
-        // 🔥 Send both emails in parallel
     await Promise.all([
       // User email
       sendMail({

@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pre-Booking Confirmed – SIPA Nutrition</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background: #f5f0e8;
+      font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;
+    "
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background: #f5f0e8; padding: 40px 0"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="600"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              max-width: 600px;
+              width: 100%;
+              background: #ffffff;
+              border-radius: 4px;
+              overflow: hidden;
+              border: 1px solid #e8e0d5;
+            "
+          >
+            <!-- TOP ACCENT BAR -->
+            <tr>
+              <td
+                style="
+                  background: #c4541a;
+                  height: 4px;
+                  font-size: 0;
+                  line-height: 0;
+                "
+              >
+                &nbsp;
+              </td>
+            </tr>
+
+            <!-- HEADER -->
+            <tr>
+              <td
+                style="
+                  padding: 40px 48px 32px;
+                  border-bottom: 1px solid #f0eae0;
+                "
+              >
+                <p
+                  style="
+                    margin: 0 0 24px;
+                    font-size: 10px;
+                    font-weight: 600;
+                    letter-spacing: 0.22em;
+                    text-transform: uppercase;
+                    color: #c4541a;
+                  "
+                >
+                  Est. 2026 · Pre-Booking Confirmed
+                </p>
+                <h1
+                  style="
+                    margin: 0;
+                    font-family: Georgia, serif;
+                    font-size: 36px;
+                    font-weight: 400;
+                    font-style: italic;
+                    color: #1c1a17;
+                    line-height: 1.15;
+                  "
+                >
+                  Your Daily Ritual<br />
+                  <em style="color: #c4541a">is Reserved.</em>
+                </h1>
+                <p
+                  style="
+                    margin: 16px 0 0;
+                    font-size: 13px;
+                    color: #9a8e82;
+                    line-height: 1.6;
+                  "
+                >
+                  Hi {{ name }}, thank you for pre-booking with SIPA Nutrition.
+                  Your spot in the first batch is officially reserved. We are
+                  preparing for launch and will be going live in the next
+                  <strong>7–10 days</strong>. Once we launch, you’ll receive a
+                  secure payment link to confirm your order before dispatch.
+                </p>
+              </td>
+            </tr>
+
+            <!-- ORDER SUMMARY -->
+            <tr>
+              <td style="padding: 32px 48px; border-bottom: 1px solid #f0eae0">
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 9px;
+                    font-weight: 600;
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: #9a8e82;
+                  "
+                >
+                  Order Summary
+                </p>
+
+                <!-- Product row -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin-bottom: 20px"
+                >
+                  <tr>
+                    <td
+                      style="padding: 14px 0; border-bottom: 1px solid #f0eae0"
+                    >
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td>
+                            <p
+                              style="
+                                margin: 0;
+                                font-size: 13px;
+                                font-weight: 600;
+                                color: #1c1a17;
+                              "
+                            >
+                              The Daily D3 + K2
+                            </p>
+                            <p
+                              style="
+                                margin: 3px 0 0;
+                                font-size: 11px;
+                                color: #9a8e82;
+                              "
+                            >
+                              30 Sachets / Pack · {{ quantity }} Pack(s)
+                            </p>
+                          </td>
+                          <td align="right">
+                            <p
+                              style="
+                                margin: 0;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: #1c1a17;
+                              "
+                            >
+                              ₹{{ totalAmount }}
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Price breakdown -->
+                  <tr>
+                    <td
+                      style="padding: 14px 0; border-bottom: 1px solid #f0eae0"
+                    >
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td style="font-size: 12px; color: #5a5245">
+                            Price per pack
+                          </td>
+                          <td
+                            align="right"
+                            style="font-size: 12px; color: #5a5245"
+                          >
+                            ₹{{ pricePerUnit }}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td
+                      style="padding: 14px 0; border-bottom: 1px solid #f0eae0"
+                    >
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td
+                            style="
+                              font-size: 12px;
+                              color: #1c6b3a;
+                              font-weight: 600;
+                            "
+                          >
+                            You Save (Early Bird)
+                          </td>
+                          <td
+                            align="right"
+                            style="
+                              font-size: 12px;
+                              color: #1c6b3a;
+                              font-weight: 600;
+                            "
+                          >
+                            − ₹{{ savings }}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Total -->
+                  <tr>
+                    <td style="padding: 16px 0 0">
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td
+                            style="
+                              font-size: 13px;
+                              font-weight: 700;
+                              color: #1c1a17;
+                              text-transform: uppercase;
+                              letter-spacing: 0.08em;
+                            "
+                          >
+                            Total (due at launch)
+                          </td>
+                          <td
+                            align="right"
+                            style="
+                              font-size: 20px;
+                              font-weight: 700;
+                              color: #1c1a17;
+                              font-family: Georgia, serif;
+                            "
+                          >
+                            ₹{{ totalAmount }}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Order ID -->
+                <div
+                  style="
+                    background: #f5f0e8;
+                    border-radius: 3px;
+                    padding: 12px 16px;
+                    display: inline-block;
+                    width: 100%;
+                    box-sizing: border-box;
+                  "
+                >
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td
+                        style="
+                          font-size: 10px;
+                          color: #9a8e82;
+                          letter-spacing: 0.14em;
+                          text-transform: uppercase;
+                        "
+                      >
+                        Order ID
+                      </td>
+                      <td
+                        align="right"
+                        style="
+                          font-size: 11px;
+                          font-weight: 600;
+                          color: #1c1a17;
+                          font-family: monospace;
+                        "
+                      >
+                        {{ orderId }}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
+            <!-- DELIVERY ADDRESS -->
+            <tr>
+              <td style="padding: 32px 48px; border-bottom: 1px solid #f0eae0">
+                <p
+                  style="
+                    margin: 0 0 10px;
+                    font-size: 9px;
+                    font-weight: 600;
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: #9a8e82;
+                  "
+                >
+                  Delivery Address
+                </p>
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 13px;
+                    color: #5a5245;
+                    line-height: 1.7;
+                  "
+                >
+                  {{ name }}<br />
+                  {{ address }}
+                </p>
+              </td>
+            </tr>
+
+            <!-- WHAT HAPPENS NEXT -->
+            <tr>
+              <td style="padding: 32px 48px; border-bottom: 1px solid #f0eae0">
+                <p
+                  style="
+                    margin: 0 0 20px;
+                    font-size: 9px;
+                    font-weight: 600;
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: #9a8e82;
+                  "
+                >
+                  What Happens Next
+                </p>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="32" valign="top" style="padding-top: 2px">
+                      <div
+                        style="
+                          width: 24px;
+                          height: 24px;
+                          background: #1c1a17;
+                          border-radius: 50%;
+                          text-align: center;
+                          line-height: 24px;
+                          font-size: 10px;
+                          font-weight: 700;
+                          color: #faf7f2;
+                        "
+                      >
+                        1
+                      </div>
+                    </td>
+                    <td style="padding-bottom: 16px">
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #1c1a17;
+                        "
+                      >
+                        Your batch is reserved
+                      </p>
+                      <p
+                        style="
+                          margin: 4px 0 0;
+                          font-size: 11px;
+                          color: #9a8e82;
+                          line-height: 1.6;
+                        "
+                      >
+                        You're in the first batch. No action needed from your
+                        side right now.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="32" valign="top" style="padding-top: 2px">
+                      <div
+                        style="
+                          width: 24px;
+                          height: 24px;
+                          background: #1c1a17;
+                          border-radius: 50%;
+                          text-align: center;
+                          line-height: 24px;
+                          font-size: 10px;
+                          font-weight: 700;
+                          color: #faf7f2;
+                        "
+                      >
+                        2
+                      </div>
+                    </td>
+                    <td style="padding-bottom: 16px">
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #1c1a17;
+                        "
+                      >
+                        Launching in 7–10 days
+                      </p>
+                      <p
+                        style="
+                          margin: 4px 0 0;
+                          font-size: 11px;
+                          color: #9a8e82;
+                          line-height: 1.6;
+                        "
+                      >
+                        We’re getting your batch ready. As soon as we go live,
+                        you’ll receive your secure payment link via email +
+                        WhatsApp.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="32" valign="top" style="padding-top: 2px">
+                      <div
+                        style="
+                          width: 24px;
+                          height: 24px;
+                          background: #c4541a;
+                          border-radius: 50%;
+                          text-align: center;
+                          line-height: 24px;
+                          font-size: 10px;
+                          font-weight: 700;
+                          color: #faf7f2;
+                        "
+                      >
+                        3
+                      </div>
+                    </td>
+                    <td>
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #1c1a17;
+                        "
+                      >
+                        Pay & receive
+                      </p>
+                      <p
+                        style="
+                          margin: 4px 0 0;
+                          font-size: 11px;
+                          color: #9a8e82;
+                          line-height: 1.6;
+                        "
+                      >
+                        Complete payment and your SIPA Daily D3+K2 ships
+                        directly to {{ address }}.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- TRUST BADGES -->
+            <tr>
+              <td
+                style="
+                  padding: 28px 48px;
+                  border-bottom: 1px solid #f0eae0;
+                  background: #fdfaf6;
+                "
+              >
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td
+                      align="center"
+                      style="font-size: 11px; color: #5a5245; padding: 0 8px"
+                    >
+                      🚚<br />
+                      <span
+                        style="
+                          font-size: 9px;
+                          letter-spacing: 0.12em;
+                          text-transform: uppercase;
+                          color: #9a8e82;
+                        "
+                        >Free Shipping</span
+                      >
+                    </td>
+                    <td
+                      align="center"
+                      style="font-size: 11px; color: #5a5245; padding: 0 8px"
+                    >
+                      🌿<br />
+                      <span
+                        style="
+                          font-size: 9px;
+                          letter-spacing: 0.12em;
+                          text-transform: uppercase;
+                          color: #9a8e82;
+                        "
+                        >100% Vegan</span
+                      >
+                    </td>
+                    <td
+                      align="center"
+                      style="font-size: 11px; color: #5a5245; padding: 0 8px"
+                    >
+                      ✅<br />
+                      <span
+                        style="
+                          font-size: 9px;
+                          letter-spacing: 0.12em;
+                          text-transform: uppercase;
+                          color: #9a8e82;
+                        "
+                        >FSSAI Certified</span
+                      >
+                    </td>
+                    <td
+                      align="center"
+                      style="font-size: 11px; color: #5a5245; padding: 0 8px"
+                    >
+                      🔬<br />
+                      <span
+                        style="
+                          font-size: 9px;
+                          letter-spacing: 0.12em;
+                          text-transform: uppercase;
+                          color: #9a8e82;
+                        "
+                        >Lab Tested</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td style="padding: 28px 48px; background: #1c1a17">
+                <p
+                  style="
+                    margin: 0 0 6px;
+                    font-family: Georgia, serif;
+                    font-size: 18px;
+                    font-style: italic;
+                    color: #faf7f2;
+                  "
+                >
+                  SIPA Nutrition
+                </p>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 10px;
+                    color: #9a8e82;
+                    letter-spacing: 0.12em;
+                    text-transform: uppercase;
+                  "
+                >
+                  India's First Daily Vitamin Sachet
+                </p>
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 10px;
+                    color: #5a5245;
+                    line-height: 1.8;
+                  "
+                >
+                  Questions? Reply to this email or reach us at
+                  <a
+                    href="mailto:support@sipanutrition.com"
+                    style="color: #c4541a; text-decoration: none"
+                    >support@sipanutrition.com</a
+                  ><br />
+                  You're receiving this because you pre-booked at
+                  sipanutrition.com
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

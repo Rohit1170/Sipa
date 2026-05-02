@@ -1,8 +1,14 @@
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import Footer from "@/components/footer";
+import Navbar from "@/components/Navbar";
+import { toast } from "@/components/ui/use-toast";
+
+// ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
+const SERIF = { fontFamily: "'Playfair Display', serif" };
+const SANS  = { fontFamily: "'DM Sans', sans-serif" };
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -12,19 +18,17 @@ const ingredients = [
     tags: ["Bone Health", "Immunity"],
     name: "Vitamin D3",
     sub: "Cholecalciferol · VitaShine®",
-    desc:
-      "Lichen-derived D3 — the most bioavailable vegan form available. Clinically proven to raise serum D levels, support calcium absorption, and regulate immune function.",
+    desc: "Lichen-derived D3 — the most bioavailable vegan form available. Clinically proven to raise serum D levels, support calcium absorption, and regulate immune function.",
     amount: "600 IU",
     rda: "100% RDA",
     dark: false,
   },
   {
     icon: "🦴",
-    tags: ["Calcium Direction", "Heart Health"],
+    tags: ["Calcium", "Heart Health"],
     name: "Vitamin K2",
     sub: "Menaquinone-7 · MK-7",
-    desc:
-      "The MK-7 form has the longest half-life — staying active far longer than MK-4. Directs calcium to your bones and teeth, away from your arteries.",
+    desc: "The MK-7 form has the longest half-life — staying active far longer than MK-4. Directs calcium to your bones and teeth, away from your arteries.",
     amount: "55 mcg",
     rda: "100% RDA",
     dark: false,
@@ -34,8 +38,7 @@ const ingredients = [
     tags: [],
     name: "Natural Orange Flavour + Excipients",
     sub: "",
-    desc:
-      "Natural flavour from real sources. GRAS-certified excipients — no artificial dyes, no fillers, no anti-caking agents. What you see is what you get.",
+    desc: "Natural flavour from real sources. GRAS-certified excipients — no artificial dyes, no fillers, no anti-caking agents. What you see is what you get.",
     amount: "q.s.",
     rda: "GRAS · Natural",
     dark: true,
@@ -43,253 +46,565 @@ const ingredients = [
 ];
 
 const benefits = [
-  {
-    num: "01",
-    title: "Stronger Bones",
-    desc: "D3 drives calcium absorption. K2 places it in your bones — not your arteries. Together they build real skeletal strength.",
-  },
-  {
-    num: "02",
-    title: "Year-Round Immunity",
-    desc: "D3 is a key regulator of immune function. Daily maintenance keeps your defences primed through every season.",
-  },
-  {
-    num: "03",
-    title: "Heart Protection",
-    desc: "K2 (MK-7) actively prevents arterial calcification — a silent risk for people with office lifestyles.",
-  },
-  {
-    num: "04",
-    title: "Less Fatigue, More Energy",
-    desc: "D3 deficiency is the #1 hidden cause of chronic fatigue in urban India. Fix the root. Feel the difference.",
-  },
+  { num: "01", title: "Stronger Bones", desc: "D3 drives calcium absorption. K2 places it in your bones — not your arteries. Together they build real skeletal strength." },
+  { num: "02", title: "Year-Round Immunity", desc: "D3 is a key regulator of immune function. Daily maintenance keeps your defences primed through every season." },
+  { num: "03", title: "Heart Protection", desc: "K2 (MK-7) actively prevents arterial calcification — a silent risk for people with office lifestyles." },
+  { num: "04", title: "Less Fatigue, More Energy", desc: "D3 deficiency is the #1 hidden cause of chronic fatigue in urban India. Fix the root. Feel the difference." },
 ];
 
 const usageSteps = [
-  {
-    step: "1",
-    label: "Quantity",
-    title: "One Sachet Per Day",
-    desc: "Exactly 1g — the precise maintenance dose. No more, no less.",
-  },
-  {
-    step: "2",
-    label: "Timing",
-    title: "After Morning Meal",
-    desc: "Take after breakfast. Morning intake aligns with your body's natural rhythm.",
-  },
-  {
-    step: "3",
-    label: "Absorption Tip",
-    title: "With a Fatty Food",
-    desc: "D3 is fat-soluble. Taking with eggs, nuts, or ghee significantly boosts absorption.",
-  },
-  {
-    step: "4",
-    label: "Duration",
-    title: "Daily, Long-Term",
-    desc: "Safe for continuous daily use. Benefits compound — consistency is the formula.",
-  },
+  { step: "1", label: "Quantity", title: "One Sachet Per Day", desc: "Exactly 1g — the precise maintenance dose. No more, no less." },
+  { step: "2", label: "Timing", title: "After Morning Meal", desc: "Take after breakfast. Morning intake aligns with your body's natural rhythm." },
+  { step: "3", label: "Absorption Tip", title: "With a Fatty Food", desc: "D3 is fat-soluble. Taking with eggs, nuts, or ghee significantly boosts absorption." },
+  { step: "4", label: "Duration", title: "Daily, Long-Term", desc: "Safe for continuous daily use. Benefits compound — consistency is the formula." },
 ];
 
 const testimonials = [
-  {
-    text: "I've tried D3 capsules for years and always forgot. The sachet just sits on my breakfast table and it's done. My vitamin D levels are back in range after just 2 months.",
-    author: "Rohan S.",
-    role: "Software Engineer, Pune",
-  },
-  {
-    text: "Love that it's vegan and actually uses VitaShine D3 — not the cheap animal-derived stuff. Clean label, no junk. The orange flavour is subtle and nice.",
-    author: "Meera K.",
-    role: "Nutritionist, Mumbai",
-  },
-  {
-    text: "The K2 + D3 combo is what I was looking for. I'd been taking them separately. SIPA just made it one simple step. Consistent energy, no more afternoon crashes.",
-    author: "Arjun P.",
-    role: "Yoga Instructor, Bangalore",
-  },
+  { text: "I've tried D3 capsules for years and always forgot. The sachet just sits on my breakfast table and it's done. My vitamin D levels are back in range after just 2 months.", author: "Rohan S.", role: "Software Engineer, Pune" },
+  { text: "Love that it's vegan and actually uses VitaShine D3 — not the cheap animal-derived stuff. Clean label, no junk. The orange flavour is subtle and nice.", author: "Meera K.", role: "Nutritionist, Mumbai" },
+  { text: "The K2 + D3 combo is what I was looking for. I'd been taking them separately. SIPA just made it one simple step. Consistent energy, no more afternoon crashes.", author: "Arjun P.", role: "Yoga Instructor, Bangalore" },
 ];
 
 const claims = [
-  {
-    title: "Third-Party Tested",
-    desc: "Every batch tested for purity, potency, and heavy metals by independent ISO-accredited labs.",
-  },
-  {
-    title: "Vegan & Non-GMO",
-    desc: "Plant-based sachets, zero genetically modified organisms. Clean from the ground up.",
-  },
-  {
-    title: "Zero Artificial Additives",
-    desc: "No synthetic dyes, flavours, or anti-caking agents like magnesium stearate.",
-  },
-  {
-    title: "WHO GMP · ISO 9001 · FSSAI",
-    desc: "Manufactured at a certified facility meeting the highest international standards.",
-  },
+  { title: "Third-Party Tested", desc: "Every batch tested for purity, potency, and heavy metals by independent ISO-accredited labs." },
+  { title: "Vegan & Non-GMO", desc: "Plant-based sachets, zero genetically modified organisms. Clean from the ground up." },
+  { title: "100% FSSAI Approved", desc: "Manufactured under FSSAI License No. 10426999000078, meeting strict national safety and quality standards." },
 ];
+
+// ─── TYPES ───────────────────────────────────────────────────────────────────
+
+interface FormErrors {
+  name?: string;
+  phone?: string;
+  email?: string;
+  address1?: string;
+  city?: string;
+  pincode?: string;
+  formState?: string;
+  consent?: string;
+}
 
 // ─── COMPONENT ───────────────────────────────────────────────────────────────
 
 export default function ProductOverview() {
-  const [selectedPlan, setSelectedPlan] = useState<"subscribe" | "onetime">("subscribe");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
-  const [notified, setNotified] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [qty, setQty] = useState(1);
+
+  // ── Form state ──
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [city, setCity] = useState("");
+  const [formState, setFormState] = useState("");
+  const [notes, setNotes] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [bookingSuccess, setBookingSuccess] = useState<{
+    orderId: string;
+    totalAmount: number;
+    quantity: number;
+  } | null>(null);
+
+  const productImages = ["/prod3.png", "/prod2.jpeg", "/prod1.jpeg", "/prod4.jpeg", "/prod5.jpeg"];
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { setLightboxIndex(null); }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  const increase = () => setQty((prev) => prev + 1);
+  const decrease = () => setQty((prev) => (prev > 1 ? prev - 1 : 1));
+
+  // ── Validation ──
+  const validate = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!name.trim()) newErrors.name = "Full name is required.";
+
+    if (!phone.trim()) {
+      newErrors.phone = "Mobile number is required.";
+    } else if (!/^[6-9]\d{9}$/.test(phone.trim())) {
+      newErrors.phone = "Enter a valid 10-digit Indian mobile number.";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    if (!address1.trim()) newErrors.address1 = "Address Line 1 is required.";
+
+    if (!city.trim()) newErrors.city = "City is required.";
+
+    if (!pincode.trim()) {
+      newErrors.pincode = "Pincode is required.";
+    } else if (!/^\d{6}$/.test(pincode.trim())) {
+      newErrors.pincode = "Enter a valid 6-digit pincode.";
+    }
+
+    if (!formState.trim()) newErrors.formState = "State is required.";
+
+    if (!consent) newErrors.consent = "Please give your consent to proceed.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // ── Clear error on change ──
+  const clearError = (field: keyof FormErrors) => {
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  const handlePrebook = async () => {
+    if (!validate()) return;
+
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/prebook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name, email, phone, quantity: qty,
+          address1, address2, pincode, city,
+          state: formState, notes, consent,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast({ title: "Error", description: data.message || "Something went wrong.", variant: "destructive" });
+        return;
+      }
+
+      setBookingSuccess({ orderId: data.orderId, totalAmount: 349 * qty, quantity: qty });
+
+    } catch (err) {
+      console.error(err);
+      toast({ title: "Network Error", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowForm(false);
+    setBookingSuccess(null);
+    setErrors({});
+  };
+
+  // ── Reusable error message ──
+  const ErrMsg = ({ msg }: { msg?: string }) =>
+    msg ? <p className="text-[10px] text-red-500 mt-1 ml-0.5" style={SANS}>{msg}</p> : null;
+
+  // ── Input class helper ──
+  const inputCls = (hasError?: string) =>
+    `input rounded-sm w-full ${hasError ? "border-red-400 focus:border-red-400" : ""}`;
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#1C1A17] font-sans">
-
-      {/* ── FONTS via next/font or global CSS ── */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap');
-        .import About from './page';
-font-playfair { font-family: 'Playfair Display', serif; }
-        .font-jost { font-family: 'Jost', sans-serif; }
-      `}</style>
-
-      {/* ── NAV ── */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-12 h-[60px] bg-[#FAF7F2]/90 backdrop-blur-md border-b border-black/10 font-jost">
-        <a href="#" className="font-playfair text-base font-bold tracking-[0.18em] uppercase text-[#1C1A17]">
-          SIPA Nutrition
-        </a>
-        <ul className="hidden md:flex gap-9 list-none">
-          {["Ingredients", "Benefits", "Science", "Journal"].map((l) => (
-            <li key={l}>
-              <a href={`#${l.toLowerCase()}`} className="text-[0.72rem] font-medium tracking-[0.14em] uppercase text-[#5A5245] hover:text-[#1C1A17] transition-colors font-jost">
-                {l}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="flex gap-5 items-center text-[#5A5245]">
-          <svg className="w-5 h-5 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" />
-            <path d="M16 10a4 4 0 01-8 0" />
-          </svg>
-          <svg className="w-5 h-5 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
-          </svg>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#FAF7F2] text-[#1C1A17]" style={SANS}>
+      <Navbar />
 
       {/* ── HERO ── */}
-      <section className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 px-6 lg:px-12 py-12 lg:py-16 items-start font-jost">
+      <section className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 px-6 lg:px-12 py-12 lg:py-16 items-start">
 
         {/* Gallery */}
-        <div className="flex flex-col gap-3">
-          {/* Main image */}
-          <div className="relative w-full aspect-square rounded-sm overflow-hidden bg-gradient-to-br from-[#E8D5BC] to-[#C49A6C]">
-            <Image
-              src="/hero.jpeg"
-              alt="SIPA Nutrition D3+K2 Sachet"
-              fill
-              className="object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-            />
-            {/* Fallback sachet visual */}
-            {/* <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <div className="relative w-36 h-52 bg-gradient-to-b from-[#2D4A2D] to-[#1A2E1A] rounded-xl flex flex-col items-center justify-center gap-2 shadow-2xl overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#C8A84B] to-[#E5C97A]" />
-                <span className="font-playfair text-lg font-bold text-[#FAF7F2] tracking-widest">SIPA</span>
-                <span className="text-[0.6rem] tracking-[0.18em] uppercase text-[#FAF7F2]/40">Nutrition</span>
-                <span className="text-[0.65rem] tracking-widest uppercase text-[#C8A84B] mt-2">D3 + K2</span>
-                <span className="font-playfair text-5xl font-light text-[#FAF7F2]/10 absolute bottom-2 right-3">30</span>
-              </div>
-            </div> */}
+        <div className="flex flex-col mt-6 gap-3">
+          <div
+            className="relative w-full aspect-square rounded-xl overflow-hidden cursor-zoom-in bg-[#f0ebe3]"
+            onClick={() => setLightboxIndex(0)}
+          >
+            <Image src={productImages[activeThumb ?? 0]} alt="SIPA Nutrition D3+K2" fill priority className="object-cover" />
           </div>
-          {/* Thumbnails */}
-          <div className="grid grid-cols-2 gap-3">
-            <div
-              className={`aspect-[4/3] rounded-sm overflow-hidden cursor-pointer bg-gradient-to-br from-[#C49A6C] to-[#A07840] transition-all ${activeThumb === 0 ? "ring-2 ring-[#C4541A]" : ""}`}
-              onClick={() => setActiveThumb(0)}
-            >
-              <div className="w-full h-full flex items-center justify-center text-[0.7rem] tracking-[0.12em] uppercase text-white/60">
-                Ingredients
+          <div className="grid grid-cols-5 gap-2">
+            {productImages.map((img, i) => (
+              <div
+                key={i}
+                className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer bg-[#f0ebe3] transition-all duration-200 ${
+                  activeThumb === i ? "ring-2 ring-[#C4541A] ring-offset-1" : "opacity-60 hover:opacity-100"
+                }`}
+                onClick={() => setActiveThumb(i)}
+              >
+                <Image src={img} alt={`Product view ${i + 1}`} fill className="object-cover" />
               </div>
-            </div>
-            <div
-              className={`aspect-[4/3] rounded-sm overflow-hidden cursor-pointer bg-gradient-to-br from-[#D4B896] to-[#B89060] transition-all ${activeThumb === 1 ? "ring-2 ring-[#C4541A]" : ""}`}
-              onClick={() => setActiveThumb(1)}
-            >
-              <div className="w-full h-full flex flex-col items-center justify-center gap-1">
-                <span className="text-2xl">🌿</span>
-                <span className="text-[0.65rem] tracking-widest uppercase text-[#5A5245]">Vegan</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
+        {/* ── Lightbox ── */}
+        {lightboxIndex !== null && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: "rgba(10,8,5,0.85)", backdropFilter: "blur(8px)" }}
+            onClick={() => setLightboxIndex(null)}
+          >
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => prev !== null ? (prev - 1 + productImages.length) % productImages.length : 0); }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <div className="relative w-full max-w-sm aspect-square rounded-2xl overflow-hidden bg-[#f0ebe3]" onClick={(e) => e.stopPropagation()}>
+              <Image src={productImages[lightboxIndex]} alt={`Product ${lightboxIndex + 1}`} fill className="object-cover" />
+            </div>
+
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex((prev) => prev !== null ? (prev + 1) % productImages.length : 0); }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <div className="absolute bottom-6 flex gap-2">
+              {productImages.map((_, i) => (
+                <button key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${i === lightboxIndex ? "bg-white w-4" : "bg-white/40"}`}
+                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }} />
+              ))}
+            </div>
+
+            <p className="absolute top-5 right-5 text-white/40 text-xs tracking-widest uppercase" style={SANS}>esc / click outside</p>
+          </div>
+        )}
+
         {/* Product Info */}
-        <div className="pt-1">
-          {/* Badges */}
+        <div className="pt-1 mt-6">
           <div className="flex gap-2 flex-wrap mb-5">
-            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#1C1A17] text-[#FAF7F2]">In Stock</span>
-            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]">New Formula</span>
-            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm border border-[#2D4A2D]/20 bg-[#2D4A2D]/10 text-[#2D4A2D]">100% Vegan</span>
+            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#1C1A17] text-[#FAF7F2]" style={SANS}>In Stock</span>
+            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]" style={SANS}>New Formula</span>
+            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm border border-[#2D4A2D]/20 bg-[#2D4A2D]/10 text-[#2D4A2D]" style={SANS}>100% Vegan</span>
           </div>
 
-          <h1 className="font-playfair text-[clamp(32px,4vw,54px)] font-medium italic text-[#1C1A17] leading-[1.08] mb-3">
+          <h1 className="text-[clamp(32px,4vw,54px)] font-bold text-[#1C1A17] leading-[1.08] mb-3" style={SERIF}>
             The Daily<br />D3 + K2
           </h1>
-          <p className="text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-[#9A8E82] mb-5">
+          <p className="text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-[#9A8E82] mb-5" style={SANS}>
             Daily Vitamin Sachet · India&apos;s First
           </p>
-          <p className="text-[0.9rem] leading-[1.75] text-[#5A5245] max-w-[420px] mb-8">
+          <p className="text-[0.9rem] leading-[1.75] text-[#5A5245] max-w-[420px] mb-8" style={SANS}>
             A precision-engineered vegan formula combining Vitamin D3 (VitaShine® lichen) with Vitamin K2 (MK-7). One slim 1g sachet a day, clinically dosed, zero fillers.
           </p>
 
-          {/* Pricing Options */}
           <div className="flex flex-col gap-3 mb-7">
-            {/* Subscribe */}
-            <button
-              onClick={() => setSelectedPlan("subscribe")}
-              className={`flex items-center justify-between px-5 py-4 border-[1.5px] rounded-sm transition-all ${selectedPlan === "subscribe" ? "border-[#C4541A] bg-[#C4541A]/5" : "border-black/15 hover:border-[#C4541A]"}`}
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${selectedPlan === "subscribe" ? "border-[#C4541A]" : "border-black/20"}`}>
-                  {selectedPlan === "subscribe" && <div className="w-2 h-2 rounded-full bg-[#C4541A]" />}
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[0.82rem] font-semibold text-[#1C1A17]">Subscribe &amp; Save 10%</span>
-                    <span className="text-[0.6rem] font-semibold tracking-[0.1em] uppercase px-2 py-[2px] rounded-sm bg-[#C4541A] text-white">Save ₹60</span>
-                  </div>
-                  <p className="text-[0.72rem] text-[#9A8E82] mt-0.5">Delivered every 30 days. Cancel anytime.</p>
-                </div>
-              </div>
-              <span className="font-playfair text-2xl font-light text-[#1C1A17]">₹539</span>
-            </button>
+            <div className="inline-flex items-center gap-1.5 w-fit bg-[#C4541A]/10 border border-[#C4541A]/30 rounded-sm px-2.5 py-1">
+              <svg viewBox="0 0 12 12" className="w-3 h-3 fill-[#C4541A]">
+                <path d="M6 0L7.5 4.5H12L8.5 7L9.5 12L6 9L2.5 12L3.5 7L0 4.5H4.5L6 0Z" />
+              </svg>
+              <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Early Bird Exclusive</span>
+            </div>
 
-            {/* One-time */}
-            <button
-              onClick={() => setSelectedPlan("onetime")}
-              className={`flex items-center justify-between px-5 py-4 border-[1.5px] rounded-sm transition-all ${selectedPlan === "onetime" ? "border-[#C4541A] bg-[#C4541A]/5" : "border-black/15 hover:border-[#C4541A]"}`}
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${selectedPlan === "onetime" ? "border-[#C4541A]" : "border-black/20"}`}>
-                  {selectedPlan === "onetime" && <div className="w-2 h-2 rounded-full bg-[#C4541A]" />}
-                </div>
-                <div className="text-left">
-                  <span className="text-[0.82rem] font-semibold text-[#1C1A17]">One-Time Purchase</span>
-                  <p className="text-[0.72rem] text-[#9A8E82] mt-0.5">Single box of 30 sachets (1g each)</p>
-                </div>
+            <div className="flex items-center gap-3">
+              <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹349</span>
+              <div className="flex flex-col">
+                <span className="text-base text-[#9A8E82] line-through leading-none" style={SANS}>₹599</span>
+                <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>42% OFF</span>
               </div>
-              <span className="font-playfair text-2xl font-light text-[#1C1A17]">₹599</span>
-            </button>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <svg viewBox="0 0 12 12" className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 fill-[#C4541A]">
+                <path d="M6 1a5 5 0 100 10A5 5 0 006 1zm0 1.5a.75.75 0 110 1.5.75.75 0 010-1.5zm-.5 2.5h1v4h-1V5z" />
+              </svg>
+              <p className="text-[0.75rem] text-[#5A5245] leading-relaxed" style={SANS}>
+                Early access price — locked only for the first batch of pre-bookers.
+              </p>
+            </div>
+
+            <div className="bg-[#1C1A17] rounded-sm px-3 py-2">
+              <span className="text-[0.68rem] text-[#F3EDE3]/60 uppercase tracking-widest" style={SANS}>
+                You&apos;re reserving at the lowest price this product will ever be.
+              </span>
+            </div>
           </div>
 
-          {/* CTA */}
           <button
-            onClick={() => setNotified(true)}
-            className="w-full py-[18px] bg-[#C4541A] hover:bg-[#D96528] text-white text-[0.8rem] font-semibold tracking-[0.18em] uppercase rounded-sm transition-colors mb-5 font-jost"
+            onClick={() => setShowForm(true)}
+            className="w-full py-[18px] bg-[#C4541A] hover:bg-[#D96528] text-white text-[0.8rem] font-semibold tracking-[0.18em] uppercase rounded-sm transition-colors mb-5"
+            style={SANS}
           >
-            {notified ? "✓ You're on the list!" : "Notify Me at Launch"}
+            Pre Book Now
           </button>
+
+          {/* ── Pre-booking Modal ── */}
+          {showForm && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+              onClick={handleCloseModal}
+            >
+              <div
+                className="relative bg-white w-full max-w-md rounded-2xl border border-black/10 overflow-hidden"
+                style={{ ...SANS, maxHeight: "90vh" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* ── SUCCESS SCREEN ── */}
+                {bookingSuccess ? (
+                  <div className="px-8 py-10 flex flex-col items-center text-center">
+                    {/* Close X */}
+                    <button
+                      onClick={handleCloseModal}
+                      className="absolute top-5 right-6 text-black/30 hover:text-black/70 text-lg"
+                    >
+                      ✕
+                    </button>
+
+                    {/* Check icon */}
+                    <div className="w-16 h-16 rounded-full bg-[#1C6B3A]/10 flex items-center justify-center mb-6">
+                      <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none">
+                        <path d="M5 13l4 4L19 7" stroke="#1C6B3A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+
+                    <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-2" style={SANS}>Pre-Booking Confirmed</p>
+                    <h2 className="text-[28px] text-[#1a1410] leading-tight mb-2" style={SERIF}>
+                      You&apos;re in the <span className="italic text-[#C4541A]">first batch.</span>
+                    </h2>
+                    <p className="text-[12px] text-black/40 mb-8" style={SANS}>No payment needed now — we collect only at launch.</p>
+
+                    {/* Cost box */}
+                    <div className="w-full bg-[#F5F0E8] rounded-sm px-6 py-5 mb-4 text-left">
+                      <p className="text-[9px] tracking-[0.2em] uppercase text-[#9A8E82] mb-3" style={SANS}>Order Summary</p>
+
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-[12px] text-[#5A5245]" style={SANS}>The Daily D3 + K2 × {bookingSuccess.quantity} pack</span>
+                        <span className="text-[12px] font-semibold text-[#1C1A17]" style={SANS}>₹{bookingSuccess.totalAmount}</span>
+                      </div>
+
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-[12px] text-[#5A5245]" style={SANS}>Early Bird Savings</span>
+                        <span className="text-[12px] font-semibold text-[#1C6B3A]" style={SANS}>− ₹{(599 - 349) * bookingSuccess.quantity}</span>
+                      </div>
+
+                      <div className="h-[1px] bg-black/10 my-3" />
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-[11px] font-bold uppercase tracking-wide text-[#1C1A17]" style={SANS}>Total Due at Launch</span>
+                        <span className="text-[22px] font-bold text-[#1C1A17]" style={SERIF}>₹{bookingSuccess.totalAmount}</span>
+                      </div>
+                    </div>
+
+                    {/* What's next */}
+                    <div className="w-full bg-[#1C1A17] rounded-sm px-6 py-4 mb-6 text-left">
+                      <p className="text-[9px] tracking-[0.2em] uppercase text-[#FAF7F2]/40 mb-3" style={SANS}>What happens next</p>
+                      {[
+                        "✉️  Check your email for confirmation",
+                        "🚀  We'll notify you the moment we launch",
+                        "💳  Pay only when your order ships",
+                      ].map((line) => (
+                        <p key={line} className="text-[11px] text-[#FAF7F2]/70 leading-relaxed mb-1" style={SANS}>{line}</p>
+                      ))}
+                    </div>
+
+                    <p className="text-[10px] text-black/25 mb-6" style={SANS}>
+                      Order ID: <span className="font-mono text-black/40">{bookingSuccess.orderId}</span>
+                    </p>
+
+                    <button
+                      onClick={handleCloseModal}
+                      className="w-full py-3 border border-black/15 rounded-sm text-[11px] font-semibold tracking-[0.18em] uppercase text-[#5A5245] hover:bg-black/5 transition-colors"
+                      style={SANS}
+                    >
+                      Close
+                    </button>
+                  </div>
+
+                ) : (
+
+                  /* ── BOOKING FORM ── */
+                  <>
+                    {/* Header */}
+                    <div className="px-8 pt-7 pb-5 border-b border-black/10 relative">
+                      <button onClick={handleCloseModal} className="absolute top-5 right-6 text-black/30 hover:text-black/70 text-lg">✕</button>
+                      <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-1" style={SANS}>Est. 2026 · Pre-Booking</p>
+                      <h2 className="text-[26px] text-[#1a1410] leading-tight" style={SERIF}>
+                        Reserve Your <span className="italic text-[#C4541A]">Daily Ritual.</span>
+                      </h2>
+                      <p className="text-[11px] text-black/40 mt-1" style={SANS}>Payment collected after launch</p>
+                    </div>
+
+                    {/* Body */}
+                    <div className="px-8 py-6 overflow-y-auto" style={{ maxHeight: "calc(90vh - 120px)" }}>
+
+                      {/* Personal */}
+                      <div className="mb-5">
+                        <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Personal Details</p>
+
+                        <div className="mb-2">
+                          <input
+                            placeholder="Full Name *"
+                            value={name}
+                            onChange={(e) => { setName(e.target.value); clearError("name"); }}
+                            className={inputCls(errors.name)}
+                            style={SANS}
+                          />
+                          <ErrMsg msg={errors.name} />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <input
+                              placeholder="Mobile *"
+                              value={phone}
+                              onChange={(e) => { setPhone(e.target.value); clearError("phone"); }}
+                              className={inputCls(errors.phone)}
+                              style={SANS}
+                            />
+                            <ErrMsg msg={errors.phone} />
+                          </div>
+                          <div>
+                            <input
+                              placeholder="Email *"
+                              value={email}
+                              onChange={(e) => { setEmail(e.target.value); clearError("email"); }}
+                              className={inputCls(errors.email)}
+                              style={SANS}
+                            />
+                            <ErrMsg msg={errors.email} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Quantity */}
+                      <div className="mb-5">
+                        <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Quantity</p>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center border border-black/20 bg-[#f7f4ef] rounded-sm">
+                            <button onClick={decrease} className="px-3 py-2 text-lg hover:text-[#C4541A]">−</button>
+                            <input
+                              type="number"
+                              value={qty}
+                              onChange={(e) => setQty(Math.max(1, Number(e.target.value)))}
+                              min={1}
+                              className="w-12 text-center bg-transparent outline-none"
+                              style={SANS}
+                            />
+                            <button onClick={increase} className="px-3 py-2 text-lg hover:text-[#C4541A]">+</button>
+                          </div>
+                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack</span>
+                        </div>
+                      </div>
+
+                      <div className="h-[1px] bg-black/10 my-5" />
+
+                      {/* Address */}
+                      <div className="mb-5">
+                        <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Delivery Address</p>
+
+                        <div className="mb-2">
+                          <input
+                            placeholder="Address Line 1 *"
+                            value={address1}
+                            onChange={(e) => { setAddress1(e.target.value); clearError("address1"); }}
+                            className={inputCls(errors.address1)}
+                            style={SANS}
+                          />
+                          <ErrMsg msg={errors.address1} />
+                        </div>
+
+                        <div className="mb-2">
+                          <input
+                            placeholder="Address Line 2 (Optional)"
+                            value={address2}
+                            onChange={(e) => setAddress2(e.target.value)}
+                            className="input rounded-sm w-full"
+                            style={SANS}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="col-span-2">
+                            <input
+                              placeholder="City *"
+                              value={city}
+                              onChange={(e) => { setCity(e.target.value); clearError("city"); }}
+                              className={inputCls(errors.city)}
+                              style={SANS}
+                            />
+                            <ErrMsg msg={errors.city} />
+                          </div>
+                          <div>
+                            <input
+                              placeholder="Pincode *"
+                              value={pincode}
+                              onChange={(e) => { setPincode(e.target.value); clearError("pincode"); }}
+                              className={inputCls(errors.pincode)}
+                              style={SANS}
+                            />
+                            <ErrMsg msg={errors.pincode} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <input
+                            placeholder="State *"
+                            value={formState}
+                            onChange={(e) => { setFormState(e.target.value); clearError("formState"); }}
+                            className={inputCls(errors.formState)}
+                            style={SANS}
+                          />
+                          <ErrMsg msg={errors.formState} />
+                        </div>
+                      </div>
+
+                      {/* Notes */}
+                      <div className="mb-4">
+                        <p className="text-[9px] tracking-[0.2em] uppercase text-black/40 mb-2" style={SANS}>Delivery Notes (Optional)</p>
+                        <textarea
+                          className="input h-16 rounded-sm resize-none w-full"
+                          placeholder="Instructions..."
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                          style={SANS}
+                        />
+                      </div>
+
+                      {/* Consent */}
+                      <div>
+                        <label className="flex gap-2 text-[11px] text-black/40 cursor-pointer" style={SANS}>
+                          <input
+                            type="checkbox"
+                            className="accent-[#C4541A] mt-0.5"
+                            checked={consent}
+                            onChange={(e) => { setConsent(e.target.checked); clearError("consent"); }}
+                          />
+                          I agree to be contacted via WhatsApp, SMS, and Email
+                        </label>
+                        <ErrMsg msg={errors.consent} />
+                      </div>
+
+                      {/* CTA */}
+                      <button
+                        onClick={handlePrebook}
+                        disabled={isLoading}
+                        className="w-full mt-5 py-4 mb-2 bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-60 disabled:cursor-not-allowed rounded-sm text-white text-[11px] font-semibold tracking-[0.22em] uppercase transition-colors"
+                        style={SANS}
+                      >
+                        {isLoading ? "Confirming..." : "Confirm Pre-Booking →"}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Trust row */}
           <div className="flex flex-wrap gap-6 pt-4 border-t border-black/10">
             {[["🚚", "Free Shipping"], ["🌿", "Sustainably Sourced"], ["✅", "FSSAI Certified"]].map(([icon, label]) => (
-              <div key={label} className="flex items-center gap-2 text-[0.7rem] tracking-[0.1em] uppercase text-[#9A8E82]">
+              <div key={label} className="flex items-center gap-2 text-[0.7rem] tracking-[0.1em] uppercase text-[#9A8E82]" style={SANS}>
                 <span>{icon}</span><span>{label}</span>
               </div>
             ))}
@@ -298,9 +613,9 @@ font-playfair { font-family: 'Playfair Display', serif; }
       </section>
 
       {/* ── ABOUT SUMMARY ── */}
-      <section id="about" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20 font-jost">
-        <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-4">About the Product</p>
-        <h2 className="font-playfair text-[clamp(28px,3vw,42px)] font-medium italic text-[#1C1A17] mb-10 leading-[1.2]">
+      <section id="about" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20">
+        <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-4" style={SANS}>About the Product</p>
+        <h2 className="text-[clamp(28px,3vw,42px)] font-medium italic text-[#1C1A17] mb-10 leading-[1.2]" style={SERIF}>
           Simple Science, <em>Real Results.</em>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-black/10">
@@ -311,86 +626,82 @@ font-playfair { font-family: 'Playfair Display', serif; }
           ].map((c) => (
             <div key={c.title} className="bg-[#FAF7F2] hover:bg-[#F3EDE3] transition-colors px-7 py-9">
               <div className="text-2xl mb-4">{c.icon}</div>
-              <h3 className="font-playfair text-[1.05rem] font-medium text-[#1C1A17] mb-2">{c.title}</h3>
-              <p className="text-[0.83rem] leading-[1.7] text-[#5A5245]">{c.desc}</p>
+              <h3 className="text-[1.05rem] font-medium text-[#1C1A17] mb-2" style={SERIF}>{c.title}</h3>
+              <p className="text-[0.83rem] leading-[1.7] text-[#5A5245]" style={SANS}>{c.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── INGREDIENTS ── */}
-      <section id="ingredients" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20 border-t border-black/10 font-jost">
-        <div className="flex justify-between items-end mb-10">
-          <div>
-            <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-3">Ingredient Integrity</p>
-            <h2 className="font-playfair text-[clamp(26px,3vw,40px)] font-medium italic text-[#1C1A17] leading-[1.15]">
-              Derived from Nature,<br /><em>Refined by Science</em>
-            </h2>
-          </div>
-          <a href="#ingredients" className="text-[0.7rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82] border-b border-black/20 pb-[2px] hidden md:block">
-            View All Ingredients
-          </a>
+      <section id="ingredients" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20 border-t border-black/10">
+        <div className="mb-10">
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-3" style={SANS}>Ingredient Integrity</p>
+          <h2 className="text-[clamp(26px,3vw,40px)] font-medium italic text-[#1C1A17] leading-[1.15]" style={SERIF}>
+            Derived from Nature,<br /><em>Refined by Science</em>
+          </h2>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
           {ingredients.map((ing) => (
-            <div
-              key={ing.name}
-              className={`p-8 rounded-sm border transition-all ${ing.dark ? "bg-[#1C1A17] border-[#1C1A17]" : "bg-white border-black/10 hover:border-[#C4541A] hover:shadow-[0_8px_32px_rgba(196,84,26,0.08)]"}`}
-            >
-              <span className="text-xl mb-5 block">{ing.icon}</span>
-              {ing.tags.length > 0 && (
-                <div className="flex gap-2 flex-wrap mb-4">
+            <div key={ing.name} className="p-8 rounded-sm border transition-all bg-white border-black/10 hover:border-[#C4541A] hover:shadow-[0_8px_32px_rgba(196,84,26,0.08)] flex flex-col h-full">
+              <div className="flex-1">
+                <span className="text-xl mb-5 block">{ing.icon}</span>
+                <div className="flex gap-2 flex-wrap mb-4 min-h-[24px]">
                   {ing.tags.map((t) => (
-                    <span key={t} className="text-[0.6rem] font-semibold tracking-[0.12em] uppercase px-2 py-[3px] border border-black/15 rounded-sm text-[#5A5245]">{t}</span>
+                    <span key={t} className="text-[0.6rem] font-semibold tracking-[0.12em] uppercase px-2 py-[3px] border border-black/15 rounded-sm text-[#5A5245]" style={SANS}>{t}</span>
                   ))}
                 </div>
-              )}
-              <h3 className={`font-playfair text-[1.1rem] font-medium mb-1 ${ing.dark ? "text-[#FAF7F2]" : "text-[#1C1A17]"}`}>{ing.name}</h3>
-              {ing.sub && <p className={`text-[0.72rem] italic mb-3 ${ing.dark ? "text-[#FAF7F2]/40" : "text-[#9A8E82]"}`}>{ing.sub}</p>}
-              <p className={`text-[0.8rem] leading-[1.65] ${ing.dark ? "text-[#FAF7F2]/50" : "text-[#5A5245]"}`}>{ing.desc}</p>
-              <div className={`mt-4 pt-4 border-t flex justify-between items-center ${ing.dark ? "border-white/8" : "border-black/10"}`}>
-                <span className={`font-playfair text-xl ${ing.dark ? "text-[#FAF7F2]" : "text-[#1C1A17]"}`}>{ing.amount}</span>
-                <span className="text-[0.68rem] font-semibold tracking-[0.1em] uppercase text-[#C4541A]">{ing.rda}</span>
+                <h3 className="text-[1.1rem] font-medium mb-1 text-[#1C1A17]" style={SERIF}>{ing.name}</h3>
+                <p className="text-[0.72rem] italic mb-3 text-[#9A8E82] min-h-[16px]" style={SANS}>{ing.sub || ""}</p>
+                <p className="text-[0.8rem] leading-[1.65] text-[#5A5245]" style={SANS}>{ing.desc}</p>
+              </div>
+              <div className="mt-4 pt-4 border-t flex justify-between items-center border-black/10">
+                <span className="text-xl text-[#1C1A17]" style={SERIF}>{ing.amount}</span>
+                <span className="text-[0.68rem] font-semibold tracking-[0.1em] uppercase text-[#C4541A]" style={SANS}>{ing.rda}</span>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── NUTRITION FACTS + CLAIMS ── */}
-      <section id="science" className="bg-[#F3EDE3] py-20 font-jost">
+      {/* ── Lab Report ── */}
+      <section id="science" className="bg-[#F3EDE3] py-20">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* Nutrition card */}
-          <div className="max-w-[320px]">
+          <div className="max-w-[400px]">
             <div className="bg-white rounded-sm p-8 border border-black/10">
-              <h3 className="font-playfair text-xl font-bold border-b-[6px] border-[#1C1A17] pb-1.5 mb-1.5">Nutrition Facts</h3>
-              <p className="text-[0.72rem] text-[#5A5245] mb-3 border-b-4 border-[#1C1A17] pb-2">Serving Size: 1 Sachet (1g) · 30 Servings Per Pack</p>
+              <h3 className="text-xl font-bold border-b-[6px] border-[#1C1A17] pb-1.5 mb-1.5" style={SERIF}>Certified Lab Report</h3>
+              <p className="text-[0.72rem] text-[#5A5245] mb-3 border-b-4 border-[#1C1A17] pb-2" style={SANS}>
+                Tested at: <span className="font-semibold text-[#1C1A17]">United Laboratories Food Testing</span>
+              </p>
+              <div className="flex justify-between items-center pb-1 mb-1 text-[0.68rem] font-semibold text-[#9A8E82] uppercase tracking-wide" style={SANS}>
+                <span className="flex-1">Nutrient</span>
+                <span className="w-24 text-right">Label Claim</span>
+                <span className="w-20 text-right">Result</span>
+              </div>
               {[
-                { label: "Vitamin D3 (Cholecalciferol)", val: "600 IU", rda: "100%" },
-                { label: "Vitamin K2 (MK-7)", val: "55 mcg", rda: "100%" },
+                { label: "Vitamin D3 (Cholecalciferol)", claim: "15 mcg (600 IU)", result: "15.5 mcg (620 IU)" },
+                { label: "Vitamin K2 (MK-7)", claim: "55 mcg", result: "55.5 mcg" },
               ].map((row) => (
-                <div key={row.label} className="flex justify-between items-center py-2 border-b border-black/8 text-[0.8rem]">
-                  <span className="font-medium text-[#1C1A17]">{row.label}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#5A5245]">{row.val}</span>
-                    <span className="text-[0.7rem] font-semibold text-[#C4541A]">{row.rda}</span>
-                  </div>
+                <div key={row.label} className="flex justify-between items-center py-2.5 border-b border-black/8 text-[0.8rem]">
+                  <span className="font-medium text-[#1C1A17] flex-1" style={SANS}>{row.label}</span>
+                  <span className="w-24 text-right text-[#5A5245]" style={SANS}>{row.claim}</span>
+                  <span className="w-20 text-right font-semibold text-[#1C6B3A]" style={SANS}>{row.result}</span>
                 </div>
               ))}
-              <div className="flex justify-between items-center py-2 text-[0.8rem]">
-                <span className="text-[#9A8E82]">Natural Flavour + Excipients</span>
-                <span className="text-[#9A8E82]">q.s.</span>
+              <div className="mt-4 pt-3 border-t border-black/10 flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-[#1C6B3A] flex items-center justify-center flex-shrink-0">
+                  <svg viewBox="0 0 10 10" className="w-2.5 h-2.5" fill="none">
+                    <path d="M2 5l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <p className="text-[0.68rem] text-[#5A5245] leading-relaxed" style={SANS}>
+                  Results meet or exceed all label claims. <span className="font-semibold text-[#1C1A17]">Certified batch report.</span>
+                </p>
               </div>
-              <p className="text-[0.68rem] text-[#9A8E82] mt-3 leading-relaxed">
-                *% Daily Value based on ICMR RDA. Sugar: 0g. Gluten Free. Non-GMO. 100% Vegan.
-              </p>
             </div>
           </div>
-
-          {/* Claims */}
           <div>
-            <h2 className="font-playfair text-[clamp(28px,3.5vw,50px)] font-medium italic text-[#1C1A17] mb-8 leading-[1.1]">
+            <h2 className="text-[clamp(28px,3.5vw,50px)] font-medium italic text-[#1C1A17] mb-8 leading-[1.1]" style={SERIF}>
               No Fillers.<br />No Nonsense.
             </h2>
             <div className="flex flex-col gap-5">
@@ -398,8 +709,8 @@ font-playfair { font-family: 'Playfair Display', serif; }
                 <div key={c.title} className="flex gap-4 items-start">
                   <div className="w-[22px] h-[22px] rounded-full bg-[#C4541A] flex items-center justify-center text-white text-[0.7rem] flex-shrink-0 mt-0.5">✓</div>
                   <div>
-                    <p className="text-[0.77rem] font-bold tracking-[0.1em] uppercase text-[#1C1A17] mb-1">{c.title}</p>
-                    <p className="text-[0.82rem] leading-[1.65] text-[#5A5245]">{c.desc}</p>
+                    <p className="text-[0.77rem] font-bold tracking-[0.1em] uppercase text-[#1C1A17] mb-1" style={SANS}>{c.title}</p>
+                    <p className="text-[0.82rem] leading-[1.65] text-[#5A5245]" style={SANS}>{c.desc}</p>
                   </div>
                 </div>
               ))}
@@ -409,42 +720,37 @@ font-playfair { font-family: 'Playfair Display', serif; }
       </section>
 
       {/* ── BENEFITS + HOW TO CONSUME ── */}
-      <section id="benefits" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 font-jost">
-        {/* Benefits */}
+      <section id="benefits" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
         <div>
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-3">Daily Benefits</p>
-          <h2 className="font-playfair text-[clamp(22px,2.5vw,34px)] font-medium italic text-[#1C1A17] mb-7 leading-[1.15]">
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-3" style={SANS}>Daily Benefits</p>
+          <h2 className="text-[clamp(22px,2.5vw,34px)] font-medium italic text-[#1C1A17] mb-7 leading-[1.15]" style={SERIF}>
             What It Does<br />For Your Body
           </h2>
           <div className="flex flex-col">
             {benefits.map((b, i) => (
               <div key={b.num} className={`flex gap-4 items-start py-4 ${i < benefits.length - 1 ? "border-b border-black/8" : ""}`}>
-                <span className="font-playfair text-[1.3rem] text-[#D4B896] min-w-[28px]">{b.num}</span>
+                <span className="text-[1.3rem] text-[#D4B896] min-w-[28px]" style={SERIF}>{b.num}</span>
                 <div>
-                  <p className="text-[0.78rem] font-semibold tracking-[0.08em] uppercase text-[#1C1A17] mb-1">{b.title}</p>
-                  <p className="text-[0.8rem] leading-[1.6] text-[#5A5245]">{b.desc}</p>
+                  <p className="text-[0.78rem] font-semibold tracking-[0.08em] uppercase text-[#1C1A17] mb-1" style={SANS}>{b.title}</p>
+                  <p className="text-[0.8rem] leading-[1.6] text-[#5A5245]" style={SANS}>{b.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-        {/* How to consume */}
         <div>
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-3">How to Consume</p>
-          <h2 className="font-playfair text-[clamp(22px,2.5vw,34px)] font-medium italic text-[#1C1A17] mb-7 leading-[1.15]">
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-3" style={SANS}>How to Consume</p>
+          <h2 className="text-[clamp(22px,2.5vw,34px)] font-medium italic text-[#1C1A17] mb-7 leading-[1.15]" style={SERIF}>
             A Simple<br />Daily Ritual
           </h2>
           <div className="flex flex-col">
             {usageSteps.map((s, i) => (
               <div key={s.step} className={`flex gap-5 items-start py-5 ${i < usageSteps.length - 1 ? "border-b border-black/8" : ""}`}>
-                <div className="w-9 h-9 rounded-full bg-[#1C1A17] text-[#FAF7F2] flex items-center justify-center text-[0.75rem] font-semibold flex-shrink-0">
-                  {s.step}
-                </div>
+                <div className="w-9 h-9 rounded-full bg-[#1C1A17] text-[#FAF7F2] flex items-center justify-center text-[0.75rem] font-semibold flex-shrink-0" style={SANS}>{s.step}</div>
                 <div>
-                  <p className="text-[0.68rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82] mb-0.5">{s.label}</p>
-                  <p className="text-[0.88rem] font-semibold text-[#1C1A17] mb-1">{s.title}</p>
-                  <p className="text-[0.8rem] leading-[1.6] text-[#5A5245]">{s.desc}</p>
+                  <p className="text-[0.68rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82] mb-0.5" style={SANS}>{s.label}</p>
+                  <p className="text-[0.88rem] font-semibold text-[#1C1A17] mb-1" style={SANS}>{s.title}</p>
+                  <p className="text-[0.8rem] leading-[1.6] text-[#5A5245]" style={SANS}>{s.desc}</p>
                 </div>
               </div>
             ))}
@@ -453,72 +759,25 @@ font-playfair { font-family: 'Playfair Display', serif; }
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section className="bg-[#FAF7F2] border-t border-black/8 py-20 font-jost">
+      {/* <section className="bg-[#FAF7F2] border-t border-black/8 py-20">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#9A8E82] text-center mb-4">Community Stories</p>
-          <h2 className="font-playfair text-[clamp(26px,4vw,54px)] font-light italic text-[#1C1A17] text-center mb-14 leading-[1.15]">
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] uppercase text-[#9A8E82] text-center mb-4" style={SANS}>Community Stories</p>
+          <h2 className="text-[clamp(26px,4vw,54px)] font-light italic text-[#1C1A17] text-center mb-14 leading-[1.15]" style={SERIF}>
             &ldquo;Finally, a supplement I<br />actually remember to take.&rdquo;
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t) => (
               <div key={t.author} className="bg-white border border-black/8 rounded-sm p-8">
                 <div className="text-[#C4541A] text-sm tracking-[2px] mb-4">★★★★★</div>
-                <p className="text-[0.88rem] leading-[1.75] text-[#5A5245] italic mb-5">&ldquo;{t.text}&rdquo;</p>
-                <p className="text-[0.7rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82]">{t.author}</p>
-                <p className="text-[0.68rem] text-[#9A8E82] mt-0.5">{t.role}</p>
+                <p className="text-[0.88rem] leading-[1.75] text-[#5A5245] italic mb-5" style={SANS}>&ldquo;{t.text}&rdquo;</p>
+                <p className="text-[0.7rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82]" style={SANS}>{t.author}</p>
+                <p className="text-[0.68rem] text-[#9A8E82] mt-0.5" style={SANS}>{t.role}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#1C1A17] px-6 lg:px-12 pt-14 pb-7 font-jost">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          <div>
-            <p className="font-playfair text-base font-bold tracking-[0.18em] uppercase text-[#FAF7F2] mb-3">SIPA Nutrition</p>
-            <p className="text-[0.78rem] leading-[1.7] text-[#FAF7F2]/30 max-w-[200px]">
-              Defining the intersection of holistic nature and rigorous science. Est. 2026, India.
-            </p>
-          </div>
-          {[
-            { title: "Shop", links: ["D3 + K2 Sachets", "Bundles", "Subscribe"] },
-            { title: "Assistance", links: ["Shipping & Returns", "Wholesale", "Contact"] },
-          ].map((col) => (
-            <div key={col.title}>
-              <p className="text-[0.65rem] font-semibold tracking-[0.18em] uppercase text-[#FAF7F2]/30 mb-4">{col.title}</p>
-              <ul className="flex flex-col gap-2.5">
-                {col.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-[0.82rem] text-[#FAF7F2]/50 hover:text-[#FAF7F2] transition-colors">{l}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          <div>
-            <p className="text-[0.65rem] font-semibold tracking-[0.18em] uppercase text-[#FAF7F2]/30 mb-4">Newsletter</p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex-1 text-[0.8rem] px-4 py-3 bg-white/5 border border-white/10 text-[#FAF7F2] placeholder:text-[#FAF7F2]/20 outline-none rounded-l-sm"
-              />
-              <button className="px-4 py-3 bg-[#C4541A] hover:bg-[#D96528] text-white rounded-r-sm transition-colors text-base">→</button>
-            </div>
-            <p className="text-[0.68rem] text-[#FAF7F2]/20 mt-2">Early-bird pricing for subscribers.</p>
-          </div>
-        </div>
-        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-white/5 pt-6">
-          <span className="text-[0.7rem] text-[#FAF7F2]/20">© 2026 SIPA Nutrition. Holistic Refinement.</span>
-          <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Service"].map((l) => (
-              <a key={l} href="#" className="text-[0.7rem] text-[#FAF7F2]/20 hover:text-[#FAF7F2]/50 transition-colors">{l}</a>
-            ))}
-          </div>
-        </div>
-      </footer>
-
+      </section> */}
+      <Footer />
     </div>
   );
 }

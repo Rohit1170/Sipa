@@ -1,5 +1,10 @@
+"use client"
+import Footer from "@/components/footer";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 import React from "react";
+
+
 
 // ─── SEO SCHEMAS (JSON-LD Structured Data) ───────────────────────────────────
 
@@ -175,25 +180,35 @@ const PullQuote: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <p style={serifFont} className="text-[1.22rem] text-neutral-900 italic leading-[1.52] m-0">{children}</p>
   </blockquote>
 );
+// ❌ Remove both top-level `const router = useRouter();` lines
 
-const InlineCTA: React.FC<{ title: string; body: string }> = ({ title, body }) => (
-  <div className="bg-orange-900/10 border border-orange-200 rounded-xl px-7 py-6 my-11 flex items-center gap-6 flex-wrap">
-    <div className="flex-1">
-      <strong className="block text-neutral-900 text-base mb-1">{title}</strong>
-      <p className="text-[0.87rem] text-stone-500 m-0">{body}</p>
+// ✅ Fix InlineCTA like this:
+const InlineCTA: React.FC<{ title: string; body: string }> = ({ title, body }) => {
+  const router = useRouter();
+
+  return (
+    <div className="bg-orange-900/10 border border-orange-200 rounded-xl px-7 py-6 my-11 flex items-center gap-6 flex-wrap">
+      <div className="flex-1">
+        <strong className="block text-neutral-900 text-base mb-1">{title}</strong>
+        <p className="text-[0.87rem] text-stone-500 m-0">{body}</p>
+      </div>
+      <button
+        onClick={() => router.push("/productOverview")}
+        className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+        style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
+      >
+        <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+        <span className="relative z-10">Pre-book Now</span>
+        <svg
+          className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+          viewBox="0 0 14 14" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"
+        >
+          <path d="M2 7h10M8 3l4 4-4 4" />
+        </svg>
+      </button>
     </div>
-    <div
-              className="relative group cursor-not-allowed"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              <span className="block px-5 py-2 bg-neutral-900 rounded-2xl text-white text-xs uppercase tracking-[0.2em] group-hover:opacity-0 transition-opacity duration-200">
-                Order - Rs 599
-              </span>
-              <span className="absolute inset-0 flex rounded-2xl items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-orange-400 text-xs uppercase tracking-[0.2em] bg-neutral-900">
-             coming soon</span>
-            </div>
-  </div>
-);
+  );
+};
 
 // ─── Larger section components ────────────────────────────────────────────────
 
@@ -484,7 +499,9 @@ const FaqList: React.FC<{ items: FaqItem[] }> = ({ items }) => (
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function blog() {
+  const router = useRouter();
   return (
+    
     <>
       {/* ════════════════════════════════════════════════════════
           HEAD — All SEO signals live here. Nothing visible to
@@ -749,15 +766,27 @@ export default function blog() {
                 </p>
                 <p style={serifFont} className="text-[3rem] text-neutral-900 leading-none mb-1">₹599</p>
                 <p className="text-[0.82rem] text-stone-500 mb-7">30 sachets · 30-day supply · ≈ ₹19.9/day</p>
-                <div
-              className="relative group cursor-not-allowed"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              <span className="block px-5 py-2 bg-neutral-900 rounded-2xl text-white text-xs uppercase tracking-[0.2em] group-hover:opacity-0 transition-opacity duration-200">
-                Order - Rs 599
-              </span>
-              <span className="absolute inset-0 flex rounded-2xl items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-orange-400 text-xs uppercase tracking-[0.2em] bg-neutral-900">
-             coming soon</span>
+                <div className="flex justify-center">
+
+               <div
+  className="relative group cursor-not-allowed"
+  style={{ fontFamily: "'Inter', sans-serif" }}
+>
+              <button
+        onClick={() => router.push("/productOverview")}
+        className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+        style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
+      >
+        <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+        <span className="relative z-10">Pre-book Now</span>
+        <svg
+          className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+          viewBox="0 0 14 14" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"
+        >
+          <path d="M2 7h10M8 3l4 4-4 4" />
+        </svg>
+      </button>
+      </div>
             </div>
                 <div className="flex justify-center flex-wrap gap-2 mt-6">
                   {[["✅ 100% Vegan", true],["🧪 Lab Tested",false],["🍬 No Sugar",false],["🏭 WHO-GMP",false],["📋 No Rx Needed",false]].map(([label, active]) => (
@@ -825,24 +854,12 @@ export default function blog() {
             </div>
           </article>
         </main>
+        
+      </div>
 
         {/* ── FOOTER ── */}
-        <footer className="border-t border-stone-200 px-8 py-10 text-center text-stone-400 text-[0.78rem]">
-          <span style={serifFont} className="block text-[1.1rem] text-neutral-900 mb-2">
-            SIPA <em className="text-orange-700 not-italic">Nutrition</em>
-          </span>
-          <p>Daily Vitamin D3 + K2 · Est. 2026</p>
-          <p className="mt-2">
-            <a href="https://www.sipanutrition.com" className="text-stone-500 no-underline hover:text-orange-700">sipanutrition.com</a>
-            &nbsp;·&nbsp;
-            <a href="mailto:hello@sipanutrition.com" className="text-stone-500 no-underline hover:text-orange-700">hello@sipanutrition.com</a>
-          </p>
-          <p className="max-w-[600px] mx-auto mt-4 text-[0.72rem] leading-[1.55]">
-            Health supplement only. Not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare professional before use. © 2026 SIPA Nutrition.
-          </p>
-        </footer>
+        <Footer/>
 
-      </div>
 
       {/* fadeInUp animation — one small global keyframe */}
       <style>{`

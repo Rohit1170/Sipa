@@ -1,6 +1,8 @@
 "use client";
 
+import Footer from "@/components/footer";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -126,6 +128,7 @@ const HeadingDisplay: React.FC<{
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const About: React.FC = () => {
+  const router = useRouter();
   return (
     <main
       className="min-h-screen bg-[#f7f4ef] text-neutral-900"
@@ -340,22 +343,25 @@ const About: React.FC = () => {
 
           {/* Matches the navbar Order button style */}
           <div className="relative group inline-block cursor-not-allowed">
-            <span
-              className="block px-8 py-3 bg-[#f7f4ef] border border-neutral-700 text-neutral-900 text-xs uppercase tracking-[0.2em] group-hover:opacity-0 transition-opacity duration-200"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              Order — ₹599
-            </span>
-            <span
-              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-orange-700 text-xs uppercase tracking-[0.2em] bg-neutral-900 border border-neutral-700"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              Coming Soon
-            </span>
+             <button
+        onClick={() => router.push("/productOverview")}
+        className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+        style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
+      >
+        <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+        <span className="relative z-10">Pre-book Now</span>
+        <svg
+          className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+          viewBox="0 0 14 14" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"
+        >
+          <path d="M2 7h10M8 3l4 4-4 4" />
+        </svg>
+      </button>
           </div>
         </section>
 
       </div>
+      <Footer/>
     </main>
   );
 };

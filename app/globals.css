@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+/* globals.css */
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap'); */
 
 :root {
   /* Updated color tokens for SIPA Nutrition premium medical aesthetic */
@@ -122,4 +124,7 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+.input {
+  @apply w-full bg-[#f7f4ef] border border-black/20 px-4 py-3 text-sm outline-none focus:border-[#C4541A] focus:bg-[#fff8f4] transition;
 }
