@@ -352,7 +352,7 @@ export default function ProductOverview() {
             // ── Step 4: Show success ──
             setBookingSuccess({
               orderId: verifyData.orderId,
-              totalAmount: 349 * qty,
+              totalAmount: 359 * qty,
               quantity: qty,
             });
             setShowForm(true);
@@ -498,10 +498,10 @@ export default function ProductOverview() {
               <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Early Bird Exclusive</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹349</span>
+              <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹359</span>
               <div className="flex flex-col">
                 <span className="text-base text-[#9A8E82] line-through leading-none" style={SANS}>₹599</span>
-                <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>42% OFF</span>
+                <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>40% OFF</span>
               </div>
             </div>
             <div className="flex items-start gap-2">
@@ -564,10 +564,6 @@ export default function ProductOverview() {
                         <span className="text-[12px] text-[#5A5245]" style={SANS}>The Daily D3 + K2 × {bookingSuccess.quantity} pack</span>
                         <span className="text-[12px] font-semibold text-[#1C1A17]" style={SANS}>₹{bookingSuccess.totalAmount}</span>
                       </div>
-                      {/* <div className="flex justify-between items-center mb-2">
-                        <span className="text-[12px] text-[#5A5245]" style={SANS}>Early Bird Savings</span>
-                        <span className="text-[12px] font-semibold text-[#1C6B3A]" style={SANS}>− ₹{(599 - 349) * bookingSuccess.quantity}</span>
-                      </div> */}
                       <div className="h-[1px] bg-black/10 my-3" />
                       <div className="flex justify-between items-center">
                         <span className="text-[11px] font-bold uppercase tracking-wide text-[#1C1A17]" style={SANS}>Total Paid</span>
@@ -645,7 +641,7 @@ export default function ProductOverview() {
                             />
                             <button onClick={increase} className="px-3 py-2 text-lg hover:text-[#C4541A]">+</button>
                           </div>
-                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{349 * qty} total</span>
+                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{359 * qty} total</span>
                         </div>
                       </div>
 
@@ -691,7 +687,7 @@ export default function ProductOverview() {
 
                       <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3 flex justify-between items-center">
                         <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
-                        <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{349 * qty}</span>
+                        <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{359 * qty}</span>
                       </div>
 
                       <button
@@ -709,7 +705,7 @@ export default function ProductOverview() {
                             Processing...
                           </>
                         ) : (
-                          `Pay ₹${349 * qty} & Pre-Book →`
+                          `Pay ₹${359 * qty} & Pre-Book →`
                         )}
                       </button>
 

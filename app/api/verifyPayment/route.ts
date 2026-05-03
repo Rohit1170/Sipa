@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import { sendMail } from "@/app/lib/sendMail";
 
-const PRICE_PER_UNIT = 349;
+const PRICE_PER_UNIT = 359;
 const ORIGINAL_PRICE = 599;
 
 const templatePath = path.join(process.cwd(), "app/templates/preBooking.html");
