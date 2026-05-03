@@ -322,20 +322,32 @@ export default function Hero() {
               >
                 <div className="h-px bg-neutral-300 mb-6" />
                 <div className="flex flex-wrap items-center gap-6 mb-8">
-                  <div>
+                  <div className="flex items-end gap-3">
+                    {/* Old Price */}
                     <p
-                      className="text-3xl font-bold text-neutral-900"
+                      className="text-2xl text-neutral-400 line-through"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       ₹599
                     </p>
+                    {/* New Price */}
                     <p
-                      className="text-xs uppercase tracking-widest text-neutral-400 mt-1"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                      className="text-5xl font-bold text-[#C4541A]"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
                     >
-                      ≈ ₹19.9/ day
+                      ₹349
                     </p>
+                    {/* Badge */}
+                    <span className="bg-[#C4541A]/10 text-[#C4541A] text-xs font-semibold px-2 py-1 rounded-md">
+                      42% OFF
+                    </span>
                   </div>
+                  <p
+                    className="text-xs uppercase tracking-widest text-neutral-400 mt-1"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    ≈ ₹11.6/ day
+                  </p>
                   <div
                     className="flex flex-col gap-1.5 text-sm text-neutral-500"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -354,21 +366,30 @@ export default function Hero() {
                 {/* CTA — Mobile */}
                 <button
                   onClick={() => router.push("/productOverview")}
-                  className="group relative w-full py-4 bg-neutral-900 text-white text-sm uppercase tracking-[0.2em] font-semibold overflow-hidden rounded-xl flex items-center justify-center gap-3"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  className="group relative overflow-hidden flex items-center mx-auto gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                  }}
                 >
-                  <span className="absolute inset-0 bg-orange-700 translate-y-full group-active:translate-y-0 transition-transform duration-300 ease-in-out" />
-                  <span className="relative flex items-center gap-3">
-                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                      <path
-                        d="M7.5 1a4.5 4.5 0 014.5 4.5c0 2.5.8 3.7 1.5 4.5H1.5C2.2 9.2 3 8 3 5.5A4.5 4.5 0 017.5 1zM6 10h3a1.5 1.5 0 01-3 0z"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    Pre Book Now!!
-                  </span>
+                  {/* Orange fill sweeps left to right */}
+                  <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+
+                  <span className="relative z-10">Pre-book Now</span>
+
+                  <svg
+                    className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg>
                 </button>
               </div>
             </div>
