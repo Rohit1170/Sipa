@@ -186,14 +186,18 @@ export default function Footer() {
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 {companyLinks.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      onClick={(event) => handleLinkClick(event, link.href)}
-                      className="text-sm text-neutral-500 hover:text-orange-500 transition-colors duration-200"
-                    >
-                      {link.label}
-                    </a>
+                  <li key={link.label}>
+                    {link.href ? (
+                      <a
+                        href={link.href}
+                        onClick={(event) => handleLinkClick(event, link.href!)}
+                        className="text-sm text-neutral-500 hover:text-orange-500 transition-colors duration-200"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <span className="text-sm text-neutral-500">{link.label}</span>
+                    )}
                   </li>
                 ))}
               </ul>

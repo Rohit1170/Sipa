@@ -4,8 +4,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    qualities: [75, 80],
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

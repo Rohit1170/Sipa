@@ -484,7 +484,7 @@ export default function ProductOverview() {
             The Daily<br />D3 + K2
           </h1>
           <p className="text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-[#9A8E82] mb-5" style={SANS}>
-            Daily Vitamin Sachet · India&apos;s First
+            Daily Vitamin Sachet
           </p>
           <p className="text-[0.9rem] leading-[1.75] text-[#5A5245] max-w-[420px] mb-8" style={SANS}>
             A precision-engineered vegan formula combining Vitamin D3 (VitaShine® lichen) with Vitamin K2 (MK-7). One slim 1g sachet a day, clinically dosed, zero fillers.

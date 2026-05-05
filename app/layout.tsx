@@ -6,7 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "SIPA Nutrition | India's First Daily Vitamin D3 + K2 Sachets",
+  title: "SIPA Nutrition | Daily Vitamin D3 + K2 Sachets",
   description:
     "Plant-based, doctor-recommended daily Vitamin D3 + K2 maintenance dose. Coming soon to revolutionize your daily nutrition.",
   icons: {
