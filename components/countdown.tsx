@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-// ── Sunday May 10 2026, 6:00 AM IST ──────────────────────────────────────────
-const LAUNCH_DATE = new Date("2026-05-10T06:00:00+05:30");
+// ── Sunday May 10 2026, 11:59 PM IST ──────────────────────────────────────────
+const LAUNCH_DATE = new Date("2026-05-10T23:59:00+05:30");
 
 const SERIF = { fontFamily: "'Playfair Display', serif" };
 const SANS  = { fontFamily: "'DM Sans', sans-serif" };
@@ -92,8 +91,7 @@ export default function CountdownSection() {
             className="text-[0.88rem] max-w-[420px] mx-auto leading-[1.8]"
             style={{ ...SANS, color: "rgba(255,255,255,0.4)" }}
           >
-            After launch, ₹359 becomes ₹599. Lock in the early bird price before
-            the clock runs out.
+           Early bird pricing ends soon — grab it before the timer runs out.
           </p>
         </div>
 
@@ -164,7 +162,7 @@ export default function CountdownSection() {
             >
               {isLaunched
                 ? "We are live now"
-                : "Offer ends Sun, May 10 · 6:00 AM IST"}
+                : "Offer ends Sun, May 10 · 11:59 PM IST"}
             </p>
           </div>
         </div>
