@@ -170,25 +170,7 @@ export default function Navbar() {
             </a>
           ))}
 
-          <button
-            onClick={handleOrderClick}
-            className="relative px-5 py-3 bg-neutral-900 text-white text-xs uppercase tracking-[0.2em] text-center overflow-hidden transition-all duration-200 cursor-not-allowed"
-          >
-            <span
-              className={`transition-opacity duration-200 ${
-                orderClicked ? "opacity-0" : "opacity-100"
-              }`}
-            >
-              Order - Rs 599
-            </span>
-            <span
-              className={`absolute inset-0 flex items-center justify-center text-orange-400 text-xs uppercase tracking-[0.2em] transition-opacity duration-200 ${
-                orderClicked ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              Coming Soon
-            </span>
-          </button>
+    
         </div>
       )}
     </nav>

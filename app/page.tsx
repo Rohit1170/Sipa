@@ -13,6 +13,7 @@ import Footer from "@/components/footer"
 import BenefitSection from "@/components/benefit"
 import Timeline from "@/components/timeline"
 import { useEffect } from "react"
+import CountdownSection from "@/components/countdown"
 
 export default function Home() {
   useEffect(() => {
@@ -27,10 +28,12 @@ export default function Home() {
       
       {/* ✅ MOBILE ONLY */}
       <div className="block md:hidden">
+        <CountdownSection />
         <Hero />
         <BenefitSection />
         <Timeline />
         <Ingredients />
+        
         <FAQ />
         <Contact /> {/* CTA */}
           <Footer />
@@ -38,6 +41,7 @@ export default function Home() {
 
       {/* ✅ DESKTOP ONLY */}
       <div className="hidden md:block">
+        <CountdownSection />
         <Hero />
         <ProductAbout />
         <BenefitSection />
@@ -46,6 +50,7 @@ export default function Home() {
         <Dosage />
         {/* <Ingredients /> */}
         <DoctorAdvice />
+        
         <FAQ />
         <Contact />
         <Footer />

@@ -3,7 +3,9 @@ import type { Metadata } from "next"
 import Script from "next/script"  // ✅ correct import
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import LaunchCountdownPopup from "@/components/launchTimer";
 import "./globals.css"
+import Navbar from "@/components/Navbar"
 
 export const metadata: Metadata = {
   title: "SIPA Nutrition | Daily Vitamin D3 + K2 Sachets",
@@ -23,6 +25,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* ✅ Google Fonts moved inside <head> as proper JSX */}
@@ -32,6 +35,7 @@ export default function RootLayout({
         />
         <link rel="canonical" href="https://www.sipanutrition.com/" />
         <meta name="google-site-verification" content="432lcv7Hma2TkRpJCpEaAMtT3M1Zw9g95ByAAZR12JE" />
+        
        <script
           dangerouslySetInnerHTML={{
             __html: `(function(c,l,a,r,i,t,y){
@@ -43,6 +47,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <Navbar/>
+          <LaunchCountdownPopup />
         {children}
         <Analytics />
         <SpeedInsights />
