@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useState, useEffect, useRef } from "react";
+import { signIn, getSession } from "next-auth/react";
 
 const SERIF = { fontFamily: "'Playfair Display', serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
@@ -23,6 +23,27 @@ export default function AuthModal({
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const pollCount = useRef(0);
+
+  // Poll for session after verification link is sent.
+  // Handles the case where user opens the link in a new tab or on another device.
+  useEffect(() => {
+    if (!sent) return;
+    pollCount.current = 0;
+
+    const interval = setInterval(async () => {
+      pollCount.current += 1;
+      if (pollCount.current > 75) { clearInterval(interval); return; } // stop after ~5 min
+
+      const session = await getSession();
+      if (session) {
+        clearInterval(interval);
+        window.location.href = callbackUrl;
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [sent, callbackUrl]);
 
   if (!isOpen) return null;
 
@@ -45,7 +66,7 @@ export default function AuthModal({
     setError("");
   };
 
-  const sendMagicLink = async (emailVal: string) => {
+  const sendVerificationLink = async (emailVal: string) => {
     const result = await signIn("nodemailer", {
       email: emailVal,
       redirect: false,
@@ -58,7 +79,7 @@ export default function AuthModal({
     return true;
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const trimName = name.trim();
     const trimEmail = email.trim().toLowerCase();
@@ -93,7 +114,7 @@ export default function AuthModal({
         setLoading(false);
         return;
       }
-      const ok = await sendMagicLink(trimEmail);
+      const ok = await sendVerificationLink(trimEmail);
       if (ok) setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -101,18 +122,47 @@ export default function AuthModal({
     setLoading(false);
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const trimEmail = email.trim().toLowerCase();
     if (!trimEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimEmail)) {
       setError("Enter a valid email address.");
       return;
     }
+
     setLoading(true);
     setError("");
+
     try {
-      const ok = await sendMagicLink(trimEmail);
-      if (ok) setSent(true);
+      const res = await fetch("/api/auth/direct-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimEmail }),
+        credentials: "include", // FIX 3: ensure cookie is sent/received
+      });
+
+      if (res.status === 404) {
+        setError("no_account");
+        setLoading(false);
+        return;
+      }
+
+      if (!res.ok) {
+        setError("Login failed. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // FIX 4: confirm session exists before redirecting
+      const session = await getSession();
+      if (!session) {
+        // FIX 5: show error if session was not created
+        setError("Session could not be created. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      window.location.href = callbackUrl;
     } catch {
       setError("Something went wrong. Please try again.");
     }
@@ -121,7 +171,7 @@ export default function AuthModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-sm"
       onClick={handleClose}
     >
       <div
@@ -158,11 +208,20 @@ export default function AuthModal({
               Link Sent.
             </h2>
             <p className="text-[0.82rem] text-[#5A5245] leading-relaxed">
-              We sent a sign-in link to{" "}
+              We sent a verification link to{" "}
               <span className="font-semibold text-[#1C1A17]">{email}</span>.
-              Click it to verify and continue to your order.
+              Click it to verify and continue.
             </p>
-            <p className="text-[0.7rem] text-[#9A8E82] mt-4">
+
+            {/* Auto-detect notice */}
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#C4541A] animate-pulse" />
+              <p className="text-[0.7rem] text-[#9A8E82]">
+                Verified on another device? This page will update automatically.
+              </p>
+            </div>
+
+            <p className="text-[0.7rem] text-[#9A8E82] mt-3">
               Didn&apos;t get it? Check your spam folder.
             </p>
             <button
@@ -188,7 +247,7 @@ export default function AuthModal({
                 )}
               </h2>
               <p className="text-[11px] text-black/40 mt-1" style={SANS}>
-                We&apos;ll email you a secure sign-in link — no password needed.
+                We&apos;ll email you a secure verification link — no password needed.
               </p>
             </div>
 
@@ -264,6 +323,17 @@ export default function AuthModal({
                           Log in instead →
                         </button>
                       </>
+                    ) : error === "no_account" ? (
+                      <>
+                        No account found with this email.{" "}
+                        <button
+                          type="button"
+                          onClick={() => switchTab("signup")}
+                          className="underline font-semibold hover:text-red-700"
+                        >
+                          Sign up instead →
+                        </button>
+                      </>
                     ) : (
                       error
                     )}
@@ -284,8 +354,10 @@ export default function AuthModal({
                       </svg>
                       Sending...
                     </>
+                  ) : tab === "login" ? (
+                    "Login →"
                   ) : (
-                    "Send Magic Link →"
+                    "Send Verification Link →"
                   )}
                 </button>
 

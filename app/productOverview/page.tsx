@@ -118,13 +118,15 @@ export default function ProductOverview() {
 
   // ── EDGE CASE 4: Track if payment succeeded (ref for use inside callbacks) ──
   const paymentSucceeded = useRef(false);
+  const profileFetched = useRef(false);
 
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  // ── Prefill form from session data ────────────────────────────────────────
+  // ── Prefill form from session data (runs once per session) ───────────────
   useEffect(() => {
-    if (!session?.user?.email) return;
+    if (!session?.user?.email || profileFetched.current) return;
+    profileFetched.current = true;
     fetch("/api/user/profile")
       .then((r) => r.json())
       .then((data) => {
