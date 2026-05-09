@@ -269,7 +269,7 @@ export default function ProductOverview() {
         amount,           // comes from server — single source of truth
         currency: "INR",
         name: "SIPA Nutrition",
-        description: "The Daily D3 + K2 — Pre-Booking",
+        description: "The Daily D3 + K2",
         order_id: razorpayOrderId,
         prefill: { name, email, contact: phone },
         theme: { color: "#C4541A" },
@@ -331,7 +331,7 @@ export default function ProductOverview() {
             if (verifyRes.status === 409) {
               toast({
                 title: "Already Pre-Booked",
-                description: "This email has already been used for a pre-booking.",
+                description: "This email already has an existing order.",
                 variant: "destructive",
               });
               resetPaymentState();
@@ -495,7 +495,7 @@ export default function ProductOverview() {
               <svg viewBox="0 0 12 12" className="w-3 h-3 fill-[#C4541A]">
                 <path d="M6 0L7.5 4.5H12L8.5 7L9.5 12L6 9L2.5 12L3.5 7L0 4.5H4.5L6 0Z" />
               </svg>
-              <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Early Bird Exclusive</span>
+              <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Launch Offer</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹359</span>
@@ -509,12 +509,12 @@ export default function ProductOverview() {
                 <path d="M6 1a5 5 0 100 10A5 5 0 006 1zm0 1.5a.75.75 0 110 1.5.75.75 0 010-1.5zm-.5 2.5h1v4h-1V5z" />
               </svg>
               <p className="text-[0.75rem] text-[#5A5245] leading-relaxed" style={SANS}>
-                Early access price — locked only for the first batch of pre-bookers.
+                Launch price — available for a limited time only.
               </p>
             </div>
             <div className="bg-[#1C1A17] rounded-sm px-3 py-2">
               <span className="text-[0.68rem] text-[#F3EDE3]/60 uppercase tracking-widest" style={SANS}>
-                You&apos;re reserving at the lowest price this product will ever be.
+                Grab it at the lowest price before it goes up.
               </span>
             </div>
           </div>
@@ -526,7 +526,7 @@ export default function ProductOverview() {
             className="w-full py-[18px] bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-50 disabled:cursor-not-allowed text-white text-[0.8rem] font-semibold tracking-[0.18em] uppercase rounded-sm transition-colors mb-5"
             style={SANS}
           >
-            {sdkReady ? "Pre Book Now" : "Loading..."}
+            {sdkReady ? "Order Now" : "Loading..."}
           </button>
 
           {/* ── Pre-booking Modal ── */}
@@ -554,7 +554,7 @@ export default function ProductOverview() {
 
                     <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-2" style={SANS}>Payment Confirmed 🎉</p>
                     <h2 className="text-[28px] text-[#1a1410] leading-tight mb-2" style={SERIF}>
-                      You&apos;re in the <span className="italic text-[#C4541A]">first batch.</span>
+                      Order <span className="italic text-[#C4541A]">Confirmed.</span>
                     </h2>
                     <p className="text-[12px] text-black/40 mb-8" style={SANS}>Payment received — your spot is locked in.</p>
 
@@ -576,7 +576,7 @@ export default function ProductOverview() {
                       {[
                         "✉️  Check your email for confirmation",
                         "🚀  We'll notify you the moment we ship",
-                        "📦  Your order will be dispatched at launch",
+                        "📦  Your order ships within 7–10 days",
                       ].map((line) => (
                         <p key={line} className="text-[11px] text-[#FAF7F2]/70 leading-relaxed mb-1" style={SANS}>{line}</p>
                       ))}
@@ -601,11 +601,11 @@ export default function ProductOverview() {
                   <>
                     <div className="px-8 pt-7 pb-5 border-b border-black/10 relative">
                       <button onClick={handleCloseModal} className="absolute top-5 right-6 text-black/30 hover:text-black/70 text-lg">✕</button>
-                      <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-1" style={SANS}>Est. 2026 · Pre-Booking</p>
+                      <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-1" style={SANS}>Est. 2026 · Official Launch</p>
                       <h2 className="text-[26px] text-[#1a1410] leading-tight" style={SERIF}>
                         Reserve Your <span className="italic text-[#C4541A]">Daily Ritual.</span>
                       </h2>
-                      <p className="text-[11px] text-black/40 mt-1" style={SANS}>Pay now · Shipped at launch · Confirmation sent via email</p>
+                      <p className="text-[11px] text-black/40 mt-1" style={SANS}>Pay now · Ships within 7–10 days · Confirmation sent via email</p>
                     </div>
 
                     <div className="px-8 py-6 overflow-y-auto" style={{ maxHeight: "calc(90vh - 120px)" }}>
@@ -705,7 +705,7 @@ export default function ProductOverview() {
                             Processing...
                           </>
                         ) : (
-                          `Pay ₹${359 * qty} & Pre-Book →`
+                          `Pay ₹${359 * qty} & Order →`
                         )}
                       </button>
 

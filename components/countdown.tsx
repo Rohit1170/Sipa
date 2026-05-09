@@ -78,20 +78,20 @@ export default function CountdownSection() {
             className="text-[0.62rem] font-semibold tracking-[0.28em] uppercase mb-4"
             style={{ ...SANS, color: "#C4541A" }}
           >
-            Limited Early Bird Access
+            We&apos;re Live — Order Today
           </p>
           <h2
             className="text-[clamp(32px,5vw,62px)] font-medium leading-[1.1] text-white mb-5"
             style={SERIF}
           >
-            Pre-Launch Offer<br />
+            Launch Offer<br />
             <em style={{ color: "#C4541A" }}>Ends Sunday.</em>
           </h2>
           <p
             className="text-[0.88rem] max-w-[420px] mx-auto leading-[1.8]"
             style={{ ...SANS, color: "rgba(255,255,255,0.4)" }}
           >
-           Early bird pricing ends soon — grab it before the timer runs out.
+            Launch pricing ends tonight — grab it before the timer runs out.
           </p>
         </div>
 
@@ -176,7 +176,7 @@ export default function CountdownSection() {
               className="text-[0.68rem] tracking-[0.16em] uppercase mb-2"
               style={{ ...SANS, color: "rgba(255,255,255,0.3)" }}
             >
-              Early Bird Price
+              Launch Price
             </p>
             <div className="flex items-end gap-3 justify-center lg:justify-start">
               <span
@@ -230,7 +230,7 @@ export default function CountdownSection() {
                 style={{ background: "#B84216" }}
               />
               <span className="relative z-10 flex items-center gap-2.5">
-                Claim Early Bird Price
+                Order Now
                 <svg viewBox="0 0 14 14" className="w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2 7h10M8 3l4 4-4 4" />
                 </svg>
@@ -251,9 +251,9 @@ export default function CountdownSection() {
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
         >
           {[
-            { stat: "₹250", label: "You Save Per Pack" },
+            { stat: "₹240", label: "You Save Per Pack" },
             { stat: "30", label: "Sachets Per Pack" },
-            { stat: "1st", label: "Batch — Limited Qty" },
+            { stat: "7–10", label: "Days to Your Door" },
           ].map(({ stat, label }) => (
             <div key={label}>
               <p

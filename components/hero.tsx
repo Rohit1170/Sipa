@@ -166,7 +166,7 @@ export default function Hero() {
                   {/* Orange fill sweeps left to right */}
                   <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
 
-                  <span className="relative z-10">Pre-book Now</span>
+                  <span className="relative z-10">Order Now</span>
 
                   <svg
                     className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
@@ -378,7 +378,7 @@ export default function Hero() {
                   {/* Orange fill sweeps left to right */}
                   <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
 
-                  <span className="relative z-10">Pre-book Now</span>
+                  <span className="relative z-10">Order Now</span>
 
                   <svg
                     className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"

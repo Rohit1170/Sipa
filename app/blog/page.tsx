@@ -473,7 +473,7 @@ const references: Reference[] = [
     authors: "Knapen, M.H.J. et al. (2013).",
     title:
       "Three-year low-dose menaquinone-7 supplementation helps decrease bone loss in healthy postmenopausal women.",
-    journal: "Osteoporosis International, 24(9), 2499–2507.",
+    journal: "Osteoporosis International, 24(9), 2499–2407.",
     doi: "doi:10.1007/s00198-013-2325-6",
     doiUrl: "https://doi.org/10.1007/s00198-013-2325-6",
   },

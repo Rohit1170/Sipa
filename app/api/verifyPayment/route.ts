@@ -167,7 +167,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const orderId = prebook!._id.toString();
     const fullAddress = `${address1}${address2 ? ", " + address2 : ""}, ${city}, ${state} - ${pincode}`;
     const adminEmail = process.env.EMAIL_USER!;
-    const savings = (ORIGINAL_PRICE - PRICE_PER_UNIT) * quantity; // ₹250 × qty
+    const savings = (ORIGINAL_PRICE - PRICE_PER_UNIT) * quantity; // ₹240 × qty
     const mrpTotal = ORIGINAL_PRICE * quantity; // ₹599 × qty (crossed out in email)
 
     // ── 4. Send confirmation emails ───────────────────────────────────────────
@@ -187,8 +187,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       sendMail({
         to: email,
         subject: isReturningCustomer
-          ? "🎉 Additional Order Confirmed — Your Pre-Booking is Updated!"
-          : "🎉 Payment Confirmed — Your Pre-Booking is Locked!",
+          ? "🎉 Additional Order Confirmed — Your Order is Updated!"
+          : "🎉 Payment Confirmed — Your Order is Locked In!",
         html: htmlTemplate,
       }),
 
@@ -196,12 +196,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       sendMail({
         to: adminEmail,
         subject: isReturningCustomer
-          ? "🔄 Returning Customer — Pre-Booking Updated"
-          : "💰 New Paid Pre-Booking Received",
+          ? "🔄 Returning Customer — Order Updated"
+          : "💰 New Order Received",
         html: `
           <div style="font-family:Arial;padding:20px;">
             <h2 style="color:#c2410c;">
-              ${isReturningCustomer ? "🔄 Returning Customer Order" : "💰 New Pre-Booking"}
+              ${isReturningCustomer ? "🔄 Returning Customer Order" : "💰 New Order"}
             </h2>
             ${isReturningCustomer ? `
               <div style="background:#fef3c7;padding:12px;border-radius:6px;margin-bottom:16px;">
@@ -237,7 +237,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         success: true,
         message: isReturningCustomer
           ? "Order updated successfully!"
-          : "Payment verified and pre-booking confirmed!",
+          : "Payment verified and order confirmed!",
         orderId,
         totalQuantity: prebook!.totalQuantity,
         totalAmountPaid: prebook!.totalAmountPaid,
