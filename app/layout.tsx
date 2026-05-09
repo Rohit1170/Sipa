@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 import Navbar from "@/components/Navbar"
+import { Providers } from "@/components/Providers"
 
 export const metadata: Metadata = {
   title: "SIPA Nutrition | Daily Vitamin D3 + K2 Sachets",
@@ -46,15 +47,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <Navbar/>
-        {children}
-        <Analytics />
-        <SpeedInsights />
-        {/* ✅ Razorpay script loads after page, non-blocking */}
-        <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="lazyOnload"
-        />
+        <Providers>
+          <Navbar/>
+          {children}
+          <Analytics />
+          <SpeedInsights />
+          {/* ✅ Razorpay script loads after page, non-blocking */}
+          <Script
+            src="https://checkout.razorpay.com/v1/checkout.js"
+            strategy="lazyOnload"
+          />
+        </Providers>
       </body>
     </html>
   )

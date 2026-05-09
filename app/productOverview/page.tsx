@@ -5,6 +5,8 @@ import Image from "next/image";
 import Footer from "@/components/footer";
 import Navbar from "@/components/Navbar";
 import { toast } from "@/components/ui/use-toast";
+import { useSession } from "next-auth/react";
+import AuthModal from "@/components/AuthModal";
 
 // ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
 const SERIF = { fontFamily: "'Playfair Display', serif" };
@@ -116,6 +118,27 @@ export default function ProductOverview() {
 
   // ── EDGE CASE 4: Track if payment succeeded (ref for use inside callbacks) ──
   const paymentSucceeded = useRef(false);
+
+  const { data: session } = useSession();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // ── Prefill form from session data ────────────────────────────────────────
+  useEffect(() => {
+    if (!session?.user?.email) return;
+    fetch("/api/user/profile")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.name) setName(data.name);
+        if (data.email) setEmail(data.email);
+        if (data.phone) setPhone(data.phone);
+        if (data.address1) setAddress1(data.address1);
+        if (data.address2) setAddress2(data.address2);
+        if (data.city) setCity(data.city);
+        if (data.state) setFormState(data.state);
+        if (data.pincode) setPincode(data.pincode);
+      })
+      .catch(() => {});
+  }, [session]);
 
   const productImages = ["/prod3.png", "/prod2.jpeg", "/prod1.jpeg", "/prod4.jpeg", "/prod5.jpeg"];
 
@@ -521,7 +544,10 @@ export default function ProductOverview() {
 
           {/* ── EDGE CASE: SDK not ready — disable button ── */}
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => {
+              if (!session) { setShowAuthModal(true); return; }
+              setShowForm(true);
+            }}
             disabled={!sdkReady}
             className="w-full py-[18px] bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-50 disabled:cursor-not-allowed text-white text-[0.8rem] font-semibold tracking-[0.18em] uppercase rounded-sm transition-colors mb-5"
             style={SANS}
@@ -877,6 +903,12 @@ export default function ProductOverview() {
       </section>
 
       <Footer />
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        callbackUrl="/productOverview"
+      />
     </div>
   );
 }

@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function Hero() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   const images = [
@@ -25,20 +23,40 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    // ✅ REMOVED: fetch("/api/warmup") — was triggering a cold-start on every page load,
-    // inflating TTFB. Use a Vercel cron job to keep functions warm instead.
-    setIsLoaded(true);
-  }, []);
-
   return (
     <>
+      <style>{`
+        @keyframes hero-fade-in-down {
+          from { opacity: 0; transform: translateY(-1rem); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hero-brand-in {
+          from { opacity: 0; transform: translateY(1.5rem); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hero-expand-x {
+          from { opacity: 0; transform: scaleX(0); }
+          to   { opacity: 1; transform: scaleX(1); }
+        }
+        @keyframes hero-fade-in-up {
+          from { opacity: 0; transform: translateY(2rem); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hero-badge-in {
+          from { opacity: 0; transform: translateY(1rem); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hero-fade-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
+
       <section className="pt-16 py-0 lg:py-8 px-0 sm:px-6 relative min-h-screen flex flex-col bg-[#f7f4ef] overflow-hidden">
         {/* Top bar */}
         <div
-          className={`flex items-center justify-between px-6 sm:px-10 pt-8 transition-all duration-700 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-          }`}
+          className="flex items-center justify-between px-6 sm:px-10 pt-8"
+          style={{ animation: "hero-fade-in-down 700ms ease 0ms both" }}
         >
           <p
             className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold whitespace-nowrap"
@@ -57,9 +75,8 @@ export default function Hero() {
 
         {/* Brand name */}
         <div
-          className={`px-6 sm:px-8 pt-4 pb-2 transition-all duration-1000 delay-100 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className="px-6 sm:px-8 pt-4 pb-2"
+          style={{ animation: "hero-brand-in 1000ms ease 100ms both" }}
         >
           <h1
             className="text-[10vw] sm:text-[6vw] lg:text-[6vw] font-bold text-neutral-900 leading-[0.9] uppercase tracking-tight"
@@ -72,10 +89,8 @@ export default function Hero() {
 
         {/* Hairline rule */}
         <div
-          className={`mx-6 sm:mx-10 h-px bg-neutral-300 transition-all duration-1000 delay-200 ${
-            isLoaded ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
-          }`}
-          style={{ transformOrigin: "left" }}
+          className="mx-6 sm:mx-10 h-px bg-neutral-300"
+          style={{ transformOrigin: "left", animation: "hero-expand-x 1000ms ease 200ms both" }}
         />
 
         {/* Main content */}
@@ -84,9 +99,7 @@ export default function Hero() {
             {/* ── DESKTOP layout ── */}
             <div className="hidden lg:grid lg:grid-cols-2 lg:gap-20 items-center">
               {/* Desktop LEFT */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              >
+              <div style={{ animation: "hero-fade-in-up 1000ms ease 300ms both" }}>
                 <p
                   className="text-3xl sm:text-4xl font-bold text-neutral-700 leading-snug mb-6"
                   style={{ fontFamily: "'Playfair Display', serif" }}
@@ -184,9 +197,7 @@ export default function Hero() {
               {/* Desktop RIGHT — image */}
               {/* ✅ CHANGED: <img> → next/image <Image> with priority prop */}
               {/* priority adds <link rel="preload"> in <head>, directly fixing LCP */}
-              <div
-                className={`transition-all duration-1000 delay-500 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              >
+              <div style={{ animation: "hero-fade-in-up 1000ms ease 500ms both" }}>
                 <div className="relative max-w-md mx-auto">
                   <div
                     className="absolute -inset-4 rounded-3xl"
@@ -216,6 +227,8 @@ export default function Hero() {
                               width={600}
                               height={700}
                               priority={i === 0}
+                              fetchPriority={i === 0 ? "high" : undefined}
+                              loading={i === 0 ? undefined : "lazy"}
                               quality={80}
                               className="w-full h-auto object-contain"
                             />
@@ -225,7 +238,8 @@ export default function Hero() {
                     </div>
                   </div>
                   <div
-                    className={`absolute -top-4 -right-4 bg-orange-700 text-white px-4 py-2 shadow-sm transition-all duration-1000 delay-500 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                    className="absolute -top-4 -right-4 bg-orange-700 text-white px-4 py-2 shadow-sm"
+                    style={{ animation: "hero-badge-in 1000ms ease 500ms both" }}
                   >
                     <p
                       className="text-xs uppercase tracking-widest"
@@ -241,9 +255,7 @@ export default function Hero() {
             {/* ── MOBILE layout ── */}
             <div className="flex flex-col gap-8 lg:hidden">
               {/* 1. Description */}
-              <div
-                className={`transition-all duration-1000 delay-200 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              >
+              <div style={{ animation: "hero-fade-in-up 1000ms ease 200ms both" }}>
                 <p
                   className="text-2xl font-bold text-neutral-700 leading-snug mb-4"
                   style={{ fontFamily: "'Playfair Display', serif" }}
@@ -261,10 +273,7 @@ export default function Hero() {
               </div>
 
               {/* 2. Image */}
-
-              <div
-                className={`transition-all duration-1000 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              >
+              <div style={{ animation: "hero-fade-in-up 1000ms ease 300ms both" }}>
                 <div className="relative max-w-sm mx-auto">
                   <div
                     className="absolute -inset-4 rounded-3xl"
@@ -292,6 +301,8 @@ export default function Hero() {
                               width={600}
                               height={700}
                               priority={i === 0}
+                              fetchPriority={i === 0 ? "high" : undefined}
+                              loading={i === 0 ? undefined : "lazy"}
                               quality={80}
                               className="w-full h-auto object-contain"
                             />
@@ -304,7 +315,8 @@ export default function Hero() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
                   </div>
                   <div
-                    className={`absolute -top-4 -right-4 bg-orange-700 text-white px-3 py-1.5 shadow-sm transition-all duration-1000 delay-500 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                    className="absolute -top-4 -right-4 bg-orange-700 text-white px-3 py-1.5 shadow-sm"
+                    style={{ animation: "hero-badge-in 1000ms ease 500ms both" }}
                   >
                     <p
                       className="text-[10px] uppercase tracking-widest"
@@ -317,9 +329,7 @@ export default function Hero() {
               </div>
 
               {/* 3. Price + trust + CTA */}
-              <div
-                className={`transition-all duration-1000 delay-400 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              >
+              <div style={{ animation: "hero-fade-in-up 1000ms ease 400ms both" }}>
                 <div className="h-px bg-neutral-300 mb-6" />
                 <div className="flex flex-wrap items-center gap-6 mb-8">
                   <div className="flex items-end gap-3">
@@ -398,7 +408,8 @@ export default function Hero() {
 
         {/* Bottom rule */}
         <div
-          className={`flex items-center gap-6 px-6 sm:px-10 pb-6 transition-all duration-1000 delay-700 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+          className="flex items-center gap-6 px-6 sm:px-10 pb-6"
+          style={{ animation: "hero-fade-in 1000ms ease 700ms both" }}
         >
           <div className="h-px bg-neutral-300 flex-1" />
           <p
@@ -410,6 +421,7 @@ export default function Hero() {
           <div className="h-px bg-neutral-300 flex-1" />
         </div>
       </section>
+
     </>
   );
 }

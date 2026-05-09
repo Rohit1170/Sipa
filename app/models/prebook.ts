@@ -21,8 +21,21 @@ const prebookSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      default: "pending", // later: paid, shipped
+      default: "pending",
     },
+
+    totalQuantity: { type: Number, default: 0 },
+    totalAmountPaid: { type: Number, default: 0 },
+
+    payments: [
+      {
+        razorpayOrderId: String,
+        razorpayPaymentId: String,
+        quantity: Number,
+        amount: Number,
+        paidAt: Date,
+      },
+    ],
   },
   { timestamps: true }
 );
