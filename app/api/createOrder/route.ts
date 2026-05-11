@@ -6,10 +6,10 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 });
 
-// ─── Toggle this to switch between test (₹1) and production (₹359) ───────────
-const IS_TEST_MODE = false; // 👈 Change to false before going live
+// ─── Toggle this to switch between test (₹1) and production (₹399) ───────────
+const IS_TEST_MODE = false;
 
-const PRICE_PER_UNIT = IS_TEST_MODE ? 100 : 35900; // 100 paise = ₹1 | 35900 paise = ₹359
+const PRICE_PER_UNIT = IS_TEST_MODE ? 100 : 39900; // 100 paise = ₹1 | 39900 paise = ₹399
 
 export async function POST(req: NextRequest) {
     console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);

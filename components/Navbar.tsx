@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -16,6 +16,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [profileName, setProfileName] = useState("");
+  const nameFetched = useRef(false);
   const pathname = usePathname();
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -72,7 +74,16 @@ export default function Navbar() {
     { label: "About", href: "/about" },
   ];
 
-  const userLabel = session?.user?.name || session?.user?.email || "";
+  useEffect(() => {
+    if (!session?.user?.email || nameFetched.current) return;
+    nameFetched.current = true;
+    fetch("/api/user/profile")
+      .then((r) => r.json())
+      .then((data) => { if (data.name) setProfileName(data.name); })
+      .catch(() => {});
+  }, [session]);
+
+  const userLabel = profileName || session?.user?.name || session?.user?.email || "";
   const initials = userLabel ? getInitials(userLabel) : "?";
 
   return (
@@ -105,39 +116,39 @@ export default function Navbar() {
               ))}
 
               {/* Session-aware section */}
-              {status !== "loading" && (
-                session ? (
-                  <div className="flex items-center gap-4">
-                    <a
-                      href="/profile"
-                      className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-orange-700 transition-colors duration-200"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      <div
-                        className="w-7 h-7 rounded-full bg-[#C4541A] text-white flex items-center justify-center text-[10px] font-bold shrink-0"
-                        style={{ fontFamily: "'DM Sans', sans-serif" }}
-                      >
-                        {initials}
-                      </div>
-                      Profile
-                    </a>
-                    <button
-                      onClick={() => signOut({ callbackUrl: "/" })}
-                      className="text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-red-600 transition-colors duration-200"
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      Logout
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setShowAuthModal(true)}
-                    className="text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-orange-700 border border-neutral-300 hover:border-orange-700 px-4 py-1.5 rounded-sm transition-colors duration-200"
+              {status === "loading" ? (
+                <div className="w-7 h-7 rounded-full bg-neutral-200 animate-pulse" />
+              ) : session ? (
+                <div className="flex items-center gap-4">
+                  <a
+                    href="/profile"
+                    className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-orange-700 transition-colors duration-200"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   >
-                    Login
+                    <div
+                      className="w-7 h-7 rounded-full bg-[#C4541A] text-white flex items-center justify-center text-[10px] font-bold shrink-0"
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                      {initials}
+                    </div>
+                    Profile
+                  </a>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-red-600 transition-colors duration-200"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    Logout
                   </button>
-                )
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-orange-700 border border-neutral-300 hover:border-orange-700 px-4 py-1.5 rounded-sm transition-colors duration-200"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                  Login
+                </button>
               )}
             </div>
 
@@ -169,34 +180,34 @@ export default function Navbar() {
             ))}
 
             {/* Mobile session-aware section */}
-            {status !== "loading" && (
-              session ? (
-                <>
-                  <a
-                    href="/profile"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-orange-700 transition-colors"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-[#C4541A] text-white flex items-center justify-center text-[9px] font-bold">
-                      {initials}
-                    </div>
-                    Profile
-                  </a>
-                  <button
-                    onClick={() => { setMenuOpen(false); signOut({ callbackUrl: "/" }); }}
-                    className="text-left text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-red-600 transition-colors"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => { setMenuOpen(false); setShowAuthModal(true); }}
-                  className="text-left text-xs uppercase tracking-[0.2em] text-[#C4541A] font-semibold"
+            {status === "loading" ? (
+              <div className="w-6 h-6 rounded-full bg-neutral-200 animate-pulse" />
+            ) : session ? (
+              <>
+                <a
+                  href="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-orange-700 transition-colors"
                 >
-                  Login / Sign Up
+                  <div className="w-6 h-6 rounded-full bg-[#C4541A] text-white flex items-center justify-center text-[9px] font-bold">
+                    {initials}
+                  </div>
+                  Profile
+                </a>
+                <button
+                  onClick={() => { setMenuOpen(false); signOut({ callbackUrl: "/" }); }}
+                  className="text-left text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-red-600 transition-colors"
+                >
+                  Logout
                 </button>
-              )
+              </>
+            ) : (
+              <button
+                onClick={() => { setMenuOpen(false); setShowAuthModal(true); }}
+                className="text-left text-xs uppercase tracking-[0.2em] text-[#C4541A] font-semibold"
+              >
+                Login / Sign Up
+              </button>
             )}
           </div>
         )}

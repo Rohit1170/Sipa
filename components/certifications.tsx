@@ -25,8 +25,7 @@ export default function Certifications() {
           style={{ transformOrigin: "left" }}
         />
 
-        {/* Header */}
-        <div
+        {/* <div
           className={`mb-8 transition-all duration-700 ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
@@ -54,7 +53,7 @@ export default function Certifications() {
               the highest international safety standards.
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Infinite logo slider */}
         <div

@@ -136,10 +136,10 @@ const productSchema = {
   brand: { "@type": "Brand", name: "SIPA Nutrition" },
   offers: {
     "@type": "Offer",
-    price: "599",
+    price: "399",
     priceCurrency: "INR",
-    availability: "https://schema.org/PreOrder",
-    url: "https://www.sipanutrition.com/#order",
+    availability: "https://schema.org/InStock",
+    url: "https://www.sipanutrition.com/productOverview",
   },
 };
 
@@ -1922,7 +1922,7 @@ export default function blog() {
                 </p>
                 <InlineCTA
                   title="Ready to supplement the right way?"
-                  body="SIPA Nutrition's daily sachet delivers both in the clinically recommended ratio — vegan, 100% lab tested, and just ₹19.9/day."
+                  body="SIPA Nutrition's daily sachet delivers both in the clinically recommended ratio — vegan, 100% lab tested, and just ≈ ₹13/day."
                 />
               </section>
 
@@ -2043,7 +2043,7 @@ export default function blog() {
                   <br />
                   D3 + K2 Sachet —{" "}
                   <em className="text-orange-700 not-italic">
-                    Just ₹19.9 a Day
+                    Just ≈ ₹13 a Day
                   </em>
                 </h2>
                 <p className="text-stone-500 max-w-lg mx-auto mb-8 text-[0.94rem]">
@@ -2054,41 +2054,36 @@ export default function blog() {
                   style={serifFont}
                   className="text-[3rem] text-neutral-900 leading-none mb-1"
                 >
-                  ₹599
+                  ₹399
                 </p>
                 <p className="text-[0.82rem] text-stone-500 mb-7">
-                  30 sachets · 30-day supply · ≈ ₹19.9/day
+                  30 sachets · 30-day supply · ≈ ₹13/day
                 </p>
                 <div className="flex justify-center">
-                  <div
-                    className="relative group cursor-not-allowed"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  <button
+                    onClick={() => router.push("/productOverview")}
+                    className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                    }}
                   >
-                    <button
-                      onClick={() => router.push("/productOverview")}
-                      className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: "12px",
-                        fontWeight: 500,
-                        letterSpacing: "0.12em",
-                        textTransform: "uppercase",
-                      }}
+                    <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+                    <span className="relative z-10">Order Now</span>
+                    <svg
+                      className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
-                      <span className="relative z-10">Pre-book Now</span>
-                      <svg
-                        className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        strokeWidth="1.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M2 7h10M8 3l4 4-4 4" />
-                      </svg>
-                    </button>
-                  </div>
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg>
+                  </button>
                 </div>
                 <div className="flex justify-center flex-wrap gap-2 mt-6">
                   {[
@@ -2107,8 +2102,7 @@ export default function blog() {
                   ))}
                 </div>
                 <p className="mt-6 text-[0.85rem] text-stone-500">
-                  <strong>Limited Batch:</strong> First 500 orders ship free.
-                  Stock ends soon.
+                  33% OFF · Free shipping · FSSAI certified
                 </p>
               </div>
 
@@ -2193,7 +2187,7 @@ export default function blog() {
                 </p>
                 <InlineCTA
                   title="Let's Get Better Together."
-                  body="Try SIPA Nutrition's Vitamin D3 + K2 sachets — 30 sachets, one a day, ₹599. Vegan. 100% lab tested."
+                  body="Try SIPA Nutrition's Vitamin D3 + K2 sachets — 30 sachets, one a day, ₹399. Vegan. 100% lab tested."
                 />
                 <p className="mt-8 text-[0.78rem] text-stone-400 leading-[1.6] italic">
                   Disclaimer: This article is for informational and educational

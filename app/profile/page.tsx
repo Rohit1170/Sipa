@@ -37,11 +37,12 @@ export default async function ProfilePage() {
   const p = prebook as any;
   const m = userMeta as any;
 
+  const isAdmin = session.user.email.toLowerCase() === process.env.EMAIL_USER?.toLowerCase();
   const displayName = p?.name || m?.name || session.user.email.split("@")[0];
   const firstName = displayName.split(" ")[0];
   const initials = getInitials(displayName);
   const quantity = p?.totalQuantity || p?.quantity || 1;
-  const amountPaid = p?.totalAmountPaid || quantity * 359;
+  const amountPaid = p?.totalAmountPaid || quantity * 399;
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#1C1A17]" style={SANS}>
@@ -244,6 +245,19 @@ export default async function ProfilePage() {
               style={SANS}
             >
               Start Your Journey →
+            </Link>
+          </div>
+        )}
+
+        {/* Admin shortcut */}
+        {isAdmin && (
+          <div className="mb-4 text-center">
+            <Link
+              href="/admin"
+              className="inline-block px-6 py-2.5 bg-[#1C1A17] text-white text-[0.72rem] font-semibold tracking-[0.18em] uppercase rounded-sm hover:bg-[#333] transition-colors"
+              style={SANS}
+            >
+              Admin Dashboard →
             </Link>
           </div>
         )}

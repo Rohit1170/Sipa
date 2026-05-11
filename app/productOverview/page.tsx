@@ -120,6 +120,8 @@ export default function ProductOverview() {
   const paymentSucceeded = useRef(false);
   const profileFetched = useRef(false);
 
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -302,16 +304,9 @@ export default function ProductOverview() {
         // ── EDGE CASE: Payment cancelled by user ──
         modal: {
           ondismiss: () => {
-             console.log("ondismiss fired");
-  console.log("paymentSucceeded:", paymentSucceeded.current);
-  console.log("paymentInProgress:", paymentInProgress);
             if (paymentSucceeded.current) return; // payment went through — ignore dismiss
             resetPaymentState();
-            toast({
-              title: "Payment Cancelled",
-              description: "You closed the payment window. Your details are saved — try again when ready.",
-              variant: "destructive",
-            });
+            setShowCancelModal(true);
           },
         },
 
@@ -377,7 +372,7 @@ export default function ProductOverview() {
             // ── Step 4: Show success ──
             setBookingSuccess({
               orderId: verifyData.orderId,
-              totalAmount: 359 * qty,
+              totalAmount: 399 * qty,
               quantity: qty,
             });
             setShowForm(true);
@@ -523,10 +518,10 @@ export default function ProductOverview() {
               <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Launch Offer</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹359</span>
+              <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹399</span>
               <div className="flex flex-col">
                 <span className="text-base text-[#9A8E82] line-through leading-none" style={SANS}>₹599</span>
-                <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>40% OFF</span>
+                <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>33% OFF</span>
               </div>
             </div>
             <div className="flex items-start gap-2">
@@ -669,7 +664,7 @@ export default function ProductOverview() {
                             />
                             <button onClick={increase} className="px-3 py-2 text-lg hover:text-[#C4541A]">+</button>
                           </div>
-                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{359 * qty} total</span>
+                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{399 * qty} total</span>
                         </div>
                       </div>
 
@@ -715,7 +710,7 @@ export default function ProductOverview() {
 
                       <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3 flex justify-between items-center">
                         <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
-                        <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{359 * qty}</span>
+                        <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{399 * qty}</span>
                       </div>
 
                       <button
@@ -733,7 +728,7 @@ export default function ProductOverview() {
                             Processing...
                           </>
                         ) : (
-                          `Pay ₹${359 * qty} & Order →`
+                          `Pay ₹${399 * qty} & Order →`
                         )}
                       </button>
 
@@ -743,6 +738,76 @@ export default function ProductOverview() {
                     </div>
                   </>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* ── PAYMENT CANCELLED MODAL ── */}
+          {showCancelModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+              <div
+                className="relative bg-white w-full max-w-sm rounded-2xl border border-black/10 overflow-hidden"
+                style={SANS}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Top accent stripe */}
+                <div className="h-1 w-full bg-gradient-to-r from-[#C4541A] to-[#E8763A]" />
+
+                <div className="px-8 py-10 flex flex-col items-center text-center">
+                  {/* Icon */}
+                  <div className="w-16 h-16 rounded-full bg-[#C4541A]/10 flex items-center justify-center mb-5">
+                    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none">
+                      <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                        stroke="#C4541A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+
+                  <p className="text-[0.62rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-2" style={SANS}>
+                    Payment Cancelled
+                  </p>
+                  <h2 className="text-[24px] font-medium text-[#1C1A17] leading-tight mb-3" style={SERIF}>
+                    No worries,{" "}
+                    <em className="italic text-[#C4541A]">we saved your details.</em>
+                  </h2>
+                  <p className="text-[0.82rem] text-[#5A5245] leading-relaxed mb-1">
+                    You closed the payment window before completing your order.
+                  </p>
+                  <p className="text-[0.78rem] text-[#9A8E82] leading-relaxed mb-7">
+                    Your form is still filled — just click <strong>Try Again</strong> to pick up right where you left off.
+                  </p>
+
+                  {/* Reminder card */}
+                  <div className="w-full bg-[#FAF7F2] border border-black/8 rounded-sm px-5 py-4 mb-7 text-left">
+                    <p className="text-[0.68rem] font-semibold tracking-[0.14em] uppercase text-[#9A8E82] mb-2" style={SANS}>
+                      Your order
+                    </p>
+                    <p className="text-[0.92rem] font-medium text-[#1C1A17]" style={SERIF}>
+                      The Daily D3 + K2 — {qty} pack{qty > 1 ? "s" : ""}
+                    </p>
+                    <p className="text-[0.75rem] text-[#C4541A] font-semibold mt-1" style={SANS}>
+                      ₹{399 * qty} · 33% OFF · ≈ ₹13/day
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  <button
+                    onClick={() => {
+                      setShowCancelModal(false);
+                      setShowForm(true);
+                    }}
+                    className="w-full py-3.5 bg-[#C4541A] hover:bg-[#D96528] text-white text-[11px] font-semibold tracking-[0.2em] uppercase rounded-sm transition-colors mb-3"
+                    style={SANS}
+                  >
+                    Try Again →
+                  </button>
+                  <button
+                    onClick={() => setShowCancelModal(false)}
+                    className="w-full py-2.5 border border-black/15 rounded-sm text-[11px] font-semibold tracking-[0.16em] uppercase text-[#5A5245] hover:bg-black/5 transition-colors"
+                    style={SANS}
+                  >
+                    Maybe Later
+                  </button>
+                </div>
               </div>
             </div>
           )}

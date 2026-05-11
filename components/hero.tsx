@@ -132,12 +132,12 @@ export default function Hero() {
                         className="text-5xl font-bold text-[#C4541A]"
                         style={{ fontFamily: "'Playfair Display', serif" }}
                       >
-                        ₹359
+                        ₹399
                       </p>
 
                       {/* Badge */}
                       <span className="bg-[#C4541A]/10 text-[#C4541A] text-xs font-semibold px-2 py-1 rounded-md">
-                        40% OFF
+                        33% OFF
                       </span>
                     </div>
 
@@ -146,7 +146,7 @@ export default function Hero() {
                       className="text-xs uppercase tracking-widest text-neutral-600 mt-2"
                       style={{ fontFamily: "'DM Sans', sans-serif" }}
                     >
-                      Special Launch Offer • ≈ ₹12/day
+                      ≈ ₹13/day
                     </p>
                   </div>
                   <div
@@ -345,18 +345,18 @@ export default function Hero() {
                       className="text-5xl font-bold text-[#C4541A]"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
-                      ₹359
+                      ₹399
                     </p>
                     {/* Badge */}
                     <span className="bg-[#C4541A]/10 text-[#C4541A] text-xs font-semibold px-2 py-1 rounded-md">
-                      40% OFF
+                      33% OFF
                     </span>
                   </div>
                   <p
                     className="text-xs uppercase tracking-widest text-neutral-400 mt-1"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   >
-                    ≈ ₹12/ day
+                    ≈ ₹13/day
                   </p>
                   <div
                     className="flex flex-col gap-1.5 text-sm text-neutral-500"

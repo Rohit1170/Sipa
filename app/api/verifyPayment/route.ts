@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import { sendMail } from "@/app/lib/sendMail";
 
-const PRICE_PER_UNIT = 359;
+const PRICE_PER_UNIT = 399;
 const ORIGINAL_PRICE = 599;
 
 const templatePath = path.join(process.cwd(), "app/templates/preBooking.html");
@@ -167,7 +167,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const orderId = prebook!._id.toString();
     const fullAddress = `${address1}${address2 ? ", " + address2 : ""}, ${city}, ${state} - ${pincode}`;
     const adminEmail = process.env.EMAIL_USER!;
-    const savings = (ORIGINAL_PRICE - PRICE_PER_UNIT) * quantity; // ₹240 × qty
+    const savings = (ORIGINAL_PRICE - PRICE_PER_UNIT) * quantity; // ₹200 × qty
     const mrpTotal = ORIGINAL_PRICE * quantity; // ₹599 × qty (crossed out in email)
 
     // ── 4. Send confirmation emails ───────────────────────────────────────────

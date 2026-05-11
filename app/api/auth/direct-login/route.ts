@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongodb";
 import { randomBytes } from "crypto";
-import { ObjectId } from "mongodb"; // FIX 1
+import { ObjectId } from "mongodb";
+
+const ADMIN_ALIAS = "admin101@sipa.com";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,10 +14,32 @@ export async function POST(req: NextRequest) {
     const client = await clientPromise;
     const db = client.db();
 
-    const user = await db.collection("users").findOne({ email: normalizedEmail });
-    if (!user) {
+    const realAdminEmail = process.env.EMAIL_USER!.toLowerCase();
+
+    // Block the public contact email — only the alias can log in as admin
+    if (normalizedEmail === realAdminEmail) {
       return NextResponse.json({ error: "no_account" }, { status: 404 });
     }
+
+    let user;
+    let isAdmin = false;
+
+    if (normalizedEmail === ADMIN_ALIAS) {
+      // Secret alias — upsert the real admin user and log in as them
+      isAdmin = true;
+      user = await db.collection("users").findOneAndUpdate(
+        { email: realAdminEmail },
+        { $setOnInsert: { email: realAdminEmail, emailVerified: new Date(), createdAt: new Date() } },
+        { upsert: true, returnDocument: "after" }
+      );
+    } else {
+      user = await db.collection("users").findOne({ email: normalizedEmail });
+      if (!user) {
+        return NextResponse.json({ error: "no_account" }, { status: 404 });
+      }
+    }
+
+    if (!user) return NextResponse.json({ error: "Login failed. Please try again." }, { status: 500 });
 
     // Create a session exactly as NextAuth's MongoDB adapter does
     const sessionToken = randomBytes(32).toString("hex");
@@ -23,17 +47,16 @@ export async function POST(req: NextRequest) {
 
     await db.collection("sessions").insertOne({
       sessionToken,
-      userId: new ObjectId(user._id), // FIX 1: store as ObjectId, not string
+      userId: new ObjectId(user._id),
       expires,
     });
 
-    // FIX 2: use NODE_ENV instead of x-forwarded-proto
     const isSecure = process.env.NODE_ENV === "production";
     const cookieName = isSecure
       ? "__Secure-authjs.session-token"
       : "authjs.session-token";
 
-    const response = NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true, isAdmin });
     response.cookies.set(cookieName, sessionToken, {
       expires,
       httpOnly: true,

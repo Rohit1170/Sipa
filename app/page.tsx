@@ -43,10 +43,11 @@ export default function Home() {
       <div className="hidden md:block">
        
         <Hero />
+        <Certifications />
         <ProductAbout />
         <BenefitSection />
         <Timeline />
-        <Certifications />
+        
         <Dosage />
         {/* <Ingredients /> */}
         <DoctorAdvice />

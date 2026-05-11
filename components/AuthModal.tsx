@@ -42,16 +42,22 @@ export default function AuthModal({
         const { exists } = await res.json();
 
         if (exists) {
-          clearInterval(interval);
-          // Verified on another device — create a session for this browser too
-          const loginRes = await fetch("/api/auth/direct-login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-            credentials: "include",
-          });
-          if (loginRes.ok) {
-            window.location.href = callbackUrl;
+          // Keep interval running until redirect succeeds (handles race where
+          // direct-login briefly returns 404 right after user record is created)
+          try {
+            const loginRes = await fetch("/api/auth/direct-login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email }),
+              credentials: "include",
+            });
+            if (loginRes.ok) {
+              clearInterval(interval);
+              window.location.href = callbackUrl;
+            }
+            // If not ok, interval continues and retries in 4 s
+          } catch {
+            // network hiccup — keep polling
           }
         }
       } catch {
@@ -218,7 +224,7 @@ export default function AuthModal({
                 />
               </svg>
             </div>
-            <p className="text-[0.62rem] font-semibold tracking-[0.2em] uppercase text-[#C4541A] mb-2" style={SANS}>
+            <p className="text-[0.62rem] font-semibold tracking-[0.2em] uppercase text-[#21408A] mb-2" style={SANS}>
               Check Your Inbox
             </p>
             <h2 className="text-[22px] font-medium italic text-[#1C1A17] mb-3" style={SERIF}>
@@ -232,7 +238,7 @@ export default function AuthModal({
 
             {/* Auto-detect notice */}
             <div className="mt-5 flex items-center justify-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#C4541A] animate-pulse" />
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#21408A] animate-pulse" />
               <p className="text-[0.7rem] text-[#9A8E82]">
                 Verified on another device? This page will update automatically.
               </p>
@@ -253,14 +259,14 @@ export default function AuthModal({
           /* ── FORM STATE ── */
           <>
             <div className="px-8 pt-7 pb-5 border-b border-black/8">
-              <p className="text-[0.62rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-1" style={SANS}>
+              <p className="text-[0.62rem] font-semibold tracking-[0.22em] uppercase text-[#21408A] mb-1" style={SANS}>
                 Est. 2026 · Official Launch
               </p>
               <h2 className="text-[22px] text-[#1C1A17] leading-tight" style={SERIF}>
                 {tab === "signup" ? (
-                  <>Create Your <em className="italic text-[#C4541A]">Account.</em></>
+                  <>Create Your <em className="italic text-[#21408A]">Account.</em></>
                 ) : (
-                  <>Welcome <em className="italic text-[#C4541A]">Back.</em></>
+                  <>Welcome <em className="italic text-[#21408A]">Back.</em></>
                 )}
               </h2>
               <p className="text-[11px] text-black/40 mt-1" style={SANS}>
@@ -360,7 +366,7 @@ export default function AuthModal({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 bg-[#C4541A] hover:bg-[#D96528] disabled:opacity-60 disabled:cursor-not-allowed text-white text-[11px] font-semibold tracking-[0.2em] uppercase rounded-sm transition-colors flex items-center justify-center gap-2 mt-2"
+                  className="w-full py-3 bg-[#21408A] hover:bg-[#1a336d] disabled:opacity-60 disabled:cursor-not-allowed text-white text-[11px] font-semibold tracking-[0.2em] uppercase rounded-sm transition-colors flex items-center justify-center gap-2 mt-2"
                   style={SANS}
                 >
                   {loading ? (

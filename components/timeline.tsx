@@ -241,51 +241,38 @@ export default function Timeline() {
                     pointerEvents: isActive ? "auto" : "none",
                   }}
                 >
-                  {/* Label + accent bar */}
-                  <div className="flex items-center gap-4 mb-6">
+                  {/* Time + label — compact supporting line */}
+                  <div className="flex items-center gap-3 mb-5">
                     <div
-                      className="h-px w-12 transition-colors duration-500"
+                      className="h-px w-10 shrink-0 transition-colors duration-500"
                       style={{ backgroundColor: t.accent }}
                     />
                     <p
-                      className="text-xs uppercase tracking-[0.3em] font-semibold"
-                      style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        color: t.accent,
-                      }}
+                      className="text-xs uppercase tracking-[0.28em] font-semibold"
+                      style={{ fontFamily: "'DM Sans', sans-serif", color: t.accent }}
+                    >
+                      {t.time}
+                    </p>
+                    <span className="text-neutral-300 text-xs">·</span>
+                    <p
+                      className="text-xs uppercase tracking-[0.2em] text-neutral-400 font-medium"
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
                     >
                       {t.label}
                     </p>
                   </div>
 
-                  {/* Time */}
-                  <p
-                    className="text-6xl sm:text-7xl lg:text-8xl font-bold leading-none mb-3"
-                    style={{
-                      fontFamily: "'Playfair Display', serif",
-                      color: t.accent,
-                    }}
-                  >
-                    {t.time}
-                  </p>
-
-                  {/* Title */}
+                  {/* Title — main headline */}
                   <h3
-                    className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 leading-tight mb-8"
+                    className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-neutral-900 leading-[1.1] mb-6"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {t.title}
                   </h3>
 
-                  {/* Divider */}
-                  <div
-                    className="h-px mb-8 max-w-md"
-                    style={{ backgroundColor: "#e5e7eb" }}
-                  />
-
-                  {/* Description */}
+                  {/* Description — large, prominent, right under title */}
                   <p
-                    className="text-neutral-500 text-base sm:text-lg leading-relaxed max-w-md"
+                    className="text-xl sm:text-2xl font-light leading-relaxed max-w-lg text-neutral-700"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   >
                     {t.desc}

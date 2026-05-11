@@ -183,7 +183,7 @@ export default function CountdownSection() {
                 className="text-[clamp(36px,5vw,56px)] font-bold text-white leading-none"
                 style={SERIF}
               >
-                ₹359
+                ₹399
               </span>
               <div className="flex flex-col pb-1">
                 <span
@@ -196,7 +196,7 @@ export default function CountdownSection() {
                   className="text-[0.65rem] font-bold tracking-wide mt-0.5"
                   style={{ ...SANS, color: "#C4541A" }}
                 >
-                  40% OFF
+                  33% OFF
                 </span>
               </div>
             </div>
@@ -204,7 +204,7 @@ export default function CountdownSection() {
               className="text-[0.7rem] mt-1"
               style={{ ...SANS, color: "rgba(255,255,255,0.25)" }}
             >
-              ≈ ₹12 / day · 30 sachets
+              ≈ ₹13 / day · 30 sachets
             </p>
           </div>
 
@@ -251,7 +251,7 @@ export default function CountdownSection() {
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
         >
           {[
-            { stat: "₹240", label: "You Save Per Pack" },
+            { stat: "₹200", label: "You Save Per Pack" },
             { stat: "30", label: "Sachets Per Pack" },
             { stat: "7–10", label: "Days to Your Door" },
           ].map(({ stat, label }) => (
