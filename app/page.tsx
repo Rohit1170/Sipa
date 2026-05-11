@@ -28,7 +28,7 @@ export default function Home() {
       
       {/* ✅ MOBILE ONLY */}
       <div className="block md:hidden">
-        <CountdownSection />
+        
         <Hero />
         <BenefitSection />
         <Timeline />
@@ -41,7 +41,7 @@ export default function Home() {
 
       {/* ✅ DESKTOP ONLY */}
       <div className="hidden md:block">
-        <CountdownSection />
+       
         <Hero />
         <ProductAbout />
         <BenefitSection />

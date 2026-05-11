@@ -25,25 +25,42 @@ export default function AuthModal({
   const [error, setError] = useState("");
   const pollCount = useRef(0);
 
-  // Poll for session after verification link is sent.
-  // Handles the case where user opens the link in a new tab or on another device.
+  // Poll the DB to detect when user verifies on another device (e.g. mobile).
+  // getSession() won't work cross-device since it relies on the local cookie.
+  // Instead we check if the email now exists in the NextAuth `users` collection —
+  // that record is only created after the verification link is clicked.
   useEffect(() => {
-    if (!sent) return;
+    if (!sent || !email) return;
     pollCount.current = 0;
 
     const interval = setInterval(async () => {
       pollCount.current += 1;
       if (pollCount.current > 75) { clearInterval(interval); return; } // stop after ~5 min
 
-      const session = await getSession();
-      if (session) {
-        clearInterval(interval);
-        window.location.href = callbackUrl;
+      try {
+        const res = await fetch(`/api/auth/check-email?email=${encodeURIComponent(email)}`);
+        const { exists } = await res.json();
+
+        if (exists) {
+          clearInterval(interval);
+          // Verified on another device — create a session for this browser too
+          const loginRes = await fetch("/api/auth/direct-login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+            credentials: "include",
+          });
+          if (loginRes.ok) {
+            window.location.href = callbackUrl;
+          }
+        }
+      } catch {
+        // network hiccup — keep polling
       }
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [sent, callbackUrl]);
+  }, [sent, email, callbackUrl]);
 
   if (!isOpen) return null;
 
