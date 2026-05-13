@@ -42,8 +42,7 @@ export default function Contact() {
               className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              We're currently in development. Reach out with any questions
-              or to join us on our journey.
+              Your wellness journey matters to us. Reach out for order support, product questions, or anything else — we're always just a message away.
             </p>
           </div>
         </div>

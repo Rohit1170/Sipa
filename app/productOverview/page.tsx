@@ -501,7 +501,7 @@ export default function ProductOverview() {
           </div>
 
           <h1 className="text-[clamp(32px,4vw,54px)] font-bold text-[#1C1A17] leading-[1.08] mb-3" style={SERIF}>
-            The Daily<br />D3 + K2
+            The Daily Vitamins<br />D3 + K2
           </h1>
           <p className="text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-[#9A8E82] mb-5" style={SANS}>
             Daily Vitamin Sachet
@@ -509,14 +509,13 @@ export default function ProductOverview() {
           <p className="text-[0.9rem] leading-[1.75] text-[#5A5245] max-w-[420px] mb-8" style={SANS}>
             A precision-engineered vegan formula combining Vitamin D3 (VitaShine® lichen) with Vitamin K2 (MK-7). One slim 1g sachet a day, clinically dosed, zero fillers.
           </p>
+          <div className="flex gap-2 flex-wrap mb-5">
+            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]" style={SANS}>600 IU</span>
+            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]" style={SANS}>55 mcg</span>
+            <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]" style={SANS}>q.s.</span>
+          </div>
 
           <div className="flex flex-col gap-3 mb-7">
-            <div className="inline-flex items-center gap-1.5 w-fit bg-[#C4541A]/10 border border-[#C4541A]/30 rounded-sm px-2.5 py-1">
-              <svg viewBox="0 0 12 12" className="w-3 h-3 fill-[#C4541A]">
-                <path d="M6 0L7.5 4.5H12L8.5 7L9.5 12L6 9L2.5 12L3.5 7L0 4.5H4.5L6 0Z" />
-              </svg>
-              <span className="text-[0.68rem] font-semibold text-[#C4541A] uppercase tracking-widest" style={SANS}>Launch Offer</span>
-            </div>
             <div className="flex items-center gap-3">
               <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹399</span>
               <div className="flex flex-col">
@@ -531,11 +530,6 @@ export default function ProductOverview() {
               <p className="text-[0.75rem] text-[#5A5245] leading-relaxed" style={SANS}>
                 Launch price — available for a limited time only.
               </p>
-            </div>
-            <div className="bg-[#1C1A17] rounded-sm px-3 py-2">
-              <span className="text-[0.68rem] text-[#F3EDE3]/60 uppercase tracking-widest" style={SANS}>
-                Grab it at the lowest price before it goes up.
-              </span>
             </div>
           </div>
 
