@@ -46,7 +46,7 @@ export default function Ingredients() {
 
   return (
     <section id="ingredients" ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full">
 
         {/* Top rule */}
         <div

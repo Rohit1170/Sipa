@@ -72,7 +72,9 @@ export default function Footer() {
   const companyLinks = [
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
+    { label: "Our Policy", href: "/policy" },
     { label: "Ph: +91 96617 44207" },
+    
   ];
 
   return (
@@ -173,6 +175,7 @@ export default function Footer() {
                 </a>
               </div>
             </div>
+            
 
             <div>
               <p

@@ -32,7 +32,7 @@ export default function Packaging() {
   return (
     <section ref={ref} className="py-0 lg:py-8 bg-[#f7f4ef] overflow-hidden">
       {/* Top rule */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full">
         <div
           className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
             inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"

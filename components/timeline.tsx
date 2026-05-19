@@ -86,7 +86,7 @@ export default function Timeline() {
 
         {/* ── Header ── */}
         <div className="border-b border-neutral-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full pt-10 pb-6">
             <p
               className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-3"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -115,7 +115,7 @@ export default function Timeline() {
 
         {/* ── Main content area ── */}
         <div className="flex-1 overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col lg:flex-row">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full h-full flex flex-col lg:flex-row">
 
           {/* Left: Step dial + nav pills */}
           <div className="flex lg:flex-col items-center justify-between lg:justify-start lg:gap-8 py-6 lg:py-10 border-b lg:border-b-0 lg:border-r border-neutral-200 lg:w-52 shrink-0 lg:pr-8">
