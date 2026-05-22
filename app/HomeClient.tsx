@@ -1,16 +1,18 @@
 "use client"
+import dynamic from "next/dynamic"
 import Hero from "@/components/hero"
-import ProductAbout from "@/components/product-about"
-import Dosage from "@/components/dosage"
-import Ingredients from "@/components/ingredients"
-import Certifications from "@/components/certifications"
-import DoctorAdvice from "@/components/doctor-advice"
-import Testimonials from "@/components/testimonials"
-import FAQ from "@/components/faq"
-import Contact from "@/components/contact"
-import Footer from "@/components/footer"
-import BenefitSection from "@/components/benefit"
-import Timeline from "@/components/timeline"
+
+const Certifications  = dynamic(() => import("@/components/certifications"))
+const BenefitSection  = dynamic(() => import("@/components/benefit"))
+const Timeline        = dynamic(() => import("@/components/timeline"))
+const Ingredients     = dynamic(() => import("@/components/ingredients"))
+const Testimonials    = dynamic(() => import("@/components/testimonials"))
+const FAQ             = dynamic(() => import("@/components/faq"))
+const Contact         = dynamic(() => import("@/components/contact"))
+const Footer          = dynamic(() => import("@/components/footer"))
+const ProductAbout    = dynamic(() => import("@/components/product-about"))
+const Dosage          = dynamic(() => import("@/components/dosage"))
+const DoctorAdvice    = dynamic(() => import("@/components/doctor-advice"))
 
 export default function HomeClient() {
   return (
@@ -19,7 +21,7 @@ export default function HomeClient() {
       {/* MOBILE — < 768px */}
       <div className="block md:hidden">
         <Hero />
-         <Certifications />
+        <Certifications />
         <BenefitSection />
         <Timeline />
         <Ingredients />

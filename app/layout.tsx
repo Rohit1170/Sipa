@@ -63,13 +63,8 @@ export default function RootLayout({
             strategy="lazyOnload"
           />
           <Script
-            id="google-maps"
-            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-            strategy="lazyOnload"
-          />
-          <Script
             id="microsoft-clarity"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `(function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

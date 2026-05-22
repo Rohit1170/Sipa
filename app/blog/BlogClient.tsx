@@ -2,6 +2,9 @@
 import Footer from "@/components/footer";
 import Link from "next/link";
 import React from "react";
+import { BlogFaqAccordion } from "@/components/blog-faq-accordion";
+import { PeopleAlsoAsk } from "@/components/blog-people-also-ask";
+import { BlogRelatedPosts } from "@/components/blog-related-posts";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -367,6 +370,69 @@ const references: Reference[] = [
     journal: "Calcified Tissue International, 106(1), 14–29.",
     doi: "doi:10.1007/s00223-019-00559-4",
     doiUrl: "https://doi.org/10.1007/s00223-019-00559-4",
+  },
+];
+
+const paaItems = [
+  {
+    question: "Why should Vitamin K2 be taken with Vitamin D3?",
+    answer:
+      "Vitamin D3 increases the amount of calcium your body absorbs from food. Without K2, that extra calcium can deposit in arteries and soft tissue instead of bones. K2 activates two proteins — osteocalcin and Matrix Gla-Protein — that direct calcium specifically into bones and prevent arterial calcification. Together, D3 and K2 complete the calcium pathway safely and effectively.",
+  },
+  {
+    question: "Can Vitamin D3 help with fatigue and low energy?",
+    answer:
+      "Yes. Vitamin D3 deficiency is strongly linked to chronic fatigue, muscle weakness, and low energy. D3 plays a direct role in mitochondrial function and muscle physiology. Restoring D3 to optimal levels through daily supplementation typically results in measurable improvements in energy and stamina within 4–8 weeks.",
+  },
+  {
+    question: "Is vegan Vitamin D3 as effective as lanolin-based D3?",
+    answer:
+      "Yes — completely. Vegan Vitamin D3 (cholecalciferol) sourced from lichen, such as VitaShine®, is molecularly identical to D3 derived from lanolin (sheep's wool). The body absorbs and metabolises both forms in exactly the same way. For people following a plant-based diet, lichen-sourced D3 is the gold-standard alternative.",
+  },
+  {
+    question: "What are the warning signs of Vitamin D deficiency?",
+    answer:
+      "Common signs include persistent fatigue, frequent illness or infections, bone pain, muscle weakness, mood changes or low mood, and hair loss. In India, where around 76% of the population is estimated to be Vitamin D deficient, these symptoms are extremely common but often misattributed. A simple blood test (25(OH)D) can confirm deficiency.",
+  },
+  {
+    question: "When is the best time of day to take Vitamin D3?",
+    answer:
+      "Morning, with a fat-containing meal. Vitamin D3 is fat-soluble, meaning it absorbs significantly better when consumed alongside dietary fat — such as eggs, nuts, avocado, or whole milk. Morning intake also aligns with your natural circadian rhythm and makes it easier to build a consistent daily habit.",
+  },
+  {
+    question: "How long does it take for Vitamin D3 and K2 to work?",
+    answer:
+      "Blood Vitamin D levels typically begin improving within 1–2 weeks of consistent supplementation. Energy, immunity, and mood improvements are often noticeable after 4–6 weeks. Measurable bone strength improvements are typically observed around the 3-month mark with daily use.",
+  },
+];
+
+const relatedPosts = [
+  {
+    slug: "vitamin-d-deficiency-signs-india",
+    title: "7 Hidden Signs of Vitamin D Deficiency Most Indians Miss",
+    excerpt:
+      "From unexplained fatigue to frequent infections — how to recognise Vitamin D deficiency before it becomes a serious health issue.",
+    tag: "Deficiency Guide",
+    readTime: "8 min read",
+    comingSoon: true as const,
+  },
+  {
+    slug: "best-time-to-take-vitamin-d3",
+    title: "When to Take Vitamin D3: Morning vs Night vs With Food",
+    excerpt:
+      "Timing matters for fat-soluble vitamins. A clear, science-backed guide to optimal D3 absorption windows and daily dosing.",
+    tag: "Dosing Guide",
+    readTime: "6 min read",
+    comingSoon: true as const,
+  },
+  {
+    slug: "vegan-vitamin-d3-sources",
+    title: "Vegan Sources of Vitamin D3: Why Lichen Is the Gold Standard",
+    excerpt:
+      "Why most D3 supplements use sheep-derived lanolin, and why plant-based VitaShine® D3 is the better choice for everyone.",
+    tag: "Vegan Nutrition",
+    readTime: "7 min read",
+    comingSoon: true as const,
   },
 ];
 
@@ -1306,39 +1372,7 @@ const SunlightInfographic: React.FC = () => (
   </div>
 );
 
-const FaqList: React.FC<{ items: FaqItem[] }> = ({ items }) => (
-  <div className="flex flex-col gap-3 my-8">
-    {items.map((item) => (
-      <div
-        key={item.num}
-        className="bg-stone-50 border border-stone-200 rounded-xl px-6 py-5"
-        itemScope
-        itemProp="mainEntity"
-        itemType="https://schema.org/Question"
-      >
-        <dl>
-          <dt
-            className="flex gap-3.5 items-start text-[0.9rem] font-semibold text-neutral-900 mb-2"
-            itemProp="name"
-          >
-            <span className="text-[0.64rem] text-orange-700 font-bold tracking-[0.08em] pt-0.5 shrink-0">
-              {item.num}
-            </span>
-            {item.question}
-          </dt>
-          <dd
-            className="text-[0.87rem] text-stone-500 leading-relaxed pl-8"
-            itemScope
-            itemProp="acceptedAnswer"
-            itemType="https://schema.org/Answer"
-          >
-            <span itemProp="text">{item.answer}</span>
-          </dd>
-        </dl>
-      </div>
-    ))}
-  </div>
-);
+// FaqList replaced by BlogFaqAccordion (see components/blog-faq-accordion.tsx)
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -1860,6 +1894,11 @@ export default function BlogClient() {
 
               <hr className="border-none border-t border-stone-200 my-12" />
 
+              {/* People Also Ask */}
+              <PeopleAlsoAsk items={paaItems} />
+
+              <hr className="border-none border-t border-stone-200 my-12" />
+
               {/* Section 07 — FAQ
                   itemScope + itemType mirrors the FAQPage JSON-LD above
                   for double-reinforcement of the schema */}
@@ -1885,7 +1924,12 @@ export default function BlogClient() {
                   Everything you need to know before you begin your daily D3 +
                   K2 routine.
                 </p>
-                <FaqList items={faqItems} />
+                <BlogFaqAccordion
+                  items={faqItems.map(({ question, answer }) => ({
+                    question,
+                    answer,
+                  }))}
+                />
               </section>
 
               <hr className="border-none border-t border-stone-200 my-12" />
@@ -1920,6 +1964,11 @@ export default function BlogClient() {
                   professional before starting any new supplement regimen.
                 </p>
               </section>
+
+              <hr className="border-none border-t border-stone-200 my-12" />
+
+              {/* Related Articles + Product CTA */}
+              <BlogRelatedPosts posts={relatedPosts} />
 
               <hr className="border-none border-t border-stone-200 my-12" />
 

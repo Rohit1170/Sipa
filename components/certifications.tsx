@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 
 const certLogos = [
@@ -85,21 +86,23 @@ export default function Certifications() {
           <div className="overflow-hidden border-y border-neutral-200 py-10 sm:py-12">
             <div className="marquee-track flex items-center gap-16 sm:gap-20 w-max">
               {[...certLogos, ...certLogos, ...certLogos].map((logo, i) => (
-                <div key={i} className="flex items-center gap-16 sm:gap-20 flex-shrink-0">
+                <div key={i} className="flex items-center gap-16 sm:gap-20 shrink-0">
 
                   {/* Responsive logo container:
                       - Mobile : h-12 w-28  (48px tall, 112px wide)
                       - Tablet : h-16 w-36  (64px tall, 144px wide)
                       - Desktop: h-20 w-44  (80px tall, 176px wide)         */}
-                  <div className="flex items-center justify-center h-12 w-28 sm:h-16 sm:w-36 lg:h-20 lg:w-44 flex-shrink-0">
-                    <img
+                  <div className="relative flex items-center justify-center h-12 w-28 sm:h-16 sm:w-36 lg:h-20 lg:w-44 shrink-0">
+                    <Image
                       src={logo.src}
                       alt={logo.alt}
-                      className="max-h-full max-w-full object-contain"
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 640px) 112px, (max-width: 1024px) 144px, 176px"
                     />
                   </div>
 
-                  <div className="w-2 h-2 rounded-full bg-gray-400 flex-shrink-0" />
+                  <div className="w-2 h-2 rounded-full bg-gray-400 shrink-0" />
                 </div>
               ))}
             </div>
@@ -113,12 +116,12 @@ export default function Certifications() {
           }`}
         >
           <p
-            className="text-xs uppercase tracking-[0.2em] text-neutral-400 pt-0.5 flex-shrink-0"
+            className="text-xs uppercase tracking-[0.2em] text-neutral-400 pt-0.5 shrink-0"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             Disclaimer
           </p>
-          <div className="w-px self-stretch bg-neutral-200 flex-shrink-0 mx-2" />
+          <div className="w-px self-stretch bg-neutral-200 shrink-0 mx-2" />
           <p
             className="text-xs text-neutral-400 leading-relaxed"
             style={{ fontFamily: "'DM Sans', sans-serif" }}

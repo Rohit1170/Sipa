@@ -58,18 +58,21 @@ export default function BenefitSection() {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <p className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-2">
+          <p className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-2"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Daily Benefits
           </p>
 
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
+              style={{ fontFamily: "'Playfair Display', serif" }}>
               Built for Your
               <br />
               <em className="italic text-orange-700">Body's Needs</em>
             </h2>
 
-            <p className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed">
+            <p className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Real wellness comes from consistency. Daily D3 + K2 maintains
               optimal levels to support your body long-term.
             </p>
@@ -101,11 +104,13 @@ export default function BenefitSection() {
                     />
                   </div>
 
-                  <p className="text-xs uppercase tracking-[0.25em] text-neutral-400 mb-2">
+                  <p className="text-xs uppercase tracking-[0.25em] text-neutral-400 mb-2"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     {b.stat}
                   </p>
 
-                  <h3 className="text-2xl font-bold text-neutral-900 leading-tight min-h-[56px]">
+                  <h3 className="text-2xl font-bold text-neutral-900 leading-tight min-h-[56px]"
+                    style={{ fontFamily: "'Playfair Display', serif" }}>
                     {b.title}
                   </h3>
                 </div>
@@ -118,7 +123,8 @@ export default function BenefitSection() {
                   
                  <div className="h-px bg-neutral-200 my-5" />
                  
-                  <p className="text-sm text-neutral-500 leading-relaxed min-h-[72px] h-full">
+                  <p className="text-sm text-neutral-500 leading-relaxed min-h-[72px] h-full"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     {b.desc}
                   </p>
                 </div>

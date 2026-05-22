@@ -1,20 +1,11 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
   const containerRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -67,11 +58,22 @@ export default function Hero() {
           style={{ scale: imageScale, y: imageY }}
         >
           <Image
-            src={isMobile ? "/bg-mobile.png" : "/bg.png"}
+            src="/bg.png"
             alt=""
             fill
             priority
-            className="object-cover"
+            fetchPriority="high"
+            sizes="100vw"
+            className="object-cover hidden sm:block"
+          />
+          <Image
+            src="/bg-mobile.png"
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className="object-cover sm:hidden"
           />
         </motion.div>
 
@@ -140,7 +142,15 @@ export default function Hero() {
 
           {/* Main content */}
           <div className="flex-1 px-10 flex items-center">
-            <div className="px-5 sm:px-32 w-full max-w-xl py-8 sm:py-10">
+            <div
+              className="px-5 sm:px-10 w-full max-w-xl py-8 sm:py-10 rounded-2xl"
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                border: "1px solid rgba(255,255,255,0.12)",
+              }}
+            >
 
               {/* Headline + description */}
               <div style={{ animation: "hero-fade-in-up 1000ms ease 300ms both" }}>
