@@ -7,6 +7,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
 import AuthModal from "@/components/AuthModal";
 import Certifications from "@/components/certifications";
+import { lookupPincode } from "@/lib/pincodeLookup";
 
 // ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
 const SERIF = { fontFamily: "'Playfair Display', serif" };
@@ -107,6 +108,14 @@ export default function ProductOverviewClient() {
     quantity: number;
   } | null>(null);
 
+  // ── Pincode autofill ──
+  const [isFetchingPincode, setIsFetchingPincode] = useState(false);
+  const [pincodeApiError, setPincodeApiError]     = useState<string | null>(null);
+  const [lastFetchedPincode, setLastFetchedPincode] = useState("");
+  const [pincodeAutofilled, setPincodeAutofilled]   = useState(false);
+  const pincodeCache    = useRef<Map<string, { city: string; state: string }>>(new Map());
+  const pincodeAbortRef = useRef<AbortController | null>(null);
+
   // ── EDGE CASE 1: Track payment in progress to block accidental modal close ──
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
@@ -143,6 +152,66 @@ export default function ProductOverviewClient() {
       })
       .catch(() => {});
   }, [session]);
+
+  // ── Smart pincode autofill ────────────────────────────────────────────────
+  useEffect(() => {
+    setPincodeApiError(null);
+
+    // Incomplete input — unlock fields so user can edit manually
+    if (!/^\d{6}$/.test(pincode)) {
+      if (pincode !== lastFetchedPincode) setPincodeAutofilled(false);
+      pincodeAbortRef.current?.abort();
+      return;
+    }
+
+    // Already fetched this exact pincode — nothing to do
+    if (pincode === lastFetchedPincode) return;
+
+    // Cache hit — instant fill, no network
+    const cached = pincodeCache.current.get(pincode);
+    if (cached) {
+      setCity(cached.city);
+      setFormState(cached.state);
+      setErrors((prev) => ({ ...prev, city: undefined, formState: undefined }));
+      setLastFetchedPincode(pincode);
+      setPincodeAutofilled(true);
+      return;
+    }
+
+    // Abort any in-flight request from a previous keystroke
+    pincodeAbortRef.current?.abort();
+    const controller = new AbortController();
+    pincodeAbortRef.current = controller;
+
+    const timer = setTimeout(async () => {
+      setIsFetchingPincode(true);
+      try {
+        const result = await lookupPincode(pincode, controller.signal);
+        if (!result) {
+          setPincodeApiError("No location found — enter city & state manually.");
+          setPincodeAutofilled(false);
+          return;
+        }
+        setCity(result.city);
+        setFormState(result.state);
+        setErrors((prev) => ({ ...prev, city: undefined, formState: undefined }));
+        pincodeCache.current.set(pincode, result);
+        setLastFetchedPincode(pincode);
+        setPincodeAutofilled(true);
+      } catch (err: any) {
+        if (err.name === "AbortError") return;
+        setPincodeApiError("Couldn't fetch location — please enter manually.");
+        setPincodeAutofilled(false);
+      } finally {
+        setIsFetchingPincode(false);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      pincodeAbortRef.current?.abort();
+    };
+  }, [pincode, lastFetchedPincode]);
 
   const productImages = ["/prod3.png", "/prod2.jpeg", "/prod1.jpeg", "/prod4.jpeg", "/prod5.jpeg"];
 
@@ -181,7 +250,6 @@ export default function ProductOverviewClient() {
   const increase = () => setQty((prev) => Math.min(prev + 1, 10));
   const decrease = () => setQty((prev) => Math.max(prev - 1, 1));
 
-  // ── Validation ────────────────────────────────────────────────────────────
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
     if (!name.trim()) newErrors.name = "Full name is required.";
@@ -658,18 +726,74 @@ export default function ProductOverviewClient() {
                         <div className="grid grid-cols-3 gap-2 mb-2">
                           <div className="col-span-2">
                             <label htmlFor="field-city" className="sr-only">City</label>
-                            <input id="field-city" placeholder="City *" value={city} onChange={(e) => { setCity(e.target.value); clearError("city"); }} className={inputCls(errors.city)} style={SANS} />
+                            <input
+                              id="field-city"
+                              placeholder="City *"
+                              value={city}
+                              readOnly={pincodeAutofilled}
+                              onChange={(e) => { if (!pincodeAutofilled) { setCity(e.target.value); clearError("city"); } }}
+                              className={`${inputCls(errors.city)} ${pincodeAutofilled ? "bg-[#F5F0E8] select-text" : ""}`}
+                              style={SANS}
+                            />
                             <ErrMsg msg={errors.city} />
                           </div>
                           <div>
                             <label htmlFor="field-pincode" className="sr-only">Pincode</label>
-                            <input id="field-pincode" placeholder="Pincode *" value={pincode} onChange={(e) => { setPincode(e.target.value); clearError("pincode"); }} className={inputCls(errors.pincode)} style={SANS} />
+                            <div className="relative">
+                              <input
+                                id="field-pincode"
+                                placeholder="Pincode *"
+                                value={pincode}
+                                inputMode="numeric"
+                                maxLength={6}
+                                onChange={(e) => {
+                                  const v = e.target.value.replace(/\D/g, "").slice(0, 6);
+                                  setPincode(v);
+                                  clearError("pincode");
+                                  if (v.length < 6) setPincodeApiError(null);
+                                }}
+                                className={inputCls(errors.pincode)}
+                                style={SANS}
+                              />
+                              {isFetchingPincode && (
+                                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+                                  <svg className="animate-spin w-3.5 h-3.5 text-[#C4541A]" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                                  </svg>
+                                </span>
+                              )}
+                            </div>
                             <ErrMsg msg={errors.pincode} />
+                            {!errors.pincode && (
+                              <>
+                                {isFetchingPincode && (
+                                  <p className="text-[9px] text-[#9A8E82] mt-1 ml-0.5 leading-snug" style={SANS}>Fetching location…</p>
+                                )}
+                                {!isFetchingPincode && pincodeAutofilled && (
+                                  <p className="text-[9px] text-[#1C6B3A] mt-1 ml-0.5 leading-snug" style={SANS}>✓ {city}, {formState} detected</p>
+                                )}
+                                {!isFetchingPincode && !pincodeAutofilled && !pincodeApiError && (
+                                  <p className="text-[9px] text-[#9A8E82] mt-1 ml-0.5 leading-snug" style={SANS}>City & state auto-filled from pincode</p>
+                                )}
+                                {pincodeApiError && (
+                                  <p className="text-[9px] text-amber-600 mt-1 ml-0.5 leading-snug" style={SANS}>{pincodeApiError}</p>
+                                )}
+                              </>
+                            )}
                           </div>
                         </div>
                         <div>
                           <label htmlFor="field-state" className="sr-only">State</label>
-                          <input id="field-state" placeholder="State *" value={formState} onChange={(e) => { setFormState(e.target.value); clearError("formState"); }} className={inputCls(errors.formState)} style={SANS} />
+                          <input
+                            id="field-state"
+                            placeholder="State *"
+                            value={formState}
+                            readOnly={pincodeAutofilled}
+                            onChange={(e) => { if (!pincodeAutofilled) { setFormState(e.target.value); clearError("formState"); } }}
+                            className={`${inputCls(errors.formState)} ${pincodeAutofilled ? "bg-[#F5F0E8] select-text" : ""}`}
+                            style={SANS}
+                          />
                           <ErrMsg msg={errors.formState} />
                         </div>
                       </div>

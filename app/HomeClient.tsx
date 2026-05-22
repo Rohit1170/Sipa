@@ -19,6 +19,7 @@ export default function HomeClient() {
       {/* MOBILE — < 768px */}
       <div className="block md:hidden">
         <Hero />
+         <Certifications />
         <BenefitSection />
         <Timeline />
         <Ingredients />

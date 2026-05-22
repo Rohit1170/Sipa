@@ -1,11 +1,20 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -58,11 +67,11 @@ export default function Hero() {
           style={{ scale: imageScale, y: imageY }}
         >
           <Image
-            src="/bg.png"
+            src={isMobile ? "/bg-mobile.png" : "/bg.png"}
             alt=""
             fill
             priority
-            className="object-cover object-center"
+            className="object-cover"
           />
         </motion.div>
 
