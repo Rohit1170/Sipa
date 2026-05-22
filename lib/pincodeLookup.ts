@@ -17,10 +17,7 @@ export async function lookupPincode(
   pincode: string,
   signal?: AbortSignal
 ): Promise<PincodeResult | null> {
-  const res = await fetch(
-    `https://api.postalpincode.in/pincode/${pincode}`,
-    { signal }
-  );
+  const res = await fetch(`/api/pincode/${pincode}`, { signal });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
   const data: PostalApiEntry[] = await res.json();
