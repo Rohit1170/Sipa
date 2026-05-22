@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pincodeLookup = require("india-pincode-lookup");
+
+function toTitleCase(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ pincode: string }> }
@@ -10,14 +17,15 @@ export async function GET(
     return NextResponse.json({ error: "Invalid pincode" }, { status: 400 });
   }
 
-  const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`, {
-    next: { revalidate: 86400 },
-  });
+  const results: { districtName: string; stateName: string }[] =
+    pincodeLookup.lookup(Number(pincode));
 
-  if (!res.ok) {
-    return NextResponse.json({ error: "Upstream error" }, { status: 502 });
+  if (!results?.length) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const data = await res.json();
-  return NextResponse.json(data);
+  return NextResponse.json({
+    city:  results[0].districtName,
+    state: toTitleCase(results[0].stateName),
+  });
 }
