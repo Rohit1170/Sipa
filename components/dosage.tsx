@@ -50,7 +50,7 @@ export default function Dosage() {
 
         {/* Header */}
         <div
-          className={`mb-8 transition-all duration-700 ${
+          className={`mb-4 lg:mb-8 transition-all duration-700 ${
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -62,7 +62,7 @@ export default function Dosage() {
           </p>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               A Simple
@@ -84,7 +84,7 @@ export default function Dosage() {
           {steps.map((s, i) => (
             <div
               key={i}
-              className={`bg-[#f7f4ef] p-10 flex flex-col justify-between min-h-[280px] transition-all duration-700 ${
+              className={`bg-[#f7f4ef] p-6 lg:p-10 flex flex-col justify-between min-h-45 lg:min-h-70 transition-all duration-700 ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${200 + i * 120}ms` }}

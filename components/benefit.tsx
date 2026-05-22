@@ -63,7 +63,7 @@ export default function BenefitSection() {
           </p>
 
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]">
               Built for Your
               <br />
               <em className="italic text-orange-700">Body's Needs</em>
@@ -81,7 +81,7 @@ export default function BenefitSection() {
           {benefits.map((b, i) => (
             <div
               key={i}
-              className={`bg-[#f7f4ef] p-10 flex flex-col min-h-[280px] transition-all duration-700 ${
+              className={`bg-[#f7f4ef] p-6 lg:p-10 flex flex-col min-h-45 lg:min-h-70 transition-all duration-700 ${
                 inView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"

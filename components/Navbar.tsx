@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -105,9 +106,12 @@ export default function Navbar() {
           {/* ── LEFT: Logo ── */}
           <div className="flex-1 flex items-center justify-start">
             <a href="/" className="flex items-center">
-              <img
+              <Image
                 src="/logo.png"
                 alt="SIPA Nutrition"
+                width={112}
+                height={44}
+                priority
                 className="h-17 sm:h-28 w-auto object-contain"
               />
             </a>
@@ -150,6 +154,7 @@ export default function Navbar() {
                 <>
                   <a
                     href="/profile"
+                    aria-label="View your profile"
                     className={`
                       flex items-center justify-center transition-colors duration-300
                       ${transparent

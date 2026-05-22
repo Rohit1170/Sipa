@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Verify Email",
+  robots: { index: false, follow: false },
+};
+
 const SERIF = { fontFamily: "'Playfair Display', serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
 

@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard",
+  robots: { index: false, follow: false },
+};
 import { connectDB } from "@/app/lib/db";
 import UserMeta from "@/app/models/userMeta";
 import Prebook from "@/app/models/prebook";

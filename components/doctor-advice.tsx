@@ -71,7 +71,7 @@ export default function IngredientsAndAdvice() {
 
         {/* Top rule */}
         <div
-          className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
+          className={`h-px bg-neutral-300 mb-4 lg:mb-8 transition-all duration-1000 ${
             inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           }`}
           style={{ transformOrigin: "left" }}
@@ -84,7 +84,7 @@ export default function IngredientsAndAdvice() {
           <div className="bg-[#f7f4ef]">
             {/* Header */}
             <div
-              className={`px-10 pt-10 pb-6 transition-all duration-700 ${
+              className={`px-5 pt-5 pb-4 lg:px-10 lg:pt-10 lg:pb-6 transition-all duration-700 ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
             >
@@ -116,7 +116,7 @@ export default function IngredientsAndAdvice() {
               {ingredients.map((ing, i) => (
                 <div
                   key={i}
-                  className={`px-10 py-6 flex items-start gap-6 transition-all duration-700 ${
+                  className={`px-5 py-4 lg:px-10 lg:py-6 flex items-start gap-6 transition-all duration-700 ${
                     inView
                       ? "opacity-100 translate-x-0"
                       : "opacity-0 -translate-x-6"
@@ -187,7 +187,7 @@ export default function IngredientsAndAdvice() {
           <div className="bg-[#f7f4ef]">
             {/* Header */}
             <div
-              className={`px-10 pt-10 pb-6 transition-all duration-700 delay-150 ${
+              className={`px-5 pt-5 pb-4 lg:px-10 lg:pt-10 lg:pb-6 transition-all duration-700 delay-150 ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
             >
@@ -219,7 +219,7 @@ export default function IngredientsAndAdvice() {
               {points.map((p, i) => (
                 <div
                   key={i}
-                  className={`px-10 py-6 flex items-start gap-6 transition-all duration-700 ${
+                  className={`px-5 py-4 lg:px-10 lg:py-6 flex items-start gap-6 transition-all duration-700 ${
                     inView
                       ? "opacity-100 translate-x-0"
                       : "opacity-0 translate-x-6"

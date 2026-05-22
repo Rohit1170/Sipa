@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "My Profile",
+  robots: { index: false, follow: false },
+};
 import { connectDB } from "@/app/lib/db";
 import Prebook from "@/app/models/prebook";
 import UserMeta from "@/app/models/userMeta";
@@ -45,7 +51,7 @@ export default async function ProfilePage() {
   const amountPaid = p?.totalAmountPaid || quantity * 399;
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#1C1A17]" style={SANS}>
+    <main className="min-h-screen bg-[#FAF7F2] text-[#1C1A17]" style={SANS}>
       <div className="max-w-2xl mx-auto px-6 py-24">
 
         {/* Header */}
@@ -267,6 +273,6 @@ export default async function ProfilePage() {
           <SignOutButton />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

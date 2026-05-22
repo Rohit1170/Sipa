@@ -1,10 +1,10 @@
 "use client";
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
-  const router = useRouter();
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -13,8 +13,8 @@ export default function Hero() {
   });
 
   // BG image zooms in and drifts upward as user scrolls
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.28]);
-  const imageY     = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.05]);
+  const imageY     = useTransform(scrollYProgress, [0, 1], ["0%", "-2%"]);
 
   // Dark overlay deepens on scroll
   const tintOpacity = useTransform(scrollYProgress, [0, 0.85], [0, 0.45]);
@@ -54,16 +54,17 @@ export default function Hero() {
       >
         {/* ── PARALLAX BG IMAGE ── */}
         <motion.div
-          className="absolute inset-0 will-change-transform"
-          style={{
-            scale: imageScale,
-            y: imageY,
-            backgroundImage: "url('/bg.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
+          className="absolute inset-0 overflow-hidden will-change-transform"
+          style={{ scale: imageScale, y: imageY }}
+        >
+          <Image
+            src="/bg.png"
+            alt=""
+            fill
+            priority
+            className="object-cover object-center"
+          />
+        </motion.div>
 
         {/* Static overlay: heavier on mobile, gradient on desktop */}
         <div
@@ -179,8 +180,8 @@ export default function Hero() {
                 className="flex items-center gap-5 flex-wrap"
                 style={{ animation: "hero-fade-in-up 1000ms ease 460ms both" }}
               >
-                <button
-                  onClick={() => router.push("/productOverview")}
+                <Link
+                  href="/productOverview"
                   className="group relative overflow-hidden flex items-center gap-2.5 px-7 py-3.5 rounded-[10px] border-[1.5px] border-white/70 hover:border-orange-400 text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
                   style={{
                     fontFamily: "'Inter', sans-serif",
@@ -202,15 +203,15 @@ export default function Hero() {
                   >
                     <path d="M2 7h10M8 3l4 4-4 4" />
                   </svg>
-                </button>
+                </Link>
 
-                <button
-                  onClick={() => router.push("/about")}
+                <Link
+                  href="/about"
                   className="text-white/45 hover:text-white text-[11px] uppercase tracking-[0.18em] underline underline-offset-4 transition-colors duration-200 cursor-pointer bg-transparent border-none"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   Our Story
-                </button>
+                </Link>
               </div>
 
             </div>
