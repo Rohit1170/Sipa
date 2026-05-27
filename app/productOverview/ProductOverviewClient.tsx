@@ -10,7 +10,7 @@ import Certifications from "@/components/certifications";
 import { lookupPincode } from "@/lib/pincodeLookup";
 
 // ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
-const SERIF = { fontFamily: "'Playfair Display', serif" };
+const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS  = { fontFamily: "'DM Sans', sans-serif" };
 
 // ─── DATA ────────────────────────────────────────────────────────────────────

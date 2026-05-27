@@ -12,7 +12,7 @@ import UserMeta from "@/app/models/userMeta";
 import Link from "next/link";
 import SignOutButton from "@/components/SignOutButton";
 
-const SERIF = { fontFamily: "'Playfair Display', serif" };
+const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
 
 function getInitials(str: string) {

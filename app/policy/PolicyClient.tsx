@@ -43,7 +43,7 @@ const GRIEVANCE_ROWS = [
 
 const SectionLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <span className="block text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3"
-    style={{ fontFamily: "'Poppins', sans-serif" }}>
+    style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
     {children}
   </span>
 );
@@ -54,7 +54,7 @@ const Divider: React.FC = () => (
 
 const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex items-start gap-4 py-2.5 border-b border-neutral-200 last:border-0"
-    style={{ fontFamily: "'Poppins', sans-serif" }}>
+    style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
     <span className="text-xs text-neutral-400 w-28 shrink-0">{label}</span>
     <span className="text-sm text-neutral-700">{value}</span>
   </div>
@@ -65,14 +65,14 @@ const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) =
 const PolicyClient: React.FC = () => {
   return (
     <main className="min-h-screen bg-[#f7f4ef] text-neutral-900"
-      style={{ fontFamily: "'Poppins', sans-serif" }}>
+      style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
       <div className="max-w-5xl mx-auto px-6 sm:px-8 pb-24 pt-28">
 
         {/* ── Hero ── */}
         <section className="text-center pb-16 border-b border-neutral-300 mb-16">
           <SectionLabel>Legal · sipanutrition.com</SectionLabel>
           <h1 className="text-5xl md:text-7xl font-light leading-tight text-neutral-900 mb-6"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 300 }}>
+            style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em", fontWeight: 400 }}>
             Return &amp;{" "}
             <em className="italic font-semibold text-orange-700" style={{ fontStyle: "italic" }}>
               Refund Policy
@@ -88,7 +88,7 @@ const PolicyClient: React.FC = () => {
           <div className="text-center mb-10">
             <SectionLabel>Section 01</SectionLabel>
             <h2 className="text-4xl md:text-5xl font-light leading-tight text-neutral-900"
-              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 300 }}>
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em", fontWeight: 400 }}>
               Our Policy at a{" "}
               <em className="italic font-semibold text-orange-700">Glance</em>
             </h2>
@@ -99,7 +99,7 @@ const PolicyClient: React.FC = () => {
             <div className="hidden sm:grid sm:grid-cols-3 bg-neutral-900 px-6 py-3">
               {["Claim Type", "Resolution", "Requirement"].map((h) => (
                 <span key={h} className="text-[10px] uppercase tracking-[0.18em] text-white/50"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}>{h}</span>
+                  style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>{h}</span>
               ))}
             </div>
             {[
@@ -133,7 +133,7 @@ const PolicyClient: React.FC = () => {
           <div className="text-center mb-10">
             <SectionLabel>Section 02</SectionLabel>
             <h2 className="text-4xl md:text-5xl font-light leading-tight text-neutral-900"
-              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 300 }}>
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em", fontWeight: 400 }}>
               Eligibility for{" "}
               <em className="italic font-semibold text-orange-700">Claims</em>
             </h2>
@@ -147,11 +147,11 @@ const PolicyClient: React.FC = () => {
             ].map((item) => (
               <div key={item.tag} className="bg-[#f7f4ef] border border-neutral-300 rounded-xl p-6">
                 <span className="block text-[10px] uppercase tracking-[0.15em] text-orange-700 mb-3"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
                   {item.tag}
                 </span>
                 <h3 className="text-lg font-medium text-neutral-900 mb-2"
-                  style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
                   {item.title}
                 </h3>
                 <p className="text-xs font-light text-stone-500 leading-relaxed">{item.desc}</p>
@@ -162,7 +162,7 @@ const PolicyClient: React.FC = () => {
           {/* Not eligible */}
           <div className="bg-[#f7f4ef] border border-neutral-300 rounded-xl p-6">
             <span className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 mb-4"
-              style={{ fontFamily: "'Poppins', sans-serif" }}>
+              style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
               Not Eligible
             </span>
             <ul className="m-0 p-0 list-none">
@@ -183,7 +183,7 @@ const PolicyClient: React.FC = () => {
           <div className="text-center mb-10">
             <SectionLabel>Section 03</SectionLabel>
             <h2 className="text-4xl md:text-5xl font-light leading-tight text-neutral-900"
-              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 300 }}>
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em", fontWeight: 400 }}>
               How to Raise{" "}
               <em className="italic font-semibold text-orange-700">a Claim</em>
             </h2>
@@ -200,7 +200,7 @@ const PolicyClient: React.FC = () => {
               <div key={i}
                 className={`p-6 bg-[#f7f4ef] ${i < CLAIM_STEPS.length - 1 ? "border-b sm:border-b-0 sm:border-r border-neutral-300" : ""}`}>
                 <div className="text-3xl font-light text-neutral-700 mb-4 leading-none"
-                  style={{ fontFamily: "'Poppins', sans-serif", color: "#FB923C", opacity: 0.7 }}>
+                  style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif", color: "#FB923C", opacity: 0.7 }}>
                   0{i + 1}
                 </div>
                 <p className="text-xs font-light text-stone-500 leading-relaxed">{step}</p>
@@ -218,7 +218,7 @@ const PolicyClient: React.FC = () => {
           {/* After approval */}
           <div className="bg-[#f7f4ef] border border-neutral-300 rounded-xl p-6">
             <span className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 mb-4"
-              style={{ fontFamily: "'Poppins', sans-serif" }}>
+              style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
               After Approval
             </span>
             {AFTER_APPROVAL.map((r) => (
@@ -237,7 +237,7 @@ const PolicyClient: React.FC = () => {
           <div>
             <SectionLabel>Section 04</SectionLabel>
             <h2 className="text-2xl font-medium text-neutral-900 mb-4 leading-snug"
-              style={{ fontFamily: "'Poppins', sans-serif" }}>
+              style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
               Cancellation{" "}
               <em className="italic text-orange-700">Policy</em>
             </h2>
@@ -256,7 +256,7 @@ const PolicyClient: React.FC = () => {
           <div className="mt-10 md:mt-0">
             <SectionLabel>Section 05</SectionLabel>
             <h2 className="text-2xl font-medium text-neutral-900 mb-4 leading-snug"
-              style={{ fontFamily: "'Poppins', sans-serif" }}>
+              style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif" }}>
               Contact &amp;{" "}
               <em className="italic text-orange-700">Support</em>
             </h2>
@@ -274,7 +274,7 @@ const PolicyClient: React.FC = () => {
           <div className="text-center mb-8">
             <SectionLabel>Section 06</SectionLabel>
             <h2 className="text-4xl md:text-5xl font-light leading-tight text-neutral-900"
-              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 300 }}>
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em", fontWeight: 400 }}>
               Grievance{" "}
               <em className="italic font-semibold text-orange-700">Officer</em>
             </h2>

@@ -11,7 +11,7 @@ import UserMeta from "@/app/models/userMeta";
 import Prebook from "@/app/models/prebook";
 import AdminDashboard from "./AdminDashboard";
 
-const SERIF = { fontFamily: "'Playfair Display', serif" };
+const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
 
 function isAdmin(email: string) {

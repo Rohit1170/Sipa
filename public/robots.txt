@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /llm.txt
+
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /auth/
+
+Sitemap: https://www.sipanutrition.com/sitemap.xml

@@ -136,7 +136,7 @@ export default function FAQ() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
             >
               Inquiry &amp; Insight.
             </h2>
@@ -213,7 +213,7 @@ export default function FAQ() {
               >
                 <h3
                   className="text-2xl font-bold text-neutral-900 pb-4 border-b border-neutral-200 mb-2"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                 >
                   {section.label}
                 </h3>
@@ -236,7 +236,7 @@ export default function FAQ() {
                             </span>
                             <h4
                               className="text-lg font-bold text-neutral-900 group-hover:text-orange-700 transition-colors duration-200"
-                              style={{ fontFamily: "'Playfair Display', serif" }}
+                              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                             >
                               {faq.q}
                             </h4>

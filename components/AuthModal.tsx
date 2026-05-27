@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { signIn, getSession } from "next-auth/react";
 
-const SERIF = { fontFamily: "'Playfair Display', serif" };
+const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
 
 interface AuthModalProps {

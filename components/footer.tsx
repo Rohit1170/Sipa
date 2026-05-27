@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInstagram,
@@ -14,6 +16,13 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   const pathname = usePathname();
   const router = useRouter();
+
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start start"],
+  });
+  const cornerRadius = useTransform(scrollYProgress, [0, 0.35], ["80px", "0px"]);
 
   const getVisibleSection = (href: string) => {
     const sections = Array.from(document.querySelectorAll(href));
@@ -78,13 +87,17 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-neutral-950">
+    <motion.footer
+      ref={containerRef}
+      className="bg-neutral-950 text-white"
+      style={{ borderTopLeftRadius: cornerRadius, borderTopRightRadius: cornerRadius }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-16 flex flex-col lg:flex-row lg:items-start justify-between gap-12">
           <div className="max-w-xs">
             <p
               className="text-3xl font-bold text-white mb-1"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
             >
               SIPA <em className="italic text-orange-500">Nutrition</em>
             </p>
@@ -226,6 +239,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

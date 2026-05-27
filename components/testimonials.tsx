@@ -73,7 +73,7 @@ export default function Testimonials() {
           </p>
           <h2
             className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
           >
             Real People,
             <br />

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const SERIF = { fontFamily: "'Playfair Display', serif" };
+const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
 
 export default function VerifyPage() {

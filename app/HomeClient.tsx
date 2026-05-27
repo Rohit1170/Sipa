@@ -32,7 +32,7 @@ export default function HomeClient() {
       </div>
 
       {/* DESKTOP — 768px+ */}
-      <div className="hidden md:block">
+      <div className="hidden md:block bg-[#f7f4ef]">
         <Hero />
         <Certifications />
         <ProductAbout />

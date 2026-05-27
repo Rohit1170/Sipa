@@ -96,7 +96,7 @@ export default function IngredientsAndAdvice() {
               </p>
               <h2
                 className="text-4xl sm:text-5xl font-bold text-neutral-900 leading-[1.05]"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.02em" }}
               >
                 Nothing Hidden,
                 <br />
@@ -148,7 +148,7 @@ export default function IngredientsAndAdvice() {
                     <div className="flex items-baseline justify-between gap-4 flex-wrap">
                       <h3
                         className="text-lg font-bold text-neutral-900 mb-2"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
+                        style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                       >
                         {ing.name}
                       </h3>
@@ -156,7 +156,7 @@ export default function IngredientsAndAdvice() {
                         <span
                           className="text-lg font-bold"
                           style={{
-                            fontFamily: "'Playfair Display', serif",
+                            fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
                             color: ing.accent,
                           }}
                         >
@@ -199,7 +199,7 @@ export default function IngredientsAndAdvice() {
               </p>
               <h2
                 className="text-4xl sm:text-5xl font-bold text-neutral-900 leading-[1.05]"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.02em" }}
               >
                 Trusted by
                 <br />
@@ -250,7 +250,7 @@ export default function IngredientsAndAdvice() {
                     </p>
                     <h3
                       className="text-lg font-bold text-neutral-900 mb-2"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
+                      style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                     >
                       {p.title}
                     </h3>

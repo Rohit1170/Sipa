@@ -96,7 +96,7 @@ export default function Timeline() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <h2
                 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
               >
                 What Happens
                 <br />
@@ -153,7 +153,7 @@ export default function Timeline() {
                 <span
                   className="text-2xl font-bold text-neutral-900 tabular-nums leading-none"
                   style={{
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
                     transition: "color 0.4s ease",
                     color: item.accent,
                   }}
@@ -265,7 +265,7 @@ export default function Timeline() {
                   {/* Title — main headline */}
                   <h3
                     className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-neutral-900 leading-[1.1] mb-6"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                   >
                     {t.title}
                   </h3>

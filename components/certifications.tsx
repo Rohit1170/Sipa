@@ -19,42 +19,7 @@ export default function Certifications() {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full">
 
         {/* Top rule */}
-        <div
-          className={`h-px bg-neutral-300 mb-8 transition-all duration-1000 ${
-            inView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
-          }`}
-          style={{ transformOrigin: "left" }}
-        />
-
-        {/* <div
-          className={`mb-8 transition-all duration-700 ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          <p
-            className="text-xs uppercase tracking-[0.3em] text-orange-700 font-semibold mb-4"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Quality & Trust
-          </p>
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Made to the
-              <br />
-              <em className="italic text-orange-700">Highest Standard.</em>
-            </h2>
-            <p
-              className="text-neutral-500 text-base max-w-sm lg:text-right leading-relaxed"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              Manufactured at a third-party certified facility meeting
-              the highest international safety standards.
-            </p>
-          </div>
-        </div> */}
+        
 
         {/* Infinite logo slider */}
         <div

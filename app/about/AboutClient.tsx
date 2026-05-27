@@ -118,7 +118,7 @@ const HeadingDisplay: React.FC<{
 }> = ({ plain, italic, size = "text-4xl md:text-5xl" }) => (
   <h2
     className={`${size} font-light leading-tight text-neutral-900`}
-    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+    style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
   >
     {plain}
     <em className="italic text-orange-700 font-semibold">{italic}</em>
@@ -141,7 +141,7 @@ const AboutClient: React.FC = () => {
           <SectionLabel>About SIPA Nutrition</SectionLabel>
           <h1
             className="text-5xl md:text-7xl font-light leading-tight text-neutral-900 mb-6"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
           >
             Built for{" "}
             <em className="italic font-semibold text-orange-700">India.</em>
@@ -159,7 +159,7 @@ const AboutClient: React.FC = () => {
             <SectionLabel>Our Story</SectionLabel>
             <h2
               className="text-2xl font-medium text-neutral-900 mb-4 leading-snug"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
             >
               The Gap We{" "}
               <em className="italic">Couldn't Ignore</em>
@@ -179,7 +179,7 @@ const AboutClient: React.FC = () => {
             <SectionLabel>Who We Are</SectionLabel>
             <h2
               className="text-2xl font-medium text-neutral-900 mb-4 leading-snug"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
             >
               A Wellness Brand for{" "}
               <em className="italic">Real Life</em>
@@ -219,7 +219,7 @@ const AboutClient: React.FC = () => {
               >
                 <div
                   className="text-3xl font-light text-neutral-700 mb-4 leading-none"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                 >
                   {item.num}
                 </div>
@@ -254,7 +254,7 @@ const AboutClient: React.FC = () => {
                 </span>
                 <h3
                   className="text-xl font-medium text-neutral-900 mb-3 leading-snug"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                 >
                   {item.title}
                   <em className="italic">{item.titleItalic}</em>
@@ -332,7 +332,7 @@ const AboutClient: React.FC = () => {
           <SectionLabel>Ready to Begin</SectionLabel>
           <h2
             className="text-4xl font-light text-neutral-900 mb-3"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
           >
             Start Your{" "}
             <em className="italic font-semibold text-orange-700">Daily Ritual</em>
@@ -346,7 +346,7 @@ const AboutClient: React.FC = () => {
              <button
         onClick={() => router.push("/productOverview")}
         className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
-        style={{ fontFamily: "'Inter', sans-serif", fontSize: "12px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
+        style={{ fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif", fontSize: "12px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" }}
       >
         <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
         <span className="relative z-10">Order Now</span>

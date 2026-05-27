@@ -204,19 +204,33 @@ export const CircularTestimonials = ({
             >
               <h3
                 className="name"
-                style={{ color: colorName, fontSize: fontSizeName }}
+                style={{
+                  color: colorName,
+                  fontSize: fontSizeName,
+                  fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 800,
+                  letterSpacing: "-0.02em",
+                }}
               >
                 {activeTestimonial.name}
               </h3>
               <p
                 className="designation"
-                style={{ color: colorDesignation, fontSize: fontSizeDesignation }}
+                style={{
+                  color: colorDesignation,
+                  fontSize: fontSizeDesignation,
+                  fontFamily: "'DM Sans', sans-serif",
+                }}
               >
                 {activeTestimonial.designation}
               </p>
               <motion.p
                 className="quote"
-                style={{ color: colorTestimony, fontSize: fontSizeQuote }}
+                style={{
+                  color: colorTestimony,
+                  fontSize: fontSizeQuote,
+                  fontFamily: "'DM Sans', sans-serif",
+                }}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, ease: "easeOut", delay: 0.08 }}
@@ -283,7 +297,6 @@ export const CircularTestimonials = ({
           justify-content: space-between;
         }
         .name {
-          font-weight: bold;
           margin-bottom: 0.25rem;
         }
         .designation {

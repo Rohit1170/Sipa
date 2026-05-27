@@ -32,7 +32,7 @@ export default function Contact() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
             >
               Let's Start a
               <br />
@@ -64,7 +64,7 @@ export default function Contact() {
             <a
               href="mailto:hello@sipanutrition.com"
               className="text-2xl sm:text-3xl font-bold text-neutral-900 hover:text-orange-700 transition-colors duration-200"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
             >
               hello@sipanutrition.com
             </a>

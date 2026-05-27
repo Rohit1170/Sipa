@@ -63,7 +63,7 @@ export default function Dosage() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
               className="text-4xl sm:text-5xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
             >
               A Simple
               <br />
@@ -112,7 +112,7 @@ export default function Dosage() {
 
                 <h3
                   className="text-2xl font-bold text-neutral-900 mb-4 leading-tight"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                 >
                   {s.title}
                 </h3>

@@ -71,7 +71,7 @@ export default function Ingredients() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
               className="text-5xl sm:text-6xl lg:text-7xl font-bold text-neutral-900 leading-[1.05]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif", letterSpacing: "-0.025em" }}
             >
               Nothing Hidden,
               <br />
@@ -120,7 +120,7 @@ export default function Ingredients() {
 
                 <h3
                   className="text-2xl font-bold text-neutral-900 leading-tight mb-1"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}
                 >
                   {ing.name}
                 </h3>
@@ -128,7 +128,7 @@ export default function Ingredients() {
                 <p
                   className="text-3xl font-bold mt-3"
                   style={{
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
                     color: ing.accent,
                   }}
                 >

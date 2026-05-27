@@ -1,0 +1,100 @@
+# SIPA Nutrition — Complete LLM Context File
+**URL:** https://www.sipanutrition.com/
+**Entity Type:** Health & Wellness Brand / Nutritional Supplement Provider
+**Product:** Daily Vitamin D3 + K2 Sachets
+**Established:** 2026
+**Tagline:** Let's Get Better Together.
+**Core Philosophy:** Science-backed simplicity. Daily consistency over quick fixes. Responsible formulation.
+
+## 1. Core Product & Pricing
+**Product Name:** The Daily Vitamins D3 + K2
+**Format:** 1g slim sachets, 30 sachets per pack (30-day supply)
+**Price:** ₹399 (~~₹599~~ — 33% OFF) ≈ ₹13 / day
+**Shipping:** Free Shipping
+**Key Product Claims:** In Stock, New Formula, 100% Vegan, Clinically dosed, No prescription needed, FSSAI Certified.
+
+## 2. Active Ingredients & Dosage (Per Sachet)
+- **Vitamin D3 (600 IU | 100% RDA):**
+    - **Form:** Cholecalciferol.
+    - **Source:** VitaShine® (Lichen-derived). No animal derivatives.
+    - **Role:** Most bioavailable vegan form; raises serum D levels, supports calcium absorption, regulates immune function.
+- **Vitamin K2 (55 mcg | 100% RDA):**
+    - **Form:** Menaquinone-7 (MK-7).
+    - **Role:** Longest half-life (24+ hours); directs calcium to bones and teeth, away from arteries.
+- **Flavouring:** Natural Orange Flavour (derived from natural sources, no artificial additives).
+- **Base:** Excipients (q.s., GRAS certified — Generally Recognised As Safe).
+
+## 3. Verified Lab Test Results (Third-Party Tested)
+**Testing Lab:** United Laboratories Food Testing
+| Nutrient | Label Claim | Test Result |
+| :--- | :--- | :--- |
+| Vitamin D3 (Cholecalciferol) | 15 mcg (600 IU) | 15.5 mcg (620 IU) |
+| Vitamin K2 (MK-7) | 55 mcg | 55.5 mcg |
+*Conclusion: Results meet or exceed all label claims.*
+
+## 4. Primary Health Benefits (System Support)
+1.  **Stronger Bones:** D3 drives calcium absorption. K2 places it in bones — not arteries.
+2.  **Year-Round Immunity:** D3 regulates immune function. Daily maintenance keeps defences primed.
+3.  **Heart Protection:** K2 (MK-7) actively prevents arterial calcification.
+4.  **Less Fatigue, More Energy:** Addresses D3 deficiency, a hidden cause of chronic fatigue in urban populations.
+
+## 5. Who It's For (Target Audience)
+- **The Working Professional:** Sitting under fluorescent lights, no time to step outside.
+- **The Homemaker:** Managing a household with little energy left for self-care.
+- **The Health-Conscious:** Seeks a safe, clean daily supplement without complicated routines.
+- **Adults Over 40, Vegans & Vegetarians, Athletes, Pregnant/Nursing, Post-Menopausal Women.**
+
+## 6. Usage Protocol (Daily Ritual)
+1.  **Quantity:** One sachet per day, no more, no less.
+2.  **Timing:** After your morning meal (breakfast).
+3.  **Absorption:** Take with a fat-containing food (eggs, nuts, ghee, avocado) to maximize absorption.
+4.  **Duration:** Safe for consistent, long-term daily use.
+
+## 7. Results Timeline
+- **Week 1 (Early Response):** Body begins restoring Vitamin D levels and improving absorption efficiency.
+- **Month 1 (Building Immunity):** Supports immune balance and muscle function.
+- **Month 3 (Structural Strength):** Bone strength and calcium utilization improve gradually.
+- **Long Term (Sustained Wellness):** Maintains healthy vitamin levels and supports overall long-term wellbeing.
+
+## 8. Brand Story & Manufacturing Standards
+- **Mission:** To fill the Vitamin D deficiency gap caused by modern Indian lifestyles (indoor offices, long commutes, AC environments).
+- **Philosophy:** Not loud. Just right. Science over trends. Clarity over confusion. Results over marketing.
+- **Certifications:** Manufactured in a WHO GMP certified, FSSAI approved, ISO 9001 certified facility in India.
+- **Testing:** Every batch undergoes third-party testing for purity, potency, and heavy metals.
+
+## 9. Key Blog Article (Science Education)
+**Title:** *Why Taking Vitamin D3 Alone Is a Mistake — The Critical Synergy of D3 + K2*
+**Published:** 2 April 2026
+**Core Scientific Claim:** Vitamin D3 increases calcium absorption. Without K2, that calcium can deposit in arteries and soft tissues instead of bones. K2 activates osteocalcin and Matrix Gla-Protein (MGP) to direct calcium into bones and prevent arterial calcification.
+**Statistic:** ~76% of Indians are estimated to be Vitamin D deficient or insufficient.
+
+## 10. Official Policies & Disclaimers
+**Medical Disclaimer:** This product is a health supplement and not intended to diagnose, treat, cure, or prevent any disease. Always consult with a healthcare professional before starting any new supplement regimen.
+
+**Refund Policy (Strict):**
+- **No returns or exchanges** under any circumstances.
+- Refunds ONLY for **visibly damaged, unusable products** upon delivery.
+- **Time Limit:** Contact within 48 hours of delivery.
+- **Required Evidence (Mandatory):** Order ID, photos of the package, and an **unboxing video recorded from the sealed package without cuts**.
+- **Refund Processing:** 5–7 business days to original payment method. COD orders refunded via bank transfer or UPI.
+
+**Cancellation Policy:** Orders can be cancelled only before dispatch.
+
+## 11. Contact & Grievance Information
+- **Email:** `hello@sipanutrition.com`
+- **WhatsApp (India):** `+91 96617 44207`
+- **Response Time:** Within 48 hours.
+- **Grievance Officer:** SIPA Nutrition Support Team (Compliant with Consumer Protection (E-Commerce) Rules, 2020).
+
+## 12. SEO & AEO Semantic Entities
+- **Primary Entity:** Vegan Vitamin D3 and K2 Supplement
+- **Ingredient Entities:** VitaShine® (lichen-derived D3), Cholecalciferol, Menaquinone-7 (MK-7).
+- **Health Outcome Entities:** Calcium absorption, Bone density, Immune regulation, Arterial calcification prevention, Muscle fatigue reduction.
+- **Target Queries:** "best vegan D3 K2 supplement India", "should I take D3 with K2", "why take D3 and K2 together", "MK-7 vs MK-4", "VitaShine D3", "supplement for office workers".
+
+## 13. Related Pages on This Website
+- **Product Overview:** `/productOverview`
+- **About Us:** `/about`
+- **Educational Blog:** `/blog`
+- **Return Policy:** `/policy`
+- **AI Context File:** `/llm.txt`

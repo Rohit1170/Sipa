@@ -7,7 +7,7 @@ export interface PaaItem {
 }
 
 const serifFont: React.CSSProperties = {
-  fontFamily: "'Playfair Display', Georgia, serif",
+  fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
 };
 
 export function PeopleAlsoAsk({ items }: { items: PaaItem[] }) {

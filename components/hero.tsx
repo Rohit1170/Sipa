@@ -1,27 +1,34 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  // BG image zooms in and drifts upward as user scrolls
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.05]);
-  const imageY     = useTransform(scrollYProgress, [0, 1], ["0%", "-2%"]);
-
-  // Dark overlay deepens on scroll
-  const tintOpacity = useTransform(scrollYProgress, [0, 0.85], [0, 0.45]);
-
-  // All hero content lifts and fades out together
-  const contentY       = useTransform(scrollYProgress, [0, 0.5], ["0%", "-22%"]);
+  const imageScale     = useTransform(scrollYProgress, [0, 1],    [1.0, 1.05]);
+  const imageY         = useTransform(scrollYProgress, [0, 1],    ["0%", "-2%"]);
+  const tintOpacity    = useTransform(scrollYProgress, [0, 0.85], [0, 0.45]);
+  const contentY       = useTransform(scrollYProgress, [0, 0.5],  ["0%", "-22%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.42], [1, 0]);
+
+  // ← NEW: corners go from 0 → 80px as user starts scrolling
+  const borderRadius   = useTransform(scrollYProgress, [0, 0.3],  ["0px", "80px"]);
 
   return (
     <>
@@ -48,46 +55,32 @@ export default function Hero() {
         }
       `}</style>
 
-      <section
+      {/* ← changed: motion.section + removed rounded-b-[90px] + added style borderRadius */}
+      <motion.section
         ref={containerRef}
         className="relative min-h-screen flex flex-col pt-16 overflow-hidden"
+        style={{ borderRadius, backgroundColor: "#f7f4ef" }}
       >
         {/* ── PARALLAX BG IMAGE ── */}
         <motion.div
           className="absolute inset-0 overflow-hidden will-change-transform"
-          style={{ scale: imageScale, y: imageY }}
+          style={{ scale: imageScale, y: imageY, backgroundColor: "#f7f4ef" }}
         >
           <Image
-            src="/bg.png"
+            src={isMobile ? "/bg-mobile.png" : "/bg.png"}
             alt=""
             fill
             priority
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover hidden sm:block"
-          />
-          <Image
-            src="/bg-mobile.png"
-            alt=""
-            fill
-            priority
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover sm:hidden"
+            className="object-cover bg-[#f7f4ef]"
           />
         </motion.div>
 
-        {/* Static overlay: heavier on mobile, gradient on desktop */}
+        {/* Static overlay — natural on left, darker toward right */}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "rgba(15,10,5,0.60)" }}
-        />
-        {/* Desktop: fade right side to transparent */}
-        <div
-          className="absolute inset-0 pointer-events-none hidden lg:block"
           style={{
             background:
-              "linear-gradient(to right, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.10) 50%, transparent 100%)",
+              "linear-gradient(to left, transparent 0%, rgba(15,10,5,0.35) 40%, rgba(15,10,5,0.68) 100%)",
           }}
         />
 
@@ -97,19 +90,18 @@ export default function Hero() {
           style={{ opacity: tintOpacity }}
         />
 
-        {/* ── ALL HERO CONTENT (lifts + fades on scroll) ── */}
+        {/* ── ALL HERO CONTENT ── */}
         <motion.div
           className="relative z-10 flex flex-col flex-1"
           style={{ y: contentY, opacity: contentOpacity }}
         >
-
           {/* Top bar */}
           <div
             className="flex items-center px-5 sm:px-12 pt-7 gap-4"
             style={{ animation: "hero-fade-in-down 700ms ease 0ms both" }}
           >
             <p
-              className="text-[10px] uppercase tracking-[0.25em] text-orange-400 font-semibold whitespace-nowrap"
+              className="text-[10px] uppercase tracking-[0.25em] text-orange-500 font-semibold whitespace-nowrap"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Daily Vitamin D3 + K2
@@ -131,12 +123,12 @@ export default function Hero() {
             <h1
               className="font-bold text-white leading-[0.9] uppercase tracking-tight"
               style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
                 fontSize: "clamp(2.4rem, 9vw, 5rem)",
               }}
             >
               SIPA
-              <em className="italic text-orange-400 ml-3 sm:ml-6">Nutrition</em>
+              <em className="italic text-orange-500 ml-3 sm:ml-6">Nutrition</em>
             </h1>
           </div>
 
@@ -151,18 +143,17 @@ export default function Hero() {
                 border: "1px solid rgba(255,255,255,0.12)",
               }}
             >
-
               {/* Headline + description */}
               <div style={{ animation: "hero-fade-in-up 1000ms ease 300ms both" }}>
                 <p
                   className="font-bold text-white leading-snug mb-4"
                   style={{
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
                     fontSize: "clamp(1.6rem, 5.5vw, 3.2rem)",
                   }}
                 >
                   Let's Get{" "}
-                  <em className="italic text-orange-400 whitespace-nowrap">Better Together.</em>
+                  <em className="italic text-orange-500 whitespace-nowrap">Better Together.</em>
                 </p>
                 <p
                   className="text-sm text-white/60 max-w-xs sm:max-w-sm leading-relaxed"
@@ -203,7 +194,7 @@ export default function Hero() {
                   href="/productOverview"
                   className="group relative overflow-hidden flex items-center gap-2.5 px-7 py-3.5 rounded-[10px] border-[1.5px] border-white/70 hover:border-orange-400 text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
                     fontSize: "11px",
                     fontWeight: 500,
                     letterSpacing: "0.12em",
@@ -232,7 +223,6 @@ export default function Hero() {
                   Our Story
                 </Link>
               </div>
-
             </div>
           </div>
 
@@ -250,9 +240,8 @@ export default function Hero() {
             </p>
             <div className="h-px bg-white/15 flex-1" />
           </div>
-
         </motion.div>
-      </section>
+      </motion.section>
     </>
   );
 }

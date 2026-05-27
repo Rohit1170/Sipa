@@ -11,7 +11,7 @@ export interface RelatedBlogPost {
 }
 
 const serifFont: React.CSSProperties = {
-  fontFamily: "'Playfair Display', Georgia, serif",
+  fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
 };
 
 export function BlogRelatedPosts({
@@ -102,7 +102,7 @@ export function BlogRelatedPosts({
                        border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white
                        bg-transparent transition-colors duration-[400ms] cursor-pointer"
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
               fontSize: "12px",
               fontWeight: 500,
               letterSpacing: "0.12em",

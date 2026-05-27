@@ -438,7 +438,7 @@ const relatedPosts = [
 
 // ─── Shared Tailwind class strings ───────────────────────────────────────────
 const serifFont = {
-  fontFamily: "'Playfair Display', Georgia, serif",
+  fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
 } as React.CSSProperties;
 const chip = (active = false) =>
   `border rounded-full px-3.5 py-1 text-[0.74rem] font-medium ${active ? "text-orange-700 border-orange-200" : "text-stone-500 border-stone-200"}`;
@@ -501,7 +501,7 @@ const InlineCTA: React.FC<{ title: string; body: string }> = ({
         href="/productOverview"
         className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
         style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
           fontSize: "12px",
           fontWeight: 500,
           letterSpacing: "0.12em",
@@ -1822,7 +1822,7 @@ export default function BlogClient() {
                     href="/productOverview"
                     className="group relative overflow-hidden flex items-center gap-2.5 px-8 py-[15px] rounded-[10px] border-[1.5px] border-[#1a1a1a] hover:border-[#c2410c] text-[#1a1a1a] hover:text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
                       fontSize: "12px",
                       fontWeight: 500,
                       letterSpacing: "0.12em",

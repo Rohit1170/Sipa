@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import Script from "next/script"
-import { DM_Sans } from "next/font/google"
+import { DM_Sans, Plus_Jakarta_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
@@ -12,6 +12,14 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  variable: "--font-plus-jakarta",
   display: "swap",
 });
 
@@ -48,9 +56,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${dmSans.variable} ${plusJakartaSans.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
         <meta name="google-site-verification" content="432lcv7Hma2TkRpJCpEaAMtT3M1Zw9g95ByAAZR12JE" />
+        <meta name="google-site-verification" content="aBvuh8BkWYYAZUMQWJQjwUind3GYgmRc7oLaeW9boTY" />
       </head>
       <body className="font-sans antialiased">
         <Providers>
