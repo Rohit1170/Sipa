@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { signIn, getSession, useSession } from "next-auth/react";
 
 const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS = { fontFamily: "'DM Sans', sans-serif" };
@@ -16,6 +16,7 @@ export default function AuthModal({
   onClose,
   callbackUrl = "/productOverview",
 }: AuthModalProps) {
+  const { update } = useSession();
   const [tab, setTab] = useState<"signup" | "login">("signup");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -42,8 +43,6 @@ export default function AuthModal({
         const { exists } = await res.json();
 
         if (exists) {
-          // Keep interval running until redirect succeeds (handles race where
-          // direct-login briefly returns 404 right after user record is created)
           try {
             const loginRes = await fetch("/api/auth/direct-login", {
               method: "POST",
@@ -53,6 +52,12 @@ export default function AuthModal({
             });
             if (loginRes.ok) {
               clearInterval(interval);
+              // Email verified — promote pending registration to UserMeta
+              await fetch("/api/auth/finalize-registration", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+              });
               window.location.href = callbackUrl;
             }
             // If not ok, interval continues and retries in 4 s
@@ -176,16 +181,15 @@ export default function AuthModal({
         return;
       }
 
-      // FIX 4: confirm session exists before redirecting
       const session = await getSession();
       if (!session) {
-        // FIX 5: show error if session was not created
         setError("Session could not be created. Please try again.");
         setLoading(false);
         return;
       }
 
-      window.location.href = callbackUrl;
+      await update();
+      handleClose();
     } catch {
       setError("Something went wrong. Please try again.");
     }

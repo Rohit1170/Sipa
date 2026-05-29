@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import AuthModal from "@/components/AuthModal";
 import Certifications from "@/components/certifications";
 import { lookupPincode } from "@/lib/pincodeLookup";
+import { ReviewSection } from "@/components/reviews/ReviewSection";
 
 // ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
 const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
@@ -927,6 +928,7 @@ export default function ProductOverviewClient() {
         </div>
       </section>
       <Certifications/>
+      <ReviewSection />
 
       {/* ── ABOUT SUMMARY ── */}
       <section id="about" className="max-w-[1200px] mx-auto px-6 lg:px-12 py-20">

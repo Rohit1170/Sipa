@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
-import UserMeta from "@/app/models/userMeta";
+import PendingRegistration from "@/app/models/pendingRegistration";
 import clientPromise from "@/app/lib/mongodb";
 
 export async function POST(req: NextRequest) {
@@ -29,9 +29,10 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
 
-    await UserMeta.findOneAndUpdate(
+    // Store temporarily — only moved to UserMeta after email is verified
+    await PendingRegistration.findOneAndUpdate(
       { email: normalizedEmail },
-      { name: name.trim(), phone: phone?.trim() || "" },
+      { name: name.trim(), phone: phone?.trim() || "", expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) },
       { upsert: true, new: true }
     );
 
