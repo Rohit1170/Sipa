@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongodb";
 import { randomBytes } from "crypto";
 import { ObjectId } from "mongodb";
+import { connectDB } from "@/app/lib/db";
+import PendingRegistration from "@/app/models/pendingRegistration";
+import UserMeta from "@/app/models/userMeta";
 
 const ADMIN_ALIAS = "admin101@sipa.com";
 
@@ -55,6 +58,18 @@ export async function POST(req: NextRequest) {
     const cookieName = isSecure
       ? "__Secure-authjs.session-token"
       : "authjs.session-token";
+
+    // Finalize pending registration → move name/phone into UserMeta
+    await connectDB();
+    const pending = await PendingRegistration.findOne({ email: normalizedEmail });
+    if (pending) {
+      await UserMeta.findOneAndUpdate(
+        { email: normalizedEmail },
+        { name: pending.name, phone: pending.phone },
+        { upsert: true, new: true }
+      );
+      await PendingRegistration.deleteOne({ email: normalizedEmail });
+    }
 
     const response = NextResponse.json({ success: true, isAdmin });
     response.cookies.set(cookieName, sessionToken, {

@@ -44,9 +44,9 @@ export default async function ProfilePage() {
   const m = userMeta as any;
 
   const isAdmin = session.user.email.toLowerCase() === process.env.EMAIL_USER?.toLowerCase();
-  const displayName = p?.name || m?.name || session.user.email.split("@")[0];
-  const firstName = displayName.split(" ")[0];
-  const initials = getInitials(displayName);
+  const displayName = p?.name || m?.name || "";
+  const firstName = displayName ? displayName.split(" ")[0] : "there";
+  const initials = displayName ? getInitials(displayName) : session.user.email.slice(0, 2).toUpperCase();
   const quantity = p?.totalQuantity || p?.quantity || 1;
   const amountPaid = p?.totalAmountPaid || quantity * 399;
 

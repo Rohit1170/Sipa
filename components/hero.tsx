@@ -72,6 +72,7 @@ export default function Hero() {
             fill
             priority
             className="object-cover bg-[#f7f4ef]"
+            style={{ objectPosition: isMobile ? "calc(50% - 20px) center" : "center center" }}
           />
         </motion.div>
 
@@ -137,10 +138,10 @@ export default function Hero() {
             <div
               className="px-5 sm:px-10 w-full max-w-xl py-8 sm:py-10 rounded-2xl"
               style={{
-                background: "rgba(255,255,255,0.06)",
-                backdropFilter: "blur(14px)",
-                WebkitBackdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(72px)",
+                WebkitBackdropFilter: "blur(72px)",
+                border: "1px solid rgba(255,255,255,0.18)",
               }}
             >
               {/* Headline + description */}
