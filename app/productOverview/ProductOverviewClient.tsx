@@ -615,11 +615,15 @@ export default function ProductOverviewClient() {
                       </svg>
                     </div>
 
-                    <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-2" style={SANS}>Payment Confirmed 🎉</p>
+                    <p className="text-[10px] tracking-[0.22em] uppercase text-[#C4541A] font-medium mb-2" style={SANS}>
+                      Payment Confirmed 🎉
+                    </p>
                     <h2 className="text-[28px] text-[#1a1410] leading-tight mb-2" style={SERIF}>
                       Order <span className="italic text-[#C4541A]">Confirmed.</span>
                     </h2>
-                    <p className="text-[12px] text-black/40 mb-8" style={SANS}>Payment received — your spot is locked in.</p>
+                    <p className="text-[12px] text-black/40 mb-8" style={SANS}>
+                      Payment received — your spot is locked in.
+                    </p>
 
                     <div className="w-full bg-[#F5F0E8] rounded-sm px-6 py-5 mb-4 text-left">
                       <p className="text-[9px] tracking-[0.2em] uppercase text-[#9A8E82] mb-3" style={SANS}>Order Summary</p>
@@ -813,9 +817,11 @@ export default function ProductOverviewClient() {
                         <ErrMsg msg={errors.consent} />
                       </div>
 
-                      <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3 flex justify-between items-center">
-                        <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
-                        <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{399 * qty}</span>
+                      <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
+                          <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{399 * qty}</span>
+                        </div>
                       </div>
 
                       <button
@@ -906,7 +912,7 @@ export default function ProductOverviewClient() {
                     Try Again →
                   </button>
                   <button
-                    onClick={() => setShowCancelModal(false)}
+                    onClick={() => { setShowCancelModal(false); handleCloseModal(); }}
                     className="w-full py-2.5 border border-black/15 rounded-sm text-[11px] font-semibold tracking-[0.16em] uppercase text-[#5A5245] hover:bg-black/5 transition-colors"
                     style={SANS}
                   >

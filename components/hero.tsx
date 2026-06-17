@@ -94,153 +94,162 @@ export default function Hero() {
         {/* ── ALL HERO CONTENT ── */}
         <motion.div
           className="relative z-10 flex flex-col flex-1"
-          style={{ y: contentY, opacity: contentOpacity }}
+          style={{ y: contentY }}
         >
-          {/* Top bar */}
-          <div
-            className="flex items-center px-5 sm:px-12 pt-7 gap-4"
-            style={{ animation: "hero-fade-in-down 700ms ease 0ms both" }}
-          >
-            <p
-              className="text-[10px] uppercase tracking-[0.25em] text-orange-500 font-semibold whitespace-nowrap"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+          {/* Top bar + Brand name — fade on scroll, no backdrop-filter here so opacity is safe */}
+          <motion.div style={{ opacity: contentOpacity }}>
+            {/* Top bar */}
+            <div
+              className="flex items-center px-5 sm:px-12 pt-7 gap-4"
+              style={{ animation: "hero-fade-in-down 700ms ease 0ms both" }}
             >
-              Daily Vitamin D3 + K2
-            </p>
-            <div className="h-px bg-white/20 flex-1" />
-            <p
-              className="hidden sm:block text-[10px] uppercase tracking-[0.25em] text-white/35"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              Est. 2026
-            </p>
-          </div>
+              <p
+                className="text-[10px] uppercase tracking-[0.25em] text-orange-500 font-semibold whitespace-nowrap"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Daily Vitamin D3 + K2
+              </p>
+              <div className="h-px bg-white/20 flex-1" />
+              <p
+                className="hidden sm:block text-[10px] uppercase tracking-[0.25em] text-white/35"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Est. 2026
+              </p>
+            </div>
 
-          {/* Brand name */}
-          <div
-            className="px-5 sm:px-12 pt-3 pb-2"
-            style={{ animation: "hero-brand-in 1000ms ease 100ms both" }}
-          >
-            <h1
-              className="font-bold text-white leading-[0.9] uppercase tracking-tight"
-              style={{
-                fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
-                fontSize: "clamp(2.4rem, 9vw, 5rem)",
-              }}
+            {/* Brand name */}
+            <div
+              className="px-5 sm:px-12 pt-3 pb-2"
+              style={{ animation: "hero-brand-in 1000ms ease 100ms both" }}
             >
-              SIPA
-              <em className="italic text-orange-500 ml-3 sm:ml-6">Nutrition</em>
-            </h1>
-          </div>
+              <h1
+                className="font-bold text-white leading-[0.9] uppercase tracking-tight"
+                style={{
+                  fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
+                  fontSize: "clamp(2.4rem, 9vw, 5rem)",
+                }}
+              >
+                SIPA
+                <em className="italic text-orange-500 ml-3 sm:ml-6">Nutrition</em>
+              </h1>
+            </div>
+          </motion.div>
 
-          {/* Main content */}
+          {/* Main content — glass card NOT inside an opacity-animated ancestor
+              so backdrop-filter always blurs through to the real background */}
           <div className="flex-1 px-10 flex items-center">
             <div
               className="px-5 sm:px-10 w-full max-w-xl py-8 sm:py-10 rounded-2xl"
               style={{
                 background: "rgba(255,255,255,0.08)",
-                backdropFilter: "blur(72px)",
-                WebkitBackdropFilter: "blur(72px)",
+                backdropFilter: "blur(52px)",
+                WebkitBackdropFilter: "blur(52px)",
                 border: "1px solid rgba(255,255,255,0.18)",
               }}
             >
-              {/* Headline + description */}
-              <div style={{ animation: "hero-fade-in-up 1000ms ease 300ms both" }}>
-                <p
-                  className="font-bold text-white leading-snug mb-4"
-                  style={{
-                    fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
-                    fontSize: "clamp(1.6rem, 5.5vw, 3.2rem)",
-                  }}
-                >
-                  Let's Get{" "}
-                  <em className="italic text-orange-500 whitespace-nowrap">Better Together.</em>
-                </p>
-                <p
-                  className="text-sm text-white/60 max-w-xs sm:max-w-sm leading-relaxed"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  A vegan daily maintenance formula engineered for optimal
-                  absorption, modern lifestyles, and lasting wellness.
-                </p>
-              </div>
-
-              {/* Trust pills */}
-              <div
-                className="flex items-center gap-3 mt-6 mb-8 flex-wrap"
-                style={{ animation: "hero-fade-in-up 1000ms ease 380ms both" }}
-              >
-                {[
-                  { color: "bg-orange-400", label: "Clinically dosed" },
-                  { color: "bg-green-400",  label: "100% Vegan" },
-                  { color: "bg-blue-300",   label: "30 Sachets" },
-                ].map(({ color, label }) => (
-                  <span
-                    key={label}
-                    className="flex items-center gap-1.5 text-[11px] text-white/55"
+              {/* Card content fades independently — opacity on children, never on the card itself */}
+              <motion.div style={{ opacity: contentOpacity }}>
+                {/* Headline + description */}
+                <div style={{ animation: "hero-fade-in-up 1000ms ease 300ms both" }}>
+                  <p
+                    className="font-bold text-white leading-snug mb-4"
+                    style={{
+                      fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif",
+                      fontSize: "clamp(1.6rem, 5.5vw, 3.2rem)",
+                    }}
+                  >
+                    Let's Get{" "}
+                    <em className="italic text-orange-500 whitespace-nowrap">Better Together.</em>
+                  </p>
+                  <p
+                    className="text-sm text-white/60 max-w-xs sm:max-w-sm leading-relaxed"
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   >
-                    <span className={`w-1.5 h-1.5 rounded-full ${color} inline-block shrink-0`} />
-                    {label}
-                  </span>
-                ))}
-              </div>
+                    A vegan daily maintenance formula engineered for optimal
+                    absorption, modern lifestyles, and lasting wellness.
+                  </p>
+                </div>
 
-              {/* CTAs */}
-              <div
-                className="flex items-center gap-5 flex-wrap"
-                style={{ animation: "hero-fade-in-up 1000ms ease 460ms both" }}
-              >
-                <Link
-                  href="/productOverview"
-                  className="group relative overflow-hidden flex items-center gap-2.5 px-7 py-3.5 rounded-[10px] border-[1.5px] border-white/70 hover:border-orange-400 text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
-                  style={{
-                    fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                  }}
+                {/* Trust pills */}
+                <div
+                  className="flex items-center gap-3 mt-6 mb-8 flex-wrap"
+                  style={{ animation: "hero-fade-in-up 1000ms ease 380ms both" }}
                 >
-                  <span className="absolute inset-0 bg-orange-600 -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
-                  <span className="relative z-10">Shop Now</span>
-                  <svg
-                    className="relative z-10 w-3 h-3 stroke-current group-hover:translate-x-1 transition-transform duration-300"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                  {[
+                    { color: "bg-orange-400", label: "Clinically dosed" },
+                    { color: "bg-green-400",  label: "100% Vegan" },
+                    { color: "bg-blue-300",   label: "30 Sachets" },
+                  ].map(({ color, label }) => (
+                    <span
+                      key={label}
+                      className="flex items-center gap-1.5 text-[11px] text-white/55"
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${color} inline-block shrink-0`} />
+                      {label}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTAs */}
+                <div
+                  className="flex items-center gap-5 flex-wrap"
+                  style={{ animation: "hero-fade-in-up 1000ms ease 460ms both" }}
+                >
+                  <Link
+                    href="/productOverview"
+                    className="group relative overflow-hidden flex items-center gap-2.5 px-7 py-3.5 rounded-[10px] border-[1.5px] border-white/70 hover:border-orange-400 text-white bg-transparent transition-colors duration-[400ms] cursor-pointer"
+                    style={{
+                      fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                    }}
                   >
-                    <path d="M2 7h10M8 3l4 4-4 4" />
-                  </svg>
-                </Link>
+                    <span className="absolute inset-0 bg-orange-600 -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
+                    <span className="relative z-10">Shop Now</span>
+                    <svg
+                      className="relative z-10 w-3 h-3 stroke-current group-hover:translate-x-1 transition-transform duration-300"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg>
+                  </Link>
 
-                <Link
-                  href="/about"
-                  className="text-white/45 hover:text-white text-[11px] uppercase tracking-[0.18em] underline underline-offset-4 transition-colors duration-200 cursor-pointer bg-transparent border-none"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  Our Story
-                </Link>
-              </div>
+                  <Link
+                    href="/about"
+                    className="text-white/45 hover:text-white text-[11px] uppercase tracking-[0.18em] underline underline-offset-4 transition-colors duration-200 cursor-pointer bg-transparent border-none"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    Our Story
+                  </Link>
+                </div>
+              </motion.div>
             </div>
           </div>
 
-          {/* Bottom rule */}
-          <div
-            className="flex items-center gap-6 px-5 sm:px-12 pb-5"
-            style={{ animation: "hero-fade-in 1000ms ease 700ms both" }}
-          >
-            <div className="h-px bg-white/15 flex-1" />
-            <p
-              className="text-[9px] uppercase tracking-[0.3em] text-white/25"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+          {/* Bottom rule — fades on scroll */}
+          <motion.div style={{ opacity: contentOpacity }}>
+            <div
+              className="flex items-center gap-6 px-5 sm:px-12 pb-5"
+              style={{ animation: "hero-fade-in 1000ms ease 700ms both" }}
             >
-              Wellness Simplified
-            </p>
-            <div className="h-px bg-white/15 flex-1" />
-          </div>
+              <div className="h-px bg-white/15 flex-1" />
+              <p
+                className="text-[9px] uppercase tracking-[0.3em] text-white/25"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Wellness Simplified
+              </p>
+              <div className="h-px bg-white/15 flex-1" />
+            </div>
+          </motion.div>
         </motion.div>
       </motion.section>
     </>
