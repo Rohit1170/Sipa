@@ -94,7 +94,7 @@ export function BlogRelatedPosts({
               SIPA Nutrition Daily D3 + K2 Sachets
             </strong>{" "}
             — India&apos;s first vegan D3+K2 formula. 600 IU VitaShine® D3 + 55 mcg
-            K2 MK-7. Clinically dosed. 100% lab tested. No sugar. Just ≈ ₹13 a day.
+            K2 MK-7. Clinically dosed. 100% lab tested. No sugar.
           </p>
           <Link
             href="/productOverview"
@@ -110,7 +110,7 @@ export function BlogRelatedPosts({
             }}
           >
             <span className="absolute inset-0 bg-[#c2410c] -translate-x-full group-hover:translate-x-0 transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)]" />
-            <span className="relative z-10">Shop Now — ₹399</span>
+            <span className="relative z-10">Shop Now — ₹599</span>
             <svg
               className="relative z-10 w-3.5 h-3.5 stroke-current group-hover:translate-x-1 transition-transform duration-300"
               viewBox="0 0 14 14"

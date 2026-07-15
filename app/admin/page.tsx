@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -61,16 +62,25 @@ export default async function AdminPage() {
       <div className="max-w-6xl mx-auto px-6 py-24">
 
         {/* Header */}
-        <div className="mb-10">
-          <p className="text-[0.65rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-2" style={SANS}>
-            Admin · SIPA Nutrition
-          </p>
-          <h1 className="text-[clamp(28px,4vw,42px)] font-medium text-[#1C1A17] leading-tight" style={SERIF}>
-            Dashboard
-          </h1>
-          <p className="text-[0.82rem] text-[#9A8E82] mt-1" style={SANS}>
-            Live data from your MongoDB — refreshes on page load.
-          </p>
+        <div className="mb-10 flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <p className="text-[0.65rem] font-semibold tracking-[0.22em] uppercase text-[#C4541A] mb-2" style={SANS}>
+              Admin · SIPA Nutrition
+            </p>
+            <h1 className="text-[clamp(28px,4vw,42px)] font-medium text-[#1C1A17] leading-tight" style={SERIF}>
+              Dashboard
+            </h1>
+            <p className="text-[0.82rem] text-[#9A8E82] mt-1" style={SANS}>
+              Live data from your MongoDB — refreshes on page load.
+            </p>
+          </div>
+          <Link
+            href="/admin/coupons"
+            className="text-[11px] font-semibold tracking-[0.14em] uppercase px-4 py-2 rounded-sm bg-[#1C1A17] text-white hover:bg-[#333] transition-colors"
+            style={SANS}
+          >
+            Coupons →
+          </Link>
         </div>
 
         <AdminDashboard

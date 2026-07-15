@@ -48,7 +48,7 @@ export default async function ProfilePage() {
   const firstName = displayName ? displayName.split(" ")[0] : "there";
   const initials = displayName ? getInitials(displayName) : session.user.email.slice(0, 2).toUpperCase();
   const quantity = p?.totalQuantity || p?.quantity || 1;
-  const amountPaid = p?.totalAmountPaid || quantity * 399;
+  const amountPaid = p?.totalAmountPaid || quantity * 599;
 
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#1C1A17]" style={SANS}>

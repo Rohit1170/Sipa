@@ -34,7 +34,7 @@ export async function GET() {
       ? {
           status: p.status,
           quantity: p.totalQuantity || p.quantity || 1,
-          totalAmountPaid: p.totalAmountPaid || (p.quantity || 1) * 399,
+          totalAmountPaid: p.totalAmountPaid || (p.quantity || 1) * 599,
           createdAt: p.createdAt,
         }
       : null,

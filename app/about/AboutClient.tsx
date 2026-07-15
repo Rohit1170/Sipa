@@ -338,7 +338,7 @@ const AboutClient: React.FC = () => {
             <em className="italic font-semibold text-orange-700">Daily Ritual</em>
           </h2>
           <p className="text-xs font-light text-neutral-500 mb-8 tracking-[0.1em] uppercase">
-            ₹399 · 30 Sachets · ≈ ₹13 / day
+            ₹599 · 30 Sachets
           </p>
 
           {/* Matches the navbar Order button style */}

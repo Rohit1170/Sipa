@@ -4,11 +4,11 @@ import HomeClient from "./HomeClient";
 export const metadata: Metadata = {
   title: "SIPA Nutrition — Daily Vitamin D3 + K2 Sachets for India",
   description:
-    "India's first vegan daily D3 + K2 sachet. 600 IU + 55 mcg MK-7 at just ₹13/day. FSSAI approved, WHO-GMP certified, third-party lab tested.",
+    "India's first vegan daily D3 + K2 sachet. 600 IU + 55 mcg MK-7. FSSAI approved, WHO-GMP certified, third-party lab tested.",
   alternates: { canonical: "https://www.sipanutrition.com/" },
   openGraph: {
     title: "SIPA Nutrition — Daily Vitamin D3 + K2 Sachets",
-    description: "Vegan. Lab-tested. ₹399 for 30 days.",
+    description: "Vegan. Lab-tested. ₹599 for 30 days.",
     url: "https://www.sipanutrition.com/",
     type: "website",
     images: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "SIPA Nutrition — Daily D3+K2 Sachets",
-    description: "Vegan. Lab-tested. ₹399 for 30 days.",
+    description: "Vegan. Lab-tested. ₹599 for 30 days.",
     images: ["https://www.sipanutrition.com/hero.jpeg"],
   },
 };

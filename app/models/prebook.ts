@@ -33,6 +33,8 @@ const prebookSchema = new mongoose.Schema(
         razorpayPaymentId: String,
         quantity: Number,
         amount: Number,
+        couponCode: String,
+        discountAmount: Number,
         paidAt: Date,
       },
     ],

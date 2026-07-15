@@ -212,7 +212,7 @@ const productSchema = {
   brand: { "@type": "Brand", name: "SIPA Nutrition" },
   offers: {
     "@type": "Offer",
-    price: "399",
+    price: "599",
     priceCurrency: "INR",
     availability: "https://schema.org/InStock",
     url: "https://www.sipanutrition.com/productOverview",

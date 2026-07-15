@@ -90,15 +90,13 @@ function buildAwarenessEmail(name: string): string {
                               <td style="font-size:12px;color:#5A5245;padding:3px 0;">✦ &nbsp;100% Vegan · No fillers · No compromise</td>
                             </tr>
                             <tr>
-                              <td style="font-size:12px;color:#5A5245;padding:3px 0;">✦ &nbsp;Just ≈ ₹13/day for a month of wellness</td>
+                              <td style="font-size:12px;color:#5A5245;padding:3px 0;">✦ &nbsp;Exclusive member promo codes</td>
                             </tr>
                           </table>
                           <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;">
                             <tr>
                               <td>
-                                <span style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:#C4541A;">₹399</span>
-                                <span style="font-size:14px;color:#9A8E82;text-decoration:line-through;margin-left:8px;">₹599</span>
-                                <span style="font-size:11px;font-weight:700;color:#1C6B3A;background:#ECFDF5;padding:3px 8px;border-radius:4px;margin-left:8px;">33% OFF</span>
+                                <span style="font-family:Georgia,serif;font-size:26px;font-weight:700;color:#C4541A;">₹599</span>
                               </td>
                             </tr>
                           </table>
@@ -182,7 +180,7 @@ export async function POST(req: NextRequest) {
     to: email,
     from: `"SIPA Nutrition" <${process.env.EMAIL_USER}>`,
     subject: "Your wellness journey is still waiting ✦",
-    text: `Hey ${name || "there"},\n\nYou created a SIPA account but haven't placed your first order yet.\n\nGet your Daily D3 + K2 (30 sachets) for just ₹399 — that's ≈ ₹13/day.\n\nOrder now: https://www.sipanutrition.com/productOverview\n\n— Team SIPA Nutrition`,
+    text: `Hey ${name || "there"},\n\nYou created a SIPA account but haven't placed your first order yet.\n\nGet your Daily D3 + K2 (30 sachets) for ₹599.\n\nOrder now: https://www.sipanutrition.com/productOverview\n\n— Team SIPA Nutrition`,
     html: buildAwarenessEmail(name || ""),
     attachments: [
       {

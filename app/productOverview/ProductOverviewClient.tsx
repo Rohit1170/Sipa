@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Footer from "@/components/footer";
 import { toast } from "@/components/ui/use-toast";
@@ -9,10 +9,17 @@ import AuthModal from "@/components/AuthModal";
 import Certifications from "@/components/certifications";
 import { lookupPincode } from "@/lib/pincodeLookup";
 import { ReviewSection } from "@/components/reviews/ReviewSection";
+import { useCoupon } from "@/hooks/useCoupon";
+import { PromoCodeInput } from "@/components/promo/PromoCodeInput";
+import { PricingBreakdown } from "@/components/promo/PricingBreakdown";
+import { Confetti, type ConfettiRef } from "@/components/magicui/confetti";
 
 // ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
 const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
 const SANS  = { fontFamily: "'DM Sans', sans-serif" };
+
+// Mirrors app/lib/coupon.ts MRP_PER_UNIT — display only, never used for payable-amount math.
+const MRP_PER_UNIT = 599;
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -134,6 +141,25 @@ export default function ProductOverviewClient() {
 
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // ── Promo code / coupon (server-validated, server-computed pricing) ──────
+  const confettiRef = useRef<ConfettiRef>(null);
+  const fireConfetti = useCallback(() => {
+    confettiRef.current?.fire({ particleCount: 120, spread: 90, origin: { y: 0.6 } });
+  }, []);
+
+  const {
+    code: promoCode,
+    setCode: setPromoCode,
+    status: promoStatus,
+    message: promoMessage,
+    coupon: appliedCoupon,
+    pricing: couponPricing,
+    apply: applyPromo,
+    remove: removePromo,
+  } = useCoupon({ productId: "daily-d3-k2", quantity: qty, onApplied: fireConfetti });
+
+  const displayTotal = couponPricing ? couponPricing.finalPrice : MRP_PER_UNIT * qty;
 
   // ── Prefill form from session data (runs once per session) ───────────────
   useEffect(() => {
@@ -325,7 +351,10 @@ export default function ProductOverviewClient() {
       const orderRes = await fetch("/api/createOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity: qty }),
+        body: JSON.stringify({
+          quantity: qty,
+          promoCode: appliedCoupon?.code,
+        }),
       });
 
       const orderData = await orderRes.json();
@@ -421,10 +450,10 @@ export default function ProductOverviewClient() {
               return;
             }
 
-            // ── Step 4: Show success ──
+            // ── Step 4: Show success ── (totalAmount comes from the server — reflects any discount actually charged)
             setBookingSuccess({
               orderId: verifyData.orderId,
-              totalAmount: 399 * qty,
+              totalAmount: verifyData.amountPaid,
               quantity: qty,
             });
             setShowForm(true);
@@ -480,6 +509,11 @@ export default function ProductOverviewClient() {
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#1C1A17]" style={SANS}>
+      <Confetti
+        ref={confettiRef}
+        manualstart
+        className="pointer-events-none fixed inset-0 z-70 size-full"
+      />
 
       {/* ── HERO ── */}
       <section className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 px-6 lg:px-12 py-12 lg:py-16 items-start">
@@ -568,16 +602,16 @@ export default function ProductOverviewClient() {
             <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]" style={SANS}>q.s.</span>
           </div>
 
-          <div className="flex flex-col gap-2 mb-7">
-            <div className="flex items-center gap-3">
-              <span className="text-4xl font-bold text-[#1C1A17] tracking-tight" style={SERIF}>₹399</span>
-              <div className="flex flex-col">
-                <span className="text-base text-[#9A8E82] line-through leading-none" style={SANS}>₹599</span>
-                <span className="text-[0.7rem] font-bold text-white bg-[#1C6B3A] px-1.5 py-0.5 rounded-sm mt-0.5 tracking-wide" style={SANS}>33% OFF</span>
-              </div>
-            </div>
-            <p className="text-[0.7rem] text-gray-600" style={SANS}><span className="font-bold">≈ ₹13 / day </span>· 30-day supply</p>
-          </div>
+          <PricingBreakdown quantity={qty} coupon={appliedCoupon} pricing={couponPricing} />
+
+          <PromoCodeInput
+            code={promoCode}
+            setCode={setPromoCode}
+            status={promoStatus}
+            message={promoMessage}
+            onApply={() => applyPromo()}
+            onRemove={removePromo}
+          />
 
           {/* ── EDGE CASE: SDK not ready — disable button ── */}
           <button
@@ -711,7 +745,7 @@ export default function ProductOverviewClient() {
                             />
                             <button onClick={increase} className="px-3 py-2 text-lg hover:text-[#C4541A]">+</button>
                           </div>
-                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{399 * qty} total</span>
+                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{displayTotal} total</span>
                         </div>
                       </div>
 
@@ -820,7 +854,7 @@ export default function ProductOverviewClient() {
                       <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3">
                         <div className="flex justify-between items-center">
                           <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
-                          <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{399 * qty}</span>
+                          <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{displayTotal}</span>
                         </div>
                       </div>
 
@@ -839,7 +873,7 @@ export default function ProductOverviewClient() {
                             Processing...
                           </>
                         ) : (
-                          `Pay ₹${399 * qty} & Order →`
+                          `Pay ₹${displayTotal} & Order →`
                         )}
                       </button>
 
@@ -896,7 +930,7 @@ export default function ProductOverviewClient() {
                       The Daily D3 + K2 — {qty} pack{qty > 1 ? "s" : ""}
                     </p>
                     <p className="text-[0.75rem] text-[#C4541A] font-semibold mt-1" style={SANS}>
-                      ₹{399 * qty} · 33% OFF · ≈ ₹13/day
+                      ₹{displayTotal} · ≈ ₹{Math.round(displayTotal / (30 * qty))}/day
                     </p>
                   </div>
 

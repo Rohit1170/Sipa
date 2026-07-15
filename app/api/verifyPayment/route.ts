@@ -1,13 +1,18 @@
 import crypto from "crypto";
+import Razorpay from "razorpay";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Prebook from "@/app/models/prebook";
+import Coupon from "@/app/models/coupon";
+import { MRP_PER_UNIT } from "@/app/lib/coupon";
 import path from "path";
 import fs from "fs";
 import { sendMail } from "@/app/lib/sendMail";
 
-const PRICE_PER_UNIT = 399;
-const ORIGINAL_PRICE = 599;
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
 const templatePath = path.join(process.cwd(), "app/templates/preBooking.html");
 const baseTemplate = fs.readFileSync(templatePath, "utf8");
@@ -76,7 +81,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       notes, consent,
     } = customerData;
 
-    const amountPaid = PRICE_PER_UNIT * quantity;
+    // ── Trusted source for amount + promo used: the Razorpay order itself ─────
+    // (never trust a client-resubmitted promoCode/discount for money or usage counts)
+    const razorpayOrder = await razorpay.orders.fetch(razorpay_order_id);
+    const amountPaid = Number(razorpayOrder.amount) / 100;
+    const appliedCouponCode = String(razorpayOrder.notes?.promoCode || "");
+    const discountAmount = Number(razorpayOrder.notes?.discountAmount || 0);
 
     // ── 2. Idempotency — has this exact Razorpay order been saved already? ────
     // Handles: browser crash, page refresh, double API call for same payment
@@ -86,11 +96,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (existingByOrderId) {
       console.log(`Idempotent: order ${razorpay_order_id} already processed`);
+      const existingPayment = existingByOrderId.payments.find(
+        (p: { razorpayOrderId: string; amount: number }) => p.razorpayOrderId === razorpay_order_id
+      );
       return NextResponse.json(
         {
           success: true,
           message: "Payment already confirmed!",
           orderId: existingByOrderId._id.toString(),
+          amountPaid: existingPayment?.amount ?? existingByOrderId.totalAmountPaid,
           totalQuantity: existingByOrderId.totalQuantity,
           totalAmountPaid: existingByOrderId.totalAmountPaid,
         },
@@ -129,6 +143,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
               razorpayPaymentId: razorpay_payment_id,
               quantity,
               amount: amountPaid,
+              couponCode: appliedCouponCode || undefined,
+              discountAmount,
               paidAt: new Date(),
             },
           },
@@ -158,26 +174,66 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             razorpayPaymentId: razorpay_payment_id,
             quantity,
             amount: amountPaid,
+            couponCode: appliedCouponCode || undefined,
+            discountAmount,
             paidAt: new Date(),
           },
         ],
       });
     }
 
+    // ── Best-effort: increment coupon usage only after a successful, paid order ──
+    // Guarded so concurrent checkouts can't push usedCount past usageLimit.
+    if (appliedCouponCode) {
+      try {
+        await Coupon.findOneAndUpdate(
+          {
+            code: appliedCouponCode,
+            $or: [{ usageLimit: 0 }, { $expr: { $lt: ["$usedCount", "$usageLimit"] } }],
+          },
+          { $inc: { usedCount: 1 } }
+        );
+      } catch (err) {
+        console.error("Coupon usage increment failed:", err);
+      }
+    }
+
     const orderId = prebook!._id.toString();
     const fullAddress = `${address1}${address2 ? ", " + address2 : ""}, ${city}, ${state} - ${pincode}`;
     const adminEmail = process.env.EMAIL_USER!;
-    const savings = (ORIGINAL_PRICE - PRICE_PER_UNIT) * quantity; // ₹200 × qty
-    const mrpTotal = ORIGINAL_PRICE * quantity; // ₹599 × qty (crossed out in email)
+    const mrpTotal = MRP_PER_UNIT * quantity; // ₹599 × qty (crossed out in email)
+
+    const mrpCrossedOutHtml =
+      discountAmount > 0
+        ? `<p style="margin: 0; font-size: 11px; color: #9a8e82; text-decoration: line-through;">₹${mrpTotal}</p>`
+        : "";
+
+    const promoRowHtml = appliedCouponCode
+      ? `<tr>
+          <td style="padding: 12px 0; border-bottom: 1px solid #f0eae0;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-size: 12px; color: #1c6b3a; font-weight: 600;">
+                  🎉 Promo (${escapeHTML(appliedCouponCode)}) applied
+                </td>
+                <td align="right" style="font-size: 12px; color: #1c6b3a; font-weight: 600;">
+                  − ₹${discountAmount}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>`
+      : "";
 
     // ── 4. Send confirmation emails ───────────────────────────────────────────
     let htmlTemplate = baseTemplate
       .replace(/{{\s*name\s*}}/g, escapeHTML(name))
       .replace(/{{\s*email\s*}}/g, escapeHTML(email))
       .replace(/{{\s*quantity\s*}}/g, quantity.toString())
-      .replace(/{{\s*pricePerUnit\s*}}/g, PRICE_PER_UNIT.toString())
+      .replace(/{{\s*mrpPerUnit\s*}}/g, MRP_PER_UNIT.toString())
       .replace(/{{\s*totalAmount\s*}}/g, amountPaid.toString())
-      .replace(/{{\s*savings\s*}}/g, savings.toString())
+      .replace(/{{\s*promoRowHtml\s*}}/g, promoRowHtml)
+      .replace(/{{\s*mrpCrossedOutHtml\s*}}/g, mrpCrossedOutHtml)
       .replace(/{{\s*mrpTotal\s*}}/g, mrpTotal.toString())
       .replace(/{{\s*orderId\s*}}/g, orderId)
       .replace(/{{\s*address\s*}}/g, escapeHTML(fullAddress));
@@ -239,6 +295,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           ? "Order updated successfully!"
           : "Payment verified and order confirmed!",
         orderId,
+        amountPaid,
         totalQuantity: prebook!.totalQuantity,
         totalAmountPaid: prebook!.totalAmountPaid,
         isReturningCustomer,

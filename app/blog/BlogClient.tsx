@@ -20,7 +20,6 @@ interface StatCard {
   desc: string;
 }
 interface AudienceCard {
-  icon: string;
   title: string;
   desc: string;
 }
@@ -133,32 +132,26 @@ const d3Cards: NumberedCard[] = [
 
 const audienceCards: AudienceCard[] = [
   {
-    icon: "",
     title: "Office Workers",
     desc: "8–10 hrs indoors = near-zero UVB. Supplementation is essential.",
   },
   {
-    icon: "",
     title: "Vegans & Vegetarians",
     desc: "K2 is almost absent in plant-based diets. Non-negotiable to supplement.",
   },
   {
-    icon: "",
     title: "Adults Over 40",
     desc: "Skin D3 synthesis and bone density both decline steadily with age.",
   },
   {
-    icon: "",
     title: "Athletes",
     desc: "Heavy training raises demand for bone mineralisation and muscle recovery.",
   },
   {
-    icon: "",
     title: "Pregnant & Nursing",
     desc: "Critical for the baby's skeletal structure and immune development.",
   },
   {
-    icon: "",
     title: "Post-Menopausal Women",
     desc: "Accelerated bone density loss after menopause makes D3 + K2 essential.",
   },
@@ -592,14 +585,6 @@ const AudienceGrid: React.FC<{ cards: AudienceCard[] }> = ({ cards }) => (
                    hover:border-orange-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-900/10
                    transition-all duration-300"
       >
-        <span
-          className="text-[2.2rem] flex items-center justify-center w-14 h-14 rounded-full
-                         bg-orange-900/10 mb-3 shrink-0"
-          role="img"
-          aria-hidden="true"
-        >
-          {c.icon}
-        </span>
         <h3
           style={serifFont}
           className="text-[0.95rem] font-medium text-neutral-900 mb-1.5"
@@ -1426,8 +1411,7 @@ export default function BlogClient() {
               {[
                 ["Science-Backed", true],
                 ["10 Min Read", false],
-                ["Published 2 April 2026", false],
-                ["By SIPA Nutrition", false],
+                ["Published 2 April 2026 By SIPA Nutrition", false],
               ].map(([label, active]) => (
                 <span key={label as string} className={chip(active as boolean)}>
                   {label as string}
@@ -1680,7 +1664,7 @@ export default function BlogClient() {
                 </p>
                 <InlineCTA
                   title="Ready to supplement the right way?"
-                  body="SIPA Nutrition's daily sachet delivers both in the clinically recommended ratio — vegan, 100% lab tested, and just ≈ ₹13/day."
+                  body="SIPA Nutrition's daily sachet delivers both in the clinically recommended ratio — vegan and 100% lab tested."
                 />
               </section>
 
@@ -1799,10 +1783,7 @@ export default function BlogClient() {
                 >
                   India's best Vegan Daily
                   <br />
-                  D3 + K2 Sachet —{" "}
-                  <em className="text-orange-700 not-italic">
-                    Just ≈ ₹13 a Day
-                  </em>
+                  <em className="text-orange-700 not-italic">D3 + K2 Sachet</em>
                 </h2>
                 <p className="text-stone-500 max-w-lg mx-auto mb-8 text-[0.94rem]">
                   Clinically dosed. 100% vegan via VitaShine®. Independently lab
@@ -1812,10 +1793,10 @@ export default function BlogClient() {
                   style={serifFont}
                   className="text-[3rem] text-neutral-900 leading-none mb-1"
                 >
-                  ₹399
+                  ₹599
                 </p>
                 <p className="text-[0.82rem] text-stone-500 mb-7">
-                  30 sachets · 30-day supply · ≈ ₹13/day
+                  30 sachets · 30-day supply
                 </p>
                 <div className="flex justify-center">
                   <Link
@@ -1860,7 +1841,7 @@ export default function BlogClient() {
                   ))}
                 </div>
                 <p className="mt-6 text-[0.85rem] text-stone-500">
-                  33% OFF · Free shipping · FSSAI certified
+                  Free shipping · FSSAI certified
                 </p>
               </div>
 
@@ -1955,7 +1936,7 @@ export default function BlogClient() {
                 </p>
                 <InlineCTA
                   title="Let's Get Better Together."
-                  body="Try SIPA Nutrition's Vitamin D3 + K2 sachets — 30 sachets, one a day, ₹399. Vegan. 100% lab tested."
+                  body="Try SIPA Nutrition's Vitamin D3 + K2 sachets — 30 sachets, one a day, ₹599. Vegan. 100% lab tested."
                 />
                 <p className="mt-8 text-[0.78rem] text-stone-400 leading-[1.6] italic">
                   Disclaimer: This article is for informational and educational
