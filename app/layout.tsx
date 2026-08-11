@@ -61,7 +61,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="432lcv7Hma2TkRpJCpEaAMtT3M1Zw9g95ByAAZR12JE" />
         <meta name="google-site-verification" content="aBvuh8BkWYYAZUMQWJQjwUind3GYgmRc7oLaeW9boTY" />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased" suppressHydrationWarning>
         <Providers>
           <Navbar/>
           {children}

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { calculatePricing, findValidCoupon } from "@/app/lib/coupon";
+import { isFreedomSaleActive, FREEDOM_SALE_MESSAGE } from "@/app/lib/campaign";
 
 interface ApplyCouponBody {
   promoCode?: string;
@@ -10,6 +11,13 @@ interface ApplyCouponBody {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const { promoCode, quantity = 1 }: ApplyCouponBody = await req.json();
+
+    if (isFreedomSaleActive()) {
+      return NextResponse.json(
+        { success: false, reason: "sale_active", message: FREEDOM_SALE_MESSAGE },
+        { status: 400 }
+      );
+    }
 
     if (!promoCode || !promoCode.trim()) {
       return NextResponse.json(

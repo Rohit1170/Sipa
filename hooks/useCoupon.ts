@@ -7,6 +7,7 @@ import {
   type CouponSummary,
   type PricingBreakdown,
 } from "@/lib/services/couponService";
+import { isFreedomSaleActive, FREEDOM_SALE_MESSAGE } from "@/app/lib/campaign";
 
 export type CouponStatus =
   | "idle"
@@ -15,7 +16,8 @@ export type CouponStatus =
   | "invalid"
   | "expired"
   | "limit_reached"
-  | "inactive";
+  | "inactive"
+  | "sale_active";
 
 interface UseCouponOptions {
   productId?: string;
@@ -83,6 +85,11 @@ export function useCoupon({ productId, quantity, onApplied }: UseCouponOptions):
     async (codeOverride?: string) => {
       const target = (codeOverride ?? code).trim();
       setCode(target);
+      if (isFreedomSaleActive()) {
+        setStatus("sale_active");
+        setMessage(FREEDOM_SALE_MESSAGE);
+        return;
+      }
       await runApply(target, quantity);
     },
     [code, quantity, runApply]
@@ -100,6 +107,7 @@ export function useCoupon({ productId, quantity, onApplied }: UseCouponOptions):
   // ── Auto-apply from ?promo=CODE on first mount ──
   useEffect(() => {
     if (hasAutoApplied.current) return;
+    if (isFreedomSaleActive()) return; // promo URLs are ignored during the Freedom Sale
     const promo = searchParams.get("promo");
     if (promo && promo.trim()) {
       hasAutoApplied.current = true;

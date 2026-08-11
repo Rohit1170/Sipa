@@ -1,6 +1,7 @@
 import Razorpay from "razorpay";
 import { NextRequest, NextResponse } from "next/server";
 import { MRP_PER_UNIT, calculatePricing, findValidCoupon } from "@/app/lib/coupon";
+import { isFreedomSaleActive, applyFreedomSalePricing } from "@/app/lib/campaign";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID!,
@@ -28,11 +29,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ── Re-validate the coupon server-side — never trust a client-sent discount ──
+    // ── Re-validate the coupon/sale server-side — never trust client-sent pricing ──
     let discountAmount = 0;
     let appliedCode = "";
+    let packQuantity = quantity; // packs actually shipped — doubles during the Freedom Sale
+    const freedomSaleActive = isFreedomSaleActive();
 
-    if (!IS_TEST_MODE && promoCode && promoCode.trim()) {
+    if (!IS_TEST_MODE && freedomSaleActive) {
+      // Freedom Sale (Buy 1 Get 1 Free) is live — coupons are disabled and never stack with it.
+      // Price paid is unchanged; the bonus is entirely in the extra packs shipped.
+      const bogo = applyFreedomSalePricing(quantity, MRP_PER_UNIT);
+      packQuantity = bogo.shippedQuantity;
+      discountAmount = bogo.discountAmount; // informational (order record/email) — not deducted from amount
+    } else if (!IS_TEST_MODE && promoCode && promoCode.trim()) {
       const result = await findValidCoupon(promoCode);
       if (!result.ok) {
         return NextResponse.json(
@@ -47,6 +56,8 @@ export async function POST(req: NextRequest) {
 
     const amount = IS_TEST_MODE
       ? quantity * PRICE_PER_UNIT
+      : freedomSaleActive
+      ? quantity * PRICE_PER_UNIT // Freedom Sale never discounts cash — only ships more packs
       : quantity * PRICE_PER_UNIT - discountAmount * 100;
 
     const order = await razorpay.orders.create({
@@ -57,6 +68,8 @@ export async function POST(req: NextRequest) {
         promoCode: appliedCode,
         discountAmount: String(discountAmount),
         quantity: String(quantity),
+        packQuantity: String(packQuantity),
+        freedomSale: String(freedomSaleActive),
       },
     });
 
@@ -68,7 +81,8 @@ export async function POST(req: NextRequest) {
       pricing: {
         mrp: quantity * MRP_PER_UNIT,
         discountAmount,
-        finalPrice: quantity * MRP_PER_UNIT - discountAmount,
+        finalPrice: freedomSaleActive ? quantity * MRP_PER_UNIT : quantity * MRP_PER_UNIT - discountAmount,
+        packQuantity,
       },
     });
   } catch (err: any) {

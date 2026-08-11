@@ -13,6 +13,7 @@ import { useCoupon } from "@/hooks/useCoupon";
 import { PromoCodeInput } from "@/components/promo/PromoCodeInput";
 import { PricingBreakdown } from "@/components/promo/PricingBreakdown";
 import { Confetti, type ConfettiRef } from "@/components/magicui/confetti";
+import { isFreedomSaleActive, applyFreedomSalePricing } from "@/app/lib/campaign";
 
 // ─── FONT CONSTANTS ───────────────────────────────────────────────────────────
 const SERIF = { fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" };
@@ -159,7 +160,15 @@ export default function ProductOverviewClient() {
     remove: removePromo,
   } = useCoupon({ productId: "daily-d3-k2", quantity: qty, onApplied: fireConfetti });
 
-  const displayTotal = couponPricing ? couponPricing.finalPrice : MRP_PER_UNIT * qty;
+  const saleActive = isFreedomSaleActive();
+  const freedomSalePricing = saleActive ? applyFreedomSalePricing(qty, MRP_PER_UNIT) : null;
+  const displayTotal = freedomSalePricing
+    ? freedomSalePricing.finalPrice
+    : couponPricing
+    ? couponPricing.finalPrice
+    : MRP_PER_UNIT * qty;
+  // Packs actually shipped — doubles during the Freedom Sale (Buy 1 Get 1 Free).
+  const packsToShip = freedomSalePricing ? freedomSalePricing.shippedQuantity : qty;
 
   // ── Prefill form from session data (runs once per session) ───────────────
   useEffect(() => {
@@ -454,7 +463,7 @@ export default function ProductOverviewClient() {
             setBookingSuccess({
               orderId: verifyData.orderId,
               totalAmount: verifyData.amountPaid,
-              quantity: qty,
+              quantity: packsToShip,
             });
             setShowForm(true);
             resetPaymentState();
@@ -602,7 +611,12 @@ export default function ProductOverviewClient() {
             <span className="text-[0.62rem] font-semibold tracking-[0.14em] uppercase px-3 py-1 rounded-sm bg-[#E8D5BC] text-[#5A5245]" style={SANS}>q.s.</span>
           </div>
 
-          <PricingBreakdown quantity={qty} coupon={appliedCoupon} pricing={couponPricing} />
+          <PricingBreakdown
+            quantity={qty}
+            coupon={saleActive ? null : appliedCoupon}
+            pricing={saleActive ? null : couponPricing}
+            freedomSale={freedomSalePricing}
+          />
 
           <PromoCodeInput
             code={promoCode}
@@ -611,6 +625,7 @@ export default function ProductOverviewClient() {
             message={promoMessage}
             onApply={() => applyPromo()}
             onRemove={removePromo}
+            saleActive={saleActive}
           />
 
           {/* ── EDGE CASE: SDK not ready — disable button ── */}
@@ -745,7 +760,11 @@ export default function ProductOverviewClient() {
                             />
                             <button onClick={increase} className="px-3 py-2 text-lg hover:text-[#C4541A]">+</button>
                           </div>
-                          <span className="text-[11px] text-black/40" style={SANS}>30 sachets / pack · ₹{displayTotal} total</span>
+                          <span className="text-[11px] text-black/40" style={SANS}>
+                            {saleActive
+                              ? `${packsToShip} packs shipped (Buy ${qty} Get ${qty} Free) · ₹${displayTotal} total`
+                              : `30 sachets / pack · ₹${displayTotal} total`}
+                          </span>
                         </div>
                       </div>
 
@@ -853,7 +872,9 @@ export default function ProductOverviewClient() {
 
                       <div className="mt-5 mb-3 bg-[#F5F0E8] rounded-sm px-4 py-3">
                         <div className="flex justify-between items-center">
-                          <span className="text-[11px] text-[#5A5245]" style={SANS}>Total ({qty} pack{qty > 1 ? "s" : ""})</span>
+                          <span className="text-[11px] text-[#5A5245]" style={SANS}>
+                            Total ({packsToShip} pack{packsToShip > 1 ? "s" : ""}{saleActive ? " · BOGO" : ""})
+                          </span>
                           <span className="text-[18px] font-bold text-[#1C1A17]" style={SERIF}>₹{displayTotal}</span>
                         </div>
                       </div>
@@ -927,10 +948,10 @@ export default function ProductOverviewClient() {
                       Your order
                     </p>
                     <p className="text-[0.92rem] font-medium text-[#1C1A17]" style={SERIF}>
-                      The Daily D3 + K2 — {qty} pack{qty > 1 ? "s" : ""}
+                      The Daily D3 + K2 — {packsToShip} pack{packsToShip > 1 ? "s" : ""}
                     </p>
                     <p className="text-[0.75rem] text-[#C4541A] font-semibold mt-1" style={SANS}>
-                      ₹{displayTotal} · ≈ ₹{Math.round(displayTotal / (30 * qty))}/day
+                      ₹{displayTotal} · ≈ ₹{Math.round(displayTotal / (30 * packsToShip))}/day
                     </p>
                   </div>
 

@@ -12,7 +12,7 @@ export interface PricingBreakdown {
   finalPrice: number;
 }
 
-export type CouponRejectReason = "not_found" | "inactive" | "expired" | "limit_reached";
+export type CouponRejectReason = "not_found" | "inactive" | "expired" | "limit_reached" | "sale_active";
 
 export interface ApplyCouponSuccess {
   success: true;

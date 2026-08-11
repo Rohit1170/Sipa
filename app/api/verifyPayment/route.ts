@@ -82,11 +82,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } = customerData;
 
     // ── Trusted source for amount + promo used: the Razorpay order itself ─────
-    // (never trust a client-resubmitted promoCode/discount for money or usage counts)
+    // (never trust a client-resubmitted promoCode/discount/pack-count for money or fulfillment)
     const razorpayOrder = await razorpay.orders.fetch(razorpay_order_id);
     const amountPaid = Number(razorpayOrder.amount) / 100;
     const appliedCouponCode = String(razorpayOrder.notes?.promoCode || "");
     const discountAmount = Number(razorpayOrder.notes?.discountAmount || 0);
+    // Packs to actually ship — doubles during the Freedom Sale (Buy 1 Get 1 Free).
+    // Sourced from the order notes we wrote in createOrder, not the client, so it can't be tampered with.
+    const packQuantity = Number(razorpayOrder.notes?.packQuantity) || quantity;
 
     // ── 2. Idempotency — has this exact Razorpay order been saved already? ────
     // Handles: browser crash, page refresh, double API call for same payment
@@ -141,7 +144,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             payments: {
               razorpayOrderId: razorpay_order_id,
               razorpayPaymentId: razorpay_payment_id,
-              quantity,
+              quantity: packQuantity,
               amount: amountPaid,
               couponCode: appliedCouponCode || undefined,
               discountAmount,
@@ -151,7 +154,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
           // Increment combined totals
           $inc: {
-            totalQuantity: quantity,
+            totalQuantity: packQuantity,
             totalAmountPaid: amountPaid,
           },
         },
@@ -166,13 +169,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         pincode, city, state,
         notes, consent,
         status: "paid",
-        totalQuantity: quantity,
+        totalQuantity: packQuantity,
         totalAmountPaid: amountPaid,
         payments: [
           {
             razorpayOrderId: razorpay_order_id,
             razorpayPaymentId: razorpay_payment_id,
-            quantity,
+            quantity: packQuantity,
             amount: amountPaid,
             couponCode: appliedCouponCode || undefined,
             discountAmount,
@@ -201,7 +204,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const orderId = prebook!._id.toString();
     const fullAddress = `${address1}${address2 ? ", " + address2 : ""}, ${city}, ${state} - ${pincode}`;
     const adminEmail = process.env.EMAIL_USER!;
-    const mrpTotal = MRP_PER_UNIT * quantity; // ₹599 × qty (crossed out in email)
+    const mrpTotal = MRP_PER_UNIT * packQuantity; // ₹599 × packs shipped (crossed out in email)
 
     const mrpCrossedOutHtml =
       discountAmount > 0
@@ -229,7 +232,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     let htmlTemplate = baseTemplate
       .replace(/{{\s*name\s*}}/g, escapeHTML(name))
       .replace(/{{\s*email\s*}}/g, escapeHTML(email))
-      .replace(/{{\s*quantity\s*}}/g, quantity.toString())
+      .replace(/{{\s*quantity\s*}}/g, packQuantity.toString())
       .replace(/{{\s*mrpPerUnit\s*}}/g, MRP_PER_UNIT.toString())
       .replace(/{{\s*totalAmount\s*}}/g, amountPaid.toString())
       .replace(/{{\s*promoRowHtml\s*}}/g, promoRowHtml)
@@ -269,7 +272,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             <p><strong>Name:</strong> ${escapeHTML(name)}</p>
             <p><strong>Email:</strong> ${escapeHTML(email)}</p>
             <p><strong>Phone:</strong> ${escapeHTML(phone)}</p>
-            <p><strong>This Order — Quantity:</strong> ${quantity} pack(s)</p>
+            <p><strong>This Order — Quantity:</strong> ${packQuantity} pack(s)${packQuantity !== quantity ? ` (paid for ${quantity}, Freedom Sale BOGO)` : ""}</p>
             <p><strong>This Order — Amount:</strong> ₹${amountPaid}</p>
             <p><strong>Delivery Address:</strong> ${escapeHTML(fullAddress)}</p>
             ${notes ? `<p><strong>Notes:</strong> ${escapeHTML(notes)}</p>` : ""}

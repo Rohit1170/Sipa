@@ -11,6 +11,8 @@ interface PromoCodeInputProps {
   message: string | null;
   onApply: () => void;
   onRemove: () => void;
+  /** When true (Freedom Sale live), the input is shown disabled/blurred and coupon entry is blocked. */
+  saleActive?: boolean;
 }
 
 const Spinner = () => (
@@ -20,10 +22,44 @@ const Spinner = () => (
   </svg>
 );
 
-export function PromoCodeInput({ code, setCode, status, message, onApply, onRemove }: PromoCodeInputProps) {
+export function PromoCodeInput({ code, setCode, status, message, onApply, onRemove, saleActive = false }: PromoCodeInputProps) {
   const isValidating = status === "validating";
   const isApplied = status === "applied";
   const isErrorState = status === "invalid" || status === "expired" || status === "limit_reached" || status === "inactive";
+
+  if (saleActive) {
+    return (
+      <div className="mb-6">
+        <p className="text-[0.68rem] font-semibold tracking-[0.18em] uppercase text-[#5A5245] mb-2" style={SANS}>
+          Promo Code
+        </p>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value=""
+            disabled
+            readOnly
+            placeholder="Enter Promo Code"
+            className="input rounded-sm flex-1 blur-[1.5px] opacity-50 cursor-not-allowed select-none"
+            style={SANS}
+            tabIndex={-1}
+            aria-disabled="true"
+          />
+          <button
+            disabled
+            className="px-6 py-3 rounded-sm bg-[#C4541A] opacity-40 cursor-not-allowed text-white text-[0.75rem] font-semibold tracking-[0.1em] uppercase"
+            style={SANS}
+            tabIndex={-1}
+          >
+            Apply
+          </button>
+        </div>
+        <p className="text-[10px] text-[#C4541A] font-semibold mt-1.5 ml-0.5" style={SANS}>
+          🎉 Freedom Sale is Live — Coupon codes are not valid at this moment.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-6">
