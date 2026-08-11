@@ -17,7 +17,16 @@ export function FreedomSalePopup() {
     if (!saleActive) return;
     if (sessionStorage.getItem(SEEN_KEY)) return;
     sessionStorage.setItem(SEEN_KEY, "1");
-    setIsOpen(true);
+
+    // Preload the banner so the popup never shows a blank card before the image paints.
+    const img = new window.Image();
+    img.src = "/FreedomSale.png";
+    const show = () => setIsOpen(true);
+    if (img.complete) show();
+    else {
+      img.onload = show;
+      img.onerror = show; // fail open — don't block the popup forever on a network hiccup
+    }
   }, [saleActive]);
 
   useEffect(() => {
