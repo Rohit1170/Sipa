@@ -71,6 +71,7 @@ export default function Hero() {
             alt=""
             fill
             priority
+            sizes="100vw"
             className="object-cover bg-[#f7f4ef]"
             style={{ objectPosition: isMobile ? "calc(50% - 20px) center" : "center center" }}
           />
